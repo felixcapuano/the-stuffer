@@ -1,5 +1,5 @@
 import React from 'react';
-import './MapsGrid.css';
+import './MapsMenu.css';
 
 // images imports
 import img_mirage from './thumbnails/de_mirage.jpg'
@@ -10,7 +10,7 @@ import img_vertigo from './thumbnails/de_vertigo.jpg'
 import img_overpass from './thumbnails/de_overpass.jpg'
 import img_train from './thumbnails/de_train.jpg'
 
-function MapsGrid() {
+function MapsMenu() {
     const imgs = {
         "Mirage":   img_mirage,
         "Dust 2":   img_dust2,
@@ -42,4 +42,4 @@ function MapsGrid() {
     );
 }
 
-export default MapsGrid;
+export default MapsMenu;
