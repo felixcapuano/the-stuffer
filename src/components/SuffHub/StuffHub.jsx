@@ -2,9 +2,12 @@ import React from 'react';
 import './StuffHub.css';
 import Map from '../Map/Map'
 import Carousel from '../Carousel/Carousel';
+import 'heatmap.js';
+import {} from 'heatmap.js/plugins/leaflet-heatmap';
 
 
-const hit_data = []
+const hit_data = [];
+const throw_data = [];
 
 const hit_len = 10;
 for (let i = 0; i < hit_len; i++) {
@@ -18,6 +21,27 @@ for (let i = 0; i < hit_len; i++) {
     });
 }
 
+const throw_len = 100;
+for (let i = 0; i < throw_len; i++) {
+    throw_data.push({
+        hit_id: Math.floor(Math.random() * hit_len),
+        lat: parseFloat(((Math.random() * 180) - 90).toFixed(2)),
+        lng: parseFloat(((Math.random() * 360) - 180).toFixed(2)),
+        type: "jumpthrow",
+        url: "https://youtu.be/dpGrH8nlZ28?t=564",
+        ticks64: true,
+        ticks128: true,
+        name: "un test",
+        description: "je suis une description",
+        validated: false,
+        likes: 0,
+        dislikes: 0,
+        reported: [],
+        count: 1,
+    });
+}
+
+
 function StuffHub() {
 
     const queryString = window.location.search;
@@ -27,7 +51,7 @@ function StuffHub() {
     return (
     // get the map name
         <div className='stuffhub'>
-            <Map mapName={mapName} markerData={hit_data}/>
+            <Map mapName={mapName} hitData={hit_data} throwData={throw_data}/>
             <Carousel />
         </div>
     );
