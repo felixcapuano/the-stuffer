@@ -27,18 +27,6 @@ function StuffHub() {
     return (
     // get the map name
         <div className='stuffhub'>
-            <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                <label className="btn btn-secondary active">
-                    <input type="checkbox" name="disp-stuff" id="toggle-smoke" autoComplete="off" checked /> Smoke
-                </label>
-                <label className="btn btn-secondary">
-                    <input type="checkbox" name="disp-stuff" id="toggle-molotov" autoComplete="off" checked /> Molotov
-                </label>
-                <label className="btn btn-secondary">
-                    <input type="checkbox" name="disp-stuff" id="toggle-flash" autoComplete="off" checked /> Flash
-                </label>
-            </div>
-
             <Map mapName={mapName} markerData={hit_data}/>
             <Carousel />
         </div>
