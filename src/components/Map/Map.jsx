@@ -32,14 +32,14 @@ const newStuffIcon = (url) => L.icon({
 });
 
 // initialisation markers list by types
-let markersLayer = {
+let layers = {
     'smoke': L.layerGroup(),
     'flash': L.layerGroup(),
     'molotov': L.layerGroup(),
 };
+let stuffLayers = L.layerGroup(Object.values(layers));
 
-const layerControl = L.control.layers({}, markersLayer);
-
+const layerControl = L.control.layers({}, layers);
 
 function Map(props) {
     const mapName = props.mapName;
@@ -56,15 +56,6 @@ function Map(props) {
         });
     }
 
-    // fill markers list with stuff data and add listener
-    const fillMarkerGroups = () => {
-        markerData.forEach((mrk) => {
-            markersLayer[mrk.type].addLayer(
-                newMarker(mrk)
-            );
-        });
-    }
-    fillMarkerGroups();
 
     // create tiles
     const mapTile = L.tileLayer('images/maps/{map}/{z}/{y}/{x}.png', {
@@ -80,44 +71,40 @@ function Map(props) {
         const map = L.map('map-container', mapCfg);
 
         map.addLayer(mapTile);
-
-        const showMarker = (show = true) => {
-            Object.values(markersLayer).forEach((layer) => {
-                show ? map.addLayer(layer) : map.removeLayer(layer);
-            });
-            show ? map.addControl(layerControl) : map.removeControl(layerControl);
-        }
+        map.addLayer(stuffLayers);
+        map.addControl(layerControl);
 
         const onMarkerClicked = (e) => {
-
-            console.log(map)
             const _leaflet_id = e.target._leaflet_id;
+            
             if (targetMrk === undefined) {
-                Object.values(markersLayer).forEach((l) => {
+
+                stuffLayers.eachLayer((l) => { 
                     if (l.hasLayer(_leaflet_id)) {
                         targetMrk = l.getLayer(_leaflet_id);
                     }
-                    l.clearLayers();
                 })
 
+                map.removeLayer(stuffLayers);
                 map.addLayer(targetMrk);
             } else {
                 map.removeLayer(targetMrk);
+                map.addLayer(stuffLayers)
 
                 targetMrk = undefined;
             }
             heatMapMode = !heatMapMode;
-
-            // testing
-            let count = 0;
-            map.eachLayer((l) => {
-                count = count + 1;
-            });
-            console.log(count);
         }
 
-
-        showMarker(true);
+        // fill markers list with stuff data and add listener
+        const fillMarkerGroups = () => {
+            markerData.forEach((mrk) => {
+                const id = layers[mrk.type]._leaflet_id;
+                stuffLayers.getLayer(id).addLayer(
+                    newMarker(mrk).on('click', onMarkerClicked));
+            });
+        }
+        fillMarkerGroups();
 
         return () => map.remove();
     });
