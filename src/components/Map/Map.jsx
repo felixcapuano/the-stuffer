@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
 import './Map.css';
+
 import L from 'leaflet';
 import HeatmapOverlay from 'leaflet-heatmap';
+
+import { throw_data, hit_data} from '../Map/data';
 
 // marker icon path
 const mrk_ico = {
     smoke: 'images/icons/smoke.png',
     flash: 'images/icons/flash.png',
     molotov: 'images/icons/molotov.png',
-}
+};
 
 // map configuration
 const corner1 = L.latLng( 180, -180);
@@ -31,7 +34,6 @@ const newStuffIcon = (url) => L.icon({
         iconAnchor: [ICON_SIZE/2, ICON_SIZE/2], // point of the icon which will correspond to marker's location
         popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
 });
-
 
 // initialisation markers list by types
 let layers = {
@@ -63,8 +65,8 @@ const heatmapLayer = new HeatmapOverlay({
 
 function Map(props) {
     const mapName = props.mapName;
-    const markerData = props.hitData;
-    const heatmapData = props.throwData;
+    const markerData = hit_data;
+    const heatmapData = throw_data ;
 
     let heatMapMode = false;
     let targetMrk = undefined;
@@ -140,15 +142,13 @@ function Map(props) {
         }
 
         // add event listener to button;
-        allMarkersLayer.eachLayer((l) => {
-            l.on('click', onMarkerClicked)
-        });
+        allMarkersLayer.eachLayer((l) => l.on('click', onMarkerClicked)); 
 
         return () => map.remove();
     });
 
     return (
-        <div id='map-container'></div>
+            <div id='map-container' />
     );
 }
 
