@@ -16,6 +16,7 @@ for (let i = 0; i < hit_len; i++) {
 const throw_len = 100;
 for (let i = 0; i < throw_len; i++) {
     throw_data.push({
+        id: i,
         hit_id: Math.floor(Math.random() * hit_len),
         lat: parseFloat(((Math.random() * 180) - 90).toFixed(2)),
         lng: parseFloat(((Math.random() * 360) - 180).toFixed(2)),

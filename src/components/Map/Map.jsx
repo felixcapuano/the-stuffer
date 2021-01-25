@@ -6,6 +6,10 @@ import HeatmapOverlay from 'leaflet-heatmap';
 
 import { throw_data, hit_data} from '../Map/data';
 
+// constants
+const SELECTION_SIZE = 20;
+const HEATMAP_MAX = 3;
+
 // marker icon path
 const mrk_ico = {
     smoke: 'images/icons/smoke.png',
@@ -65,11 +69,14 @@ const heatmapLayer = new HeatmapOverlay({
 
 function Map(props) {
     const mapName = props.mapName;
+    const setSelectedData = props.setSelectedData;
+
     const markerData = hit_data;
     const heatmapData = throw_data ;
 
     let heatMapMode = false;
-    let targetMrk = undefined;
+    let targetedMrk = undefined;
+    let stuffSelection = [];
 
     // marker creation
     const createMarker = (mrk) => {
@@ -98,18 +105,26 @@ function Map(props) {
         errorTileUrl: 'images/maps/tiles/empty.png',
     });
 
-    // pickup stuff for the heat map by id
-    const setHeatmapById = (id) => {
-        const hmd = heatmapData.filter((d) => d.hit_id === id);
-        heatmapLayer.setData({
-            max: 3,
-            data: hmd,
-        });
-    }
-
     useEffect(() => {
         // create map after component load
         const map = L.map('map-container', mapCfg);
+        map.on('click', (e) => {
+            if (targetedMrk) {
+                const border = {
+                    south: e.latlng.lat - SELECTION_SIZE / 2,
+                    north: e.latlng.lat + SELECTION_SIZE / 2,
+                    east: e.latlng.lng - SELECTION_SIZE / 2,
+                    west: e.latlng.lng + SELECTION_SIZE / 2,
+                }
+                const selectHeatPoint = stuffSelection.filter((s) => {
+                    return ((border.south < s.lat) &&
+                        (border.north > s.lat) &&
+                        (border.east < s.lng) &&
+                        (border.west > s.lng));
+                });
+                setSelectedData(selectHeatPoint);
+            }
+        });
 
         map.addLayer(mapTile);
         map.addLayer(allMarkersLayer);
@@ -118,25 +133,31 @@ function Map(props) {
         const onMarkerClicked = (e) => {
             const _leaflet_id = e.target._leaflet_id;
             
-            if (!targetMrk) {
+            if (!targetedMrk) {
 
-                targetMrk = allMarkersLayer.getLayer(_leaflet_id);
-                const targetMrkId = Number(targetMrk.options.title);
-                setHeatmapById(targetMrkId);
+                targetedMrk = allMarkersLayer.getLayer(_leaflet_id);
+                const targetedMrkId = Number(targetedMrk.options.title);
+
+                // filtering data by id
+                stuffSelection = heatmapData.filter((d) => d.hit_id === targetedMrkId);
+
+                // display data on the heat map
+                heatmapLayer.setData({ max: HEATMAP_MAX, data: stuffSelection });
 
                 map.removeControl(layerControl);
                 map.removeLayer(allMarkersLayer);
-                map.addLayer(targetMrk);
+                map.addLayer(targetedMrk);
                 map.addLayer(heatmapLayer);
 
             } else {
 
                 map.addControl(layerControl);
-                map.removeLayer(targetMrk);
+                map.removeLayer(targetedMrk);
                 map.addLayer(allMarkersLayer)
                 map.removeLayer(heatmapLayer);
                 
-                targetMrk = undefined;
+                stuffSelection = [];
+                targetedMrk = undefined;
             }
             heatMapMode = !heatMapMode;
         }
@@ -148,7 +169,10 @@ function Map(props) {
     });
 
     return (
+        <div>
             <div id='map-container' />
+            { stuffSelection }
+        </div>
     );
 }
 

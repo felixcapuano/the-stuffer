@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './StuffHub.css';
 import Map from '../Map/Map'
+import SelectionView from '../SelectionView/SelectionView';
 
-class StuffHub extends React.Component {
+function StuffHub(props) {
     
-    render() {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const mapName = urlParams.get('m');
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const mapName = urlParams.get('m');
 
-        return (
-            // get the map name
-            <div className='stuffhub'>
-                <Map mapName={mapName} />
-            </div>
-        );
-    }
+    const [selectedData , setSelectedData] = useState([]);
+
+    return (
+        // get the map name
+        <div className='stuffhub'>
+            <Map mapName={mapName}
+                setSelectedData={setSelectedData} />
+            <SelectionView data={selectedData} />
+        </div>
+    );
 }
 
 export default StuffHub;
