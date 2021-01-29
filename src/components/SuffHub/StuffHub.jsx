@@ -3,6 +3,8 @@ import './StuffHub.css';
 import Map from '../Map/Map'
 import SelectionView from '../SelectionView/SelectionView';
 
+import { throw_data, hit_data} from '../SuffHub/data';
+
 function StuffHub(props) {
     
     const queryString = window.location.search;
@@ -15,6 +17,8 @@ function StuffHub(props) {
         // get the map name
         <div className='stuffhub'>
             <Map mapName={mapName}
+                markerData={hit_data}
+                heatmapData={throw_data}
                 setSelectedData={setSelectedData} />
             <SelectionView data={selectedData} />
         </div>

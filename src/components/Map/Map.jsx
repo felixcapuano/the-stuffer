@@ -4,8 +4,6 @@ import './Map.css';
 import L from 'leaflet';
 import HeatmapOverlay from 'leaflet-heatmap';
 
-import { throw_data, hit_data} from '../Map/data';
-
 // constants
 const SELECTION_SIZE = 20;
 const HEATMAP_MAX = 3;
@@ -71,11 +69,10 @@ function Map(props) {
     const mapName = props.mapName;
     const setSelectedData = props.setSelectedData;
 
-    const markerData = hit_data;
-    const heatmapData = throw_data ;
+    const markerData = props.markerData;
+    const heatmapData = props.heatmapData;
 
     let heatMapMode = false;
-    let targetedMrk = undefined;
     let stuffSelection = [];
 
     // marker creation
@@ -106,6 +103,8 @@ function Map(props) {
     });
 
     useEffect(() => {
+        let targetedMrk = undefined;
+
         // create map after component load
         const map = L.map('map-container', mapCfg);
         map.on('click', (e) => {
