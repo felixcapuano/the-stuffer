@@ -10,7 +10,6 @@ import Badge from 'react-bootstrap/Badge';
 
 function SelectionView(props) {
     const stuffData = props.data;
-    console.log(stuffData);
 
     const stuffCard = (stuff) => {
         const url = `https://www.youtube.com/embed/${stuff.yt_id}?start=${stuff.yt_start_time}`;

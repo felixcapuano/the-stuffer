@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './Map.css';
 
 import L from 'leaflet';
 import HeatmapOverlay from 'leaflet-heatmap';
+
 
 // constants
 const SELECTION_SIZE = 20;
@@ -38,50 +39,48 @@ const newStuffIcon = (url) => L.icon({
 });
 
 // initialisation markers list by types
-let layers = {
+const layers = {
     'smoke': L.layerGroup(),
     'flash': L.layerGroup(),
     'molotov': L.layerGroup(),
 };
-let allMarkersLayer = L.layerGroup();
+const allMarkersLayer = L.layerGroup();
+
+// marker creation
+const createMarker = (mrk) => {
+    return L.marker([mrk.lat, mrk.lng], {
+        icon: newStuffIcon(mrk_ico[mrk.type]),
+        title: mrk.id,
+    });
+}
 
 // initialize heatmap
 const heatmapLayer = new HeatmapOverlay({
-  // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-  // if scaleRadius is false it will be the constant radius used in pixels
-  "radius": 2,
-  "maxOpacity": .8,
-  // scales the radius based on map zoom
-  "scaleRadius": true,
-  // if set to false the heatmap uses the global maximum for colorization
-  // if activated: uses the data maximum within the current map boundaries
-  //   (there will always be a red spot with useLocalExtremas true)
-  "useLocalExtrema": true,
-  // which field name in your data represents the latitude - default "lat"
-  latField: 'lat',
-  // which field name in your data represents the longitude - default "lng"
-  lngField: 'lng',
-  // which field name in your data represents the data value - default "value"
-  valueField: 'count'
+    // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+    // if scaleRadius is false it will be the constant radius used in pixels
+    "radius": 2,
+    "maxOpacity": .8,
+    // scales the radius based on map zoom
+    "scaleRadius": true,
+    // if set to false the heatmap uses the global maximum for colorization
+    // if activated: uses the data maximum within the current map boundaries
+    //   (there will always be a red spot with useLocalExtremas true)
+    "useLocalExtrema": true,
+    // which field name in your data represents the latitude - default "lat"
+    latField: 'lat',
+    // which field name in your data represents the longitude - default "lng"
+    lngField: 'lng',
+    // which field name in your data represents the data value - default "value"
+    valueField: 'count'
 });
 
 function Map(props) {
     const mapName = props.mapName;
     const setSelectedData = props.setSelectedData;
 
+    // get all map data
     const markerData = props.markerData;
     const heatmapData = props.heatmapData;
-
-    let heatMapMode = false;
-    let stuffSelection = [];
-
-    // marker creation
-    const createMarker = (mrk) => {
-        return L.marker([mrk.lat, mrk.lng], {
-            icon: newStuffIcon(mrk_ico[mrk.type]),
-            title: mrk.id,
-        });
-    }
 
     // fill markers list with stuff data
     markerData.forEach((mrk) => {
@@ -91,9 +90,64 @@ function Map(props) {
         allMarkersLayer.addLayer(newMrk);
     });
 
+    // init the layer controller
     const layerControl = L.control.layers({}, layers);
 
-    // create tiles
+    // ????
+    let stuffSelection = [];
+
+    // main layer grouping marker dans heatmap layers
+    const mainLayer = L.layerGroup();
+
+    // - false normal mode with marker
+    // - true selection mode focusing on the clicker marker
+    const selectionMode = useRef(false)
+
+    // keep the id of the current clicker/targeted maker by user
+    const targetMrkId = useRef(0);
+    
+    // function to get marker by id (database not leaflet)
+    const getMarkerById = (id) => (markerData.filter((m) => m.id === id))[0]
+
+    // set the normal mode on the main layer
+    const setNormalMode = () => {
+        // add layer from normal mode
+        //mainLayer.addControl(layerControl);
+        mainLayer.addLayer(allMarkersLayer);
+    }
+
+    // set the selection mode on the main layer
+    const setSelectionMode = (id) => {
+
+        const mrk = createMarker(getMarkerById(id));
+
+        // filtering data by id to keep only relevent one
+        const stuffSelection = heatmapData.filter((d) => d.hit_id === id);
+
+        // set data of the heatmap layer 
+        heatmapLayer.setData({ max: HEATMAP_MAX, data: stuffSelection });
+
+        // add heatmap layer and the marker to the layer
+        mainLayer.addLayer(mrk);
+        mainLayer.addLayer(heatmapLayer);
+    }
+
+    const updateLayer = () => {
+        // remove all layer diplayed
+        mainLayer.clearLayers();
+
+        // if a marker is targeted then
+        if (selectionMode.current) {
+            console.log('setup selection mode');
+            setSelectionMode(targetMrkId.current);
+        } else {
+            console.log('setup normal mode');
+            setNormalMode();
+        }
+    }
+    updateLayer();
+
+    // create map tiles
     const mapTile = L.tileLayer('images/maps/{map}/{z}/{y}/{x}.png', {
         map: mapName,
         minZoom: 0,
@@ -103,19 +157,20 @@ function Map(props) {
     });
 
     useEffect(() => {
-        let targetedMrk = undefined;
-
-        // create map after component load
         const map = L.map('map-container', mapCfg);
+        map.addLayer(mapTile);
+        map.addLayer(mainLayer);
+        
         map.on('click', (e) => {
-            if (targetedMrk) {
+            console.log(selectionMode);
+            if (!selectionMode) {
                 const border = {
                     south: e.latlng.lat - SELECTION_SIZE / 2,
                     north: e.latlng.lat + SELECTION_SIZE / 2,
                     east: e.latlng.lng - SELECTION_SIZE / 2,
                     west: e.latlng.lng + SELECTION_SIZE / 2,
                 }
-                const selectHeatPoint = stuffSelection.filter((s) => {
+                const selectHeatPoint = heatmapData.filter((s) => {
                     return ((border.south < s.lat) &&
                         (border.north > s.lat) &&
                         (border.east < s.lng) &&
@@ -125,40 +180,19 @@ function Map(props) {
             }
         });
 
-        map.addLayer(mapTile);
-        map.addLayer(allMarkersLayer);
-        map.addControl(layerControl);
-
         const onMarkerClicked = (e) => {
+            // find the clicked marker id
             const _leaflet_id = e.target._leaflet_id;
-            
-            if (!targetedMrk) {
+            // get the marker object thank to is id
+            const targetMrk = allMarkersLayer.getLayer(_leaflet_id);
 
-                targetedMrk = allMarkersLayer.getLayer(_leaflet_id);
-                const targetedMrkId = Number(targetedMrk.options.title);
+            targetMrkId.current = Number(targetMrk.options.title);
+            selectionMode.current = !selectionMode.current;
 
-                // filtering data by id
-                stuffSelection = heatmapData.filter((d) => d.hit_id === targetedMrkId);
+            console.log('target Mrk: ' + targetMrkId.current);
+            console.log(selectionMode);
 
-                // display data on the heat map
-                heatmapLayer.setData({ max: HEATMAP_MAX, data: stuffSelection });
-
-                map.removeControl(layerControl);
-                map.removeLayer(allMarkersLayer);
-                map.addLayer(targetedMrk);
-                map.addLayer(heatmapLayer);
-
-            } else {
-
-                map.addControl(layerControl);
-                map.removeLayer(targetedMrk);
-                map.addLayer(allMarkersLayer)
-                map.removeLayer(heatmapLayer);
-                
-                stuffSelection = [];
-                targetedMrk = undefined;
-            }
-            heatMapMode = !heatMapMode;
+            updateLayer();
         }
 
         // add event listener to button;
