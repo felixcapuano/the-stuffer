@@ -1,0 +1,15 @@
+version: "3.9"
+services: 
+  the-stuffer:
+    build: ./the-stuffer
+    volumes: 
+      - type: bind
+        source: ./the-stuffer/app
+        target: /app
+    ports:
+      - 3000:3000
+    networks: 
+      - main
+  
+networks: 
+  main:
