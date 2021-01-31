@@ -17,8 +17,8 @@ function StuffHub(props) {
         // get the map name
         <div className='stuffhub'>
             <Map mapName={mapName}
-                markerData={hit_data}
-                heatmapData={throw_data}
+                normalModeData={hit_data}
+                selectionModeData={throw_data}
                 setSelectedData={setSelectedData} />
             <SelectionView data={selectedData} />
         </div>
