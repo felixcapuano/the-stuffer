@@ -1,6 +1,6 @@
 import React from 'react';
 import './Navigation.css';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -8,6 +8,24 @@ import Nav from 'react-bootstrap/Nav';
 
 
 function Navigation(props) {
+    const maps = [
+       { key:"de_mirage", name: "Mirage" },
+       { key:"de_dust2", name: "Dust 2" },
+       { key:"de_inferno", name: "Inferno" },
+       { key:"de_nuke", name: "Nuke" },
+       { key:"de_vertigo", name: "Vertigo" },
+       { key:"de_overpass", name: "Overpass" },
+       { key:"de_train", name: "Train" },
+    ];
+
+    const dropdownItems = maps.map((m) => {
+        return (
+            <NavDropdown.Item>
+                <Link to={"/stuffhub?m="+m.key}>{m.name}</Link>
+            </NavDropdown.Item>
+        );
+    });
+
     return (
         <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
             <Navbar.Brand href="/">TheStuffer</Navbar.Brand>
@@ -15,13 +33,7 @@ function Navigation(props) {
             <Navbar.Collapse id="main-navbar">
                 <Nav className="mr-auto">
                     <NavDropdown title="Maps" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="/stuffhub?m=de_mirage">Mirage</NavDropdown.Item>
-                        <NavDropdown.Item href="/stuffhub?m=de_dust2">Dust 2</NavDropdown.Item>
-                        <NavDropdown.Item href="/stuffhub?m=de_inferno">Inferno</NavDropdown.Item>
-                        <NavDropdown.Item href="/stuffhub?m=de_nuke">Nuke</NavDropdown.Item>
-                        <NavDropdown.Item href="/stuffhub?m=de_train">Train</NavDropdown.Item>
-                        <NavDropdown.Item href="/stuffhub?m=de_vertigo">Vertigo</NavDropdown.Item>
-                        <NavDropdown.Item href="/stuffhub?m=de_overpass">Overpass</NavDropdown.Item>
+                        {dropdownItems}
                     </NavDropdown>
                     <Nav.Link href="/help" disabled>Help</Nav.Link>
                     <Nav.Link href="/patch" disabled>Patch Notes</Nav.Link>

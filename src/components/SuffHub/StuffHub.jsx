@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import './StuffHub.css';
+
 import Map from '../Map/Map'
 import SelectionView from '../SelectionView/SelectionView';
 
+import './StuffHub.css';
 import { throw_data, hit_data} from '../SuffHub/data';
 
 function StuffHub(props) {

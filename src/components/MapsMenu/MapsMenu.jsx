@@ -1,5 +1,6 @@
 import React from 'react';
 import './MapsMenu.css';
+import { withRouter, Link } from 'react-router-dom';
 
 // images imports
 import img_mirage from './thumbnails/de_mirage.jpg'
@@ -27,10 +28,10 @@ function MapsMenu() {
 
     const grid = imgs.map((map) => { return (
         <Col>
-            <a href={"/stuffhub?m=" + map.key}><div className="thumbnail">
+            <Link to={"/stuffhub?m="+map.key}><div className="thumbnail">
                 <img src={map.thumb} className="img-fluid" id="thumb-img" alt={map.name}></img>
                 <div className="bottom-left">{map.name}</div>
-            </div></a>
+            </div></Link>
         </Col>
     )});
 
