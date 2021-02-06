@@ -1,6 +1,6 @@
 import React from 'react';
 import './MapsMenu.css';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // images imports
 import img_mirage from './thumbnails/de_mirage.jpg'

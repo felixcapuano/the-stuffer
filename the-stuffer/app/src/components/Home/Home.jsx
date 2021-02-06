@@ -1,11 +1,20 @@
 import React from 'react';
-import './Home.css';
 import MapsMenu from '../MapsMenu/MapsMenu'
+import Jumbotron from 'react-bootstrap/Jumbotron';
+import Button from 'react-bootstrap/esm/Button';
+import './Home.css';
 
 function Home() {
     return (
-        <div className='home'>
-            <h3 id="leading">The place to share and learn csgo stuff.</h3>
+        <div className="home">
+            <Jumbotron id="leading">
+                <p>
+                    The place to share and learn csgo stuff.
+                </p>
+                <p>
+                    <Button variant="light">Let's roll!</Button>
+                </p>
+            </Jumbotron>
             <MapsMenu />
         </div>
     );
