@@ -4,6 +4,9 @@ WORKDIR /app
 
 EXPOSE 3000
 
-RUN npm install
+COPY app .
 
-CMD [ "npm", "start"]
+RUN npm i
+RUN npm i -g nodemon
+
+CMD [ "nodemon", "server.js"]

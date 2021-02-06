@@ -1,15 +1,25 @@
 version: "3.9"
 services: 
-  the-stuffer:
-    build: ./the-stuffer
-    volumes: 
-      - type: bind
-        source: ./the-stuffer/app
-        target: /app
-    ports:
-      - 3000:3000
-    networks: 
-      - main
+  #the-stuffer:
+  #  build: ./the-stuffer
+  #  restart: always
+  #  ports:
+  #    - 3000:3000
+  #  environment:
+  #    MONGO_URL: http://main:27017
+  #    ME_CONFIG_MONGODB_ADMINUSERNAME: root
+  #    ME_CONFIG_MONGODB_ADMINPASSWORD: example
+  #  networks: 
+  #    - main
+
+  mongo:
+    image: mongo
+    restart: always
+    ports: 
+      - 27017:27017
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
   
 networks: 
   main:

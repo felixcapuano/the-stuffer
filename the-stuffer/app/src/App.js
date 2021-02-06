@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import { Navigation, Footer, Home, StuffHub } from './components';
+import { Navigation, Footer, Home, StuffHub, StuffForm } from './components';
 
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={() => <Home />} />
           <Route path="/stuffhub" exact component={() => <StuffHub />} />
+          <Route path="/create" exact component={() => <StuffForm />} />
         </Switch>
         <Footer />
       </Router>

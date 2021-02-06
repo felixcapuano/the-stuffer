@@ -25,7 +25,6 @@ for (let i = 0; i < throw_len; i++) {
         yt_start_time: 133,
         ticks64: true,
         ticks128: true,
-        name: "un test",
         description: "je suis une description",
         validated: false,
         likes: 0,

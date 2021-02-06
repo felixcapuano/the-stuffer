@@ -105,6 +105,7 @@ function Map(props) {
             });
             setSelectedData(selectHeatData);
         }
+        e.originalEvent.preventDefault();
     }
 
     const updateLayer = () => normalMode.current ? setSelectionMode() : setNormalMode();
