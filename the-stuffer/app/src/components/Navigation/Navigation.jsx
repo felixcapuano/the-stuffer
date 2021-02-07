@@ -20,7 +20,7 @@ function Navigation(props) {
 
     const dropdownItems = maps.map((m) => {
         return (
-            <NavDropdown.Item>
+            <NavDropdown.Item key={m.key}>
                 <Link to={"/stuffhub?m="+m.key}>{m.name}</Link>
             </NavDropdown.Item>
         );

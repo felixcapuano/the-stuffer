@@ -16,32 +16,37 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 function MapsMenu() {
-    const imgs = [
-       { key:"de_mirage", thumb: img_mirage, name: "Mirage" },
-       { key:"de_dust2",  thumb: img_dust2, name: "Dust 2" },
-       { key:"de_inferno", thumb: img_inferno, name: "Inferno" },
-       { key:"de_nuke", thumb: img_nuke, name: "Nuke" },
-       { key:"de_vertigo", thumb: img_vertigo, name: "Vertigo" },
-       { key:"de_overpass", thumb: img_overpass, name: "Overpass" },
-       { key:"de_train", thumb: img_train, name: "Train" },
-    ];
+  const maps = [
+    { key: "de_mirage", thumb: img_mirage, name: "Mirage" },
+    { key: "de_dust2", thumb: img_dust2, name: "Dust 2" },
+    { key: "de_inferno", thumb: img_inferno, name: "Inferno" },
+    { key: "de_nuke", thumb: img_nuke, name: "Nuke" },
+    { key: "de_vertigo", thumb: img_vertigo, name: "Vertigo" },
+    { key: "de_overpass", thumb: img_overpass, name: "Overpass" },
+    { key: "de_train", thumb: img_train, name: "Train" },
+  ];
 
-    const grid = imgs.map((map) => { return (
-        <Col>
-            <Link to={"/stuffhub?m="+map.key}><div className="thumbnail">
-                <img src={map.thumb} className="img-fluid" id="thumb-img" alt={map.name}></img>
-                <div className="bottom-left">{map.name}</div>
-            </div></Link>
-        </Col>
-    )});
-
+  const grid = maps.map((map) => {
     return (
-        <Container fluid>
-            <Row key={imgs.key}>
-                {grid}
-            </Row>
-        </Container>
-    );
+      <Col key={map.key}>
+        <Link to={"/stuffhub?m=" + map.key}><div className="thumbnail">
+          <img src={map.thumb} className="img-fluid" id="thumb-img" alt={map.name}></img>
+          <div className="bottom-left">{map.name}</div>
+        </div></Link>
+      </Col>
+    )
+  });
+
+  return (
+    <Container fluid id='maps-menu'>
+      <Row>
+        {grid.slice(0,3)}
+      </Row>
+      <Row>
+        {grid.slice(3,7)}
+      </Row>
+    </Container>
+  );
 }
 
 export default MapsMenu;
