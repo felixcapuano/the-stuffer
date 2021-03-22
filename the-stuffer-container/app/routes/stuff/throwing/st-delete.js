@@ -1,5 +1,4 @@
 
 exports.stdProcess = async (data) => {
-    console.log('stuff throwing delete not implemented');
-
+    return [200, 'stuff throwing delete not implemented'];
 }

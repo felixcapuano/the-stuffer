@@ -1,4 +1,4 @@
 exports.stcProcess = async (data) => {
-    console.log('stuff throwing create not implemented');
 
+    return [200, 'stuff throwing create not implemented'];
 }

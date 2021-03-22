@@ -17,10 +17,10 @@ const { stdProcess } = require('./routes/stuff/throwing/st-delete');
 const { stgProcess } = require('./routes/stuff/throwing/st-get');
 const { stuProcess } = require('./routes/stuff/throwing/st-update');
 
-const { slcProcess } = require('./routes/stuff/landing/st-create');
-const { sldProcess } = require('./routes/stuff/landing/st-delete');
-const { slgProcess } = require('./routes/stuff/landing/st-get');
-const { sluProcess } = require('./routes/stuff/landing/st-update');
+const { slcProcess } = require('./routes/stuff/landing/sl-create');
+const { sldProcess } = require('./routes/stuff/landing/sl-delete');
+const { slgProcess } = require('./routes/stuff/landing/sl-get');
+const { sluProcess } = require('./routes/stuff/landing/sl-update');
 
 const PORT = process.env.PORT || 9000;
 
@@ -28,12 +28,12 @@ app.use(express.json());
 
 app.post( '/stuff/throwing/create', validate(stcSchema), handler(stcProcess));
 app.delete( '/stuff/throwing/delete', validate(stdSchema), handler(stdProcess));
-app.get(  '/stuff/throwing/get'   , validate(stgSchema), handler(stgProcess));
-app.put(  '/stuff/throwing/update', validate(stuSchema), handler(stuProcess));
+app.get( '/stuff/throwing/get', validate(stgSchema), handler(stgProcess));
+app.put( '/stuff/throwing/update', validate(stuSchema), handler(stuProcess));
 
-app.post('/stuff/landing/create', validate(slcSchema), handler(slcProcess));
-app.delete('/stuff/landing/delete', validate(sldSchema), handler(sldProcess));
-app.get( '/stuff/landing/get'   , validate(slgSchema), handler(slgProcess));
+app.post( '/stuff/landing/create', validate(slcSchema), handler(slcProcess));
+app.delete( '/stuff/landing/delete', validate(sldSchema), handler(sldProcess));
+app.get( '/stuff/landing/get', validate(slgSchema), handler(slgProcess));
 app.put( '/stuff/landing/update', validate(sluSchema), handler(sluProcess));
 
 app.listen(PORT, () => {

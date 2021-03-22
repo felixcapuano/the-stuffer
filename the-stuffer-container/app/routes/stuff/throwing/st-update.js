@@ -1,5 +1,4 @@
 
 exports.stuProcess = async (data) => {
-    console.log('stuff throwing update not implemented');
-
+    return [200, 'stuff throwing update not implemented'];
 }

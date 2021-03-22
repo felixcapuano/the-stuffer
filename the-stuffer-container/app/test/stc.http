@@ -1,0 +1,14 @@
+POST http://localhost:9000/stuff/throwing/create
+Content-Type: application/json
+
+{
+    "hit_id": 0,
+    "lat": 0,
+    "lng": 0,
+    "type": "throw",
+    "yt_id": "Gu064JTzQu8",
+    "yt_start_time": 100,
+    "ticks64": true,
+    "ticks128": true,
+    "description": "perfect smoke"
+}

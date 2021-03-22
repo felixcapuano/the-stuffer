@@ -1,5 +1,4 @@
 
 exports.stgProcess = async (data) => {
-    console.log('stuff throwing get not implemented');
-
+    return [200, 'stuff throwing get not implemented'];
 }

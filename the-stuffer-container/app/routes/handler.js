@@ -2,9 +2,18 @@
 exports.handler = (process) => {
     return async (req, res) => {
 
-        const body = req.body;
+        let data = {};
+        switch (req.method) {
+            case 'GET':
+                data = req.query;
+                break;
+            default:
+                data = req.body;
+                break;
+        }
+        console.log(data);
 
-        const [status, response] = await process(body)
+        const [status, response] = await process(data)
                     .catch(() => [ 500, {}]);
 
 
