@@ -2,7 +2,7 @@ POST http://localhost:9000/stuff/throwing/create
 Content-Type: application/json
 
 {
-    "hit_id": 0,
+    "hit_id": "1234567890",
     "lat": 0,
     "lng": 0,
     "type": "throw",

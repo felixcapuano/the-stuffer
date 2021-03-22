@@ -10,7 +10,9 @@ exports.stcSchema = {
     },
     "type": {
         isString: true,
-        isIn: ["throw", "jumpthrow", "runjumpthrow"]
+        isIn: {
+            options: ["throw", "jumpthrow", "runjumpthrow"]
+        }
     },
     "yt_id": {
         isString: true,
