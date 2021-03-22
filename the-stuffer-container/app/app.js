@@ -25,15 +25,22 @@ const PORT = process.env.PORT || 9000;
 
 app.use(express.json());
 
-app.post( '/stuff/throwing/create', validate(stcSchema), handler(stcProcess));
-app.delete( '/stuff/throwing/delete', validate(stdSchema), handler(stdProcess));
-app.get( '/stuff/throwing/get', validate(stgSchema), handler(stgProcess));
-app.put( '/stuff/throwing/update', validate(stuSchema), handler(stuProcess));
+const stuffRouter = express.Router();
 
-app.post( '/stuff/landing/create', validate(slcSchema), handler(slcProcess));
-app.delete( '/stuff/landing/delete', validate(sldSchema), handler(sldProcess));
-app.get( '/stuff/landing/get', validate(slgSchema), handler(slgProcess));
-app.put( '/stuff/landing/update', validate(sluSchema), handler(sluProcess));
+const throwingRouter = express.Router();
+app.use('/stuff', stuffRouter);
+stuffRouter.use('/throwing', throwingRouter)
+throwingRouter.post( '/create', validate(stcSchema), handler(stcProcess));
+throwingRouter.delete( '/delete', validate(stdSchema), handler(stdProcess));
+throwingRouter.get( '/get', validate(stgSchema), handler(stgProcess));
+throwingRouter.put( '/update', validate(stuSchema), handler(stuProcess));
+
+const landingRouter = express.Router();
+stuffRouter.use('/landing', landingRouter)
+landingRouter.post( '/create', validate(slcSchema), handler(slcProcess));
+landingRouter.delete( '/delete', validate(sldSchema), handler(sldProcess));
+landingRouter.get( '/get', validate(slgSchema), handler(slgProcess));
+landingRouter.put( '/update', validate(sluSchema), handler(sluProcess));
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);
