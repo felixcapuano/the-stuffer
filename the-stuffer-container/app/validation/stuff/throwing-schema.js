@@ -1,48 +1,74 @@
 exports.stcSchema = {
     "hit_id": {
-        isString: true,
+        isString: {
+            errorMessage: "not string"
+        },
+        errorMessage: "missing hit_id",
     },
     "lat": {
-        isFloat: true,
+        isFloat: {
+            errorMessage: "not float"
+        },
+        errorMessage: "missing lat",
     },
     "lng": {
-        isFloat: true,
+        isFloat: {
+            errorMessage: "not float"
+        },
+        errorMessage: "missing lng",
     },
     "type": {
-        isString: true,
+        isString: {
+            errorMessage: "not string"
+        },
         isIn: {
             options: ["throw", "jumpthrow", "runjumpthrow"]
-        }
+        },
+        errorMessage: "Missing type",
     },
     "yt_id": {
-        isString: true,
+        isString: {
+            errorMessage: "not string"
+        },
         isLength: {
             options: {
                 min: 11,
                 max: 11
             }
-        }
+        },
+        errorMessage: "missing yt_id",
     },
     "yt_start_time": {
         isInt: {
             options: {
                 min: 0,
-            }
+            },
+            errorMessage: "not int"
         },
+        errorMessage: "missing yt_start_time",
     },
     "ticks64": {
-        isBoolean: true,
+        isBoolean: {
+            errorMessage: "not boolean"
+        },
+        errorMessage: "missing ticks64",
     },
     "ticks128": {
-        isBoolean: true,
+        isBoolean: {
+            errorMessage: "not boolean"
+        },
+        errorMessage: "missing ticks128",
     },
     "description": {
-        isString: true,
+        isString: {
+            errorMessage: "not string"
+        },
         isLength: {
             options: {
                 max: 255
             }
-        }
+        },
+        errorMessage: "missing description",
     }
 };
 
