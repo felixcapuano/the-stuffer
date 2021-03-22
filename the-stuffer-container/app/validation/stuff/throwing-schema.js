@@ -1,73 +1,58 @@
 exports.stcSchema = {
-    "hit_id": {
-        isString: {
-            errorMessage: "not string"
-        },
+    "landing_id": {
+        isString: { errorMessage: "not string" },
         errorMessage: "missing hit_id",
     },
-    "lat": {
-        isFloat: {
-            errorMessage: "not float"
-        },
+    "position": {
+        isObject: { errorMessage: "not object" },
+        errorMessage: "missing position",
+    },
+    "position.lat": {
+        isFloat: { errorMessage: "not float" },
         errorMessage: "missing lat",
     },
-    "lng": {
-        isFloat: {
-            errorMessage: "not float"
-        },
+    "position.lng": {
+        isFloat: { errorMessage: "not float" },
         errorMessage: "missing lng",
     },
+    "position.floor": {
+        isInt: {
+            options: { min: 0, },
+            errorMessage: "not int"
+        },
+        optional: { options: { nullable: true } }
+    },
     "type": {
-        isString: {
-            errorMessage: "not string"
-        },
-        isIn: {
-            options: ["throw", "jumpthrow", "runjumpthrow"]
-        },
+        isString: { errorMessage: "not string" },
+        isIn: { options: ["throw", "jumpthrow", "runjumpthrow"] },
         errorMessage: "Missing type",
     },
-    "yt_id": {
-        isString: {
-            errorMessage: "not string"
-        },
+    "video.id": {
+        isString: { errorMessage: "not string" },
         isLength: {
-            options: {
-                min: 11,
-                max: 11
-            }
+            options: { min: 11, max: 11 },
+            errorMessage: "length isn't equal to 11"
         },
         errorMessage: "missing yt_id",
     },
-    "yt_start_time": {
+    "video.time": {
         isInt: {
-            options: {
-                min: 0,
-            },
+            options: { min: 0, },
             errorMessage: "not int"
         },
         errorMessage: "missing yt_start_time",
     },
-    "ticks64": {
-        isBoolean: {
-            errorMessage: "not boolean"
-        },
+    "tickrate.64": {
+        isBoolean: { errorMessage: "not boolean" },
         errorMessage: "missing ticks64",
     },
-    "ticks128": {
-        isBoolean: {
-            errorMessage: "not boolean"
-        },
+    "tickrate.128": {
+        isBoolean: { errorMessage: "not boolean" },
         errorMessage: "missing ticks128",
     },
     "description": {
-        isString: {
-            errorMessage: "not string"
-        },
-        isLength: {
-            options: {
-                max: 255
-            }
-        },
+        isString: { errorMessage: "not string" },
+        isLength: { options: { max: 255 } },
         errorMessage: "missing description",
     }
 };
