@@ -3,12 +3,19 @@ Content-Type: application/json
 
 {
     "hit_id": 0,
-    "lat": 0,
-    "lng": 0,
+    "position": {
+        "lat": 0,
+        "lng": 0,
+        "floor": 0
+    },
     "type": "throw",
-    "yt_id": "Gu064JTzQu8",
-    "yt_start_time": 100,
-    "ticks64": true,
-    "ticks128": true,
+    "video": {
+        "id": "Gu064JTzQu8",
+        "time": 100
+    },
+    "tickrate": {
+        "64": true,
+        "128": true
+    },
     "description": "perfect smoke"
 }
