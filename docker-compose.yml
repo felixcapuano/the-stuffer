@@ -13,11 +13,13 @@ services:
 
   mongo:
     image: mongo:4.4.4
-    ports: 
-      - 27017:27017
+    container_name: mongo-thestuffer
     environment: 
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-  
-networks: 
-  main:
+      MONGO_INITDB_DATABASE: thestuffer
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    volumes: 
+      - ./mongo/init-scripts:/docker-entrypoint-initdb.d:ro
+      - ./mongo-volume:/data/db
+    ports: 
+      - 27017-27019:27017-27019
