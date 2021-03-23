@@ -3,12 +3,13 @@ Content-Type: application/json
 
 {
     "landing_id": "azerty",
+    "type": "smoke",
+    "movement": "throw",
     "position": {
         "lat": 0,
         "lng": 0,
         "floor": null
     },
-    "type": "throw",
     "video": {
         "id": "Gu064JTzQu8",
         "time": 100

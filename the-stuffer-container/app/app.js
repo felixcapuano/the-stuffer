@@ -8,8 +8,8 @@ const app = express();
 const { validate } = require('./validation/validation');
 const { handler } = require('./routes/handler');
 
-const { slcSchema, sluSchema, sldSchema, slgSchema } = require('./validation/stuff/landing-schema');
-const { stcSchema, stuSchema, stdSchema, stgSchema } = require('./validation/stuff/throwing-schema');
+const { slcSchema, sluSchema } = require('./validation/stuff/landing-schema');
+const { stcSchema, stuSchema } = require('./validation/stuff/throwing-schema');
 
 const { stcProcess } = require('./routes/stuff/throwing/st-create');
 const { stdProcess } = require('./routes/stuff/throwing/st-delete');
@@ -31,16 +31,17 @@ const throwingRouter = express.Router();
 app.use('/stuff', stuffRouter);
 stuffRouter.use('/throwing', throwingRouter)
 throwingRouter.post( '/create', validate(stcSchema), handler(stcProcess));
-throwingRouter.delete( '/delete', validate(stdSchema), handler(stdProcess));
-throwingRouter.get( '/get', validate(stgSchema), handler(stgProcess));
-throwingRouter.put( '/update', validate(stuSchema), handler(stuProcess));
+throwingRouter.delete( '/delete/:id', handler(stdProcess));
+throwingRouter.get( '/get/', handler(stgProcess));
+throwingRouter.get( '/get/:id', handler(stgProcess));
+throwingRouter.put( '/update/:id', validate(stuSchema), handler(stuProcess));
 
-const landingRouter = express.Router();
-stuffRouter.use('/landing', landingRouter)
-landingRouter.post( '/create', validate(slcSchema), handler(slcProcess));
-landingRouter.delete( '/delete', validate(sldSchema), handler(sldProcess));
-landingRouter.get( '/get', validate(slgSchema), handler(slgProcess));
-landingRouter.put( '/update', validate(sluSchema), handler(sluProcess));
+//const landingRouter = express.Router();
+//stuffRouter.use('/landing', landingRouter)
+//landingRouter.post( '/create', validate(slcSchema), handler(slcProcess));
+//landingRouter.delete( '/delete', validate(sldSchema), handler(sldProcess));
+//landingRouter.get( '/get', validate(slgSchema), handler(slgProcess));
+//landingRouter.put( '/update', validate(sluSchema), handler(sluProcess));
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);

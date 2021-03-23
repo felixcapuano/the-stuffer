@@ -1,4 +1,18 @@
+const getStuffByCategory = async (params) => {
 
-exports.stgProcess = async (data) => {
-    return [200, 'stuff throwing get not implemented'];
+    return [200, params];
+}
+
+const getStuffById = async (id) => {
+
+    return [200, id];
+}
+
+exports.stgProcess = async (req) => {
+
+    if (req.params.id) {
+        return await getStuffById(req.params.id);
+    } else {
+        return await getStuffByCategory(req.query);
+    }
 }

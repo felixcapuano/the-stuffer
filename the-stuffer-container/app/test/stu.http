@@ -1,6 +1,22 @@
-PUT http://localhost:9000/stuff/throwing/update
+PUT http://localhost:9000/stuff/throwing/update/mongoid
 Content-Type: application/json
 
 {
-    "update": "update"
+    "landing_id": "azerty",
+    "type": "smoke",
+    "movement": "throw",
+    "position": {
+        "lat": 0,
+        "lng": 0,
+        "floor": null
+    },
+    "video": {
+        "id": "Gu064JTzQu8",
+        "time": 100
+    },
+    "tickrate": {
+        "64": true,
+        "128": true
+    },
+    "description": "perfect smoke"
 }

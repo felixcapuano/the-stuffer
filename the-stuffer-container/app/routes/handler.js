@@ -1,21 +1,9 @@
+const { request } = require("express");
 
 exports.handler = (process) => {
     return async (req, res) => {
 
-        let data = {};
-        switch (req.method) {
-            case 'GET':
-                data = req.query;
-                break;
-            default:
-                data = req.body;
-                break;
-        }
-        console.log(data);
-
-        const [status, response] = await process(data)
-                    .catch(() => [ 500, {}]);
-
+        const [status, response] = await process(req);
 
         switch (status) {
             case 200:

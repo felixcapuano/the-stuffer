@@ -3,6 +3,22 @@ exports.stcSchema = {
         isString: { errorMessage: "not string" },
         errorMessage: "missing hit_id",
     },
+    "type": {
+        isString: { errorMessage: "not string" },
+        isIn: { 
+            options: ["smoke", "flash", "molotov"],
+            errorMessage: "not in: smoke, flash, molotov"
+        },
+        errorMessage: "missing type",
+    },
+    "movement": {
+        isString: { errorMessage: "not string" },
+        isIn: {
+            options: ["throw", "jumpthrow", "runjumpthrow"],
+            errorMessage: "not in: throw, jumpthrow, runjumpthrow"
+        },
+        errorMessage: "missing movement",
+    },
     "position": {
         isObject: { errorMessage: "not object" },
         errorMessage: "missing position",
@@ -21,11 +37,6 @@ exports.stcSchema = {
             errorMessage: "not int"
         },
         optional: { options: { nullable: true } }
-    },
-    "type": {
-        isString: { errorMessage: "not string" },
-        isIn: { options: ["throw", "jumpthrow", "runjumpthrow"] },
-        errorMessage: "Missing type",
     },
     "video.id": {
         isString: { errorMessage: "not string" },
@@ -57,14 +68,72 @@ exports.stcSchema = {
     }
 };
 
-exports.stdSchema = {
-
-};
-
-exports.stgSchema = {
-
-};
-
 exports.stuSchema = {
-
+    "landing_id": {
+        isString: { errorMessage: "not string" },
+        optional: { options: { nullable: true } }
+    },
+    "type": {
+        isString: { errorMessage: "not string" },
+        isIn: { 
+            options: ["smoke", "flash", "molotov"],
+            errorMessage: "not in: smoke, flash, molotov"
+        },
+        optional: { options: { nullable: true } }
+    },
+    "movement": {
+        isString: { errorMessage: "not string" },
+        isIn: {
+            options: ["throw", "jumpthrow", "runjumpthrow"],
+            errorMessage: "not in: throw, jumpthrow, runjumpthrow"
+        },
+        optional: { options: { nullable: true } }
+    },
+    "position": {
+        isObject: { errorMessage: "not object" },
+        optional: { options: { nullable: true } }
+    },
+    "position.lat": {
+        isFloat: { errorMessage: "not float" },
+        optional: { options: { nullable: true } }
+    },
+    "position.lng": {
+        isFloat: { errorMessage: "not float" },
+        optional: { options: { nullable: true } }
+    },
+    "position.floor": {
+        isInt: {
+            options: { min: 0, },
+            errorMessage: "not int"
+        },
+        optional: { options: { nullable: true } }
+    },
+    "video.id": {
+        isString: { errorMessage: "not string" },
+        isLength: {
+            options: { min: 11, max: 11 },
+            errorMessage: "length isn't equal to 11"
+        },
+        optional: { options: { nullable: true } }
+    },
+    "video.time": {
+        isInt: {
+            options: { min: 0, },
+            errorMessage: "not int"
+        },
+        optional: { options: { nullable: true } }
+    },
+    "tickrate.64": {
+        isBoolean: { errorMessage: "not boolean" },
+        optional: { options: { nullable: true } }
+    },
+    "tickrate.128": {
+        isBoolean: { errorMessage: "not boolean" },
+        optional: { options: { nullable: true } }
+    },
+    "description": {
+        isString: { errorMessage: "not string" },
+        isLength: { options: { max: 255 } },
+        optional: { options: { nullable: true } }
+    }
 };

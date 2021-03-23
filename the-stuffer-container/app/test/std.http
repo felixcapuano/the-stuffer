@@ -1,6 +1,1 @@
-DELETE  http://localhost:9000/stuff/throwing/delete
-Content-Type: application/json
-
-{
-    "delete": "delete"
-}
+DELETE  http://localhost:9000/stuff/throwing/delete/mongoid
