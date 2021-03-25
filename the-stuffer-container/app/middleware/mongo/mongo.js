@@ -13,33 +13,31 @@ const options = {
     socketTimeoutMS: 5000,
     serverSelectionTimeoutMS: 5000,
     heartbeatFrequencyMS: 5000,
-    bufferCommands: false,
 }
 
-exports.mongoConnect = async () => {
-
-    const uri = `mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`;
-    console.log('Mongo trying to connect to : ' + uri);
-    mongoose.connect(uri, options)
-        .catch(e => {})
-}
+const uri = `mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`;
 
 const db = mongoose.connection;
-db.on('error', e => console.error('Mongo error : ' + e.message));
-db.on('disconnected', async () => {
-    console.log('Mongo connection interrupted!');
-    await this.mongoConnect();
-});
-db.once('open', async () => {
-    console.log('Mongo connection established!');
-});
+db.on('error', e => console.log('Mongo error : ' + e.message));
+db.on('disconnected', () => console.log('Connection interrupted'));
+db.once('open', () => console.log('Mongo connection established!'));
+console.log(mongoose.connection)
 
+exports.connectDatabase = () => {
+    console.log('Mongo trying to connect to : ' + uri);
+    return mongoose.connect(uri, options);
+}
+
+exports.isMongoConnected = (req,res, next) => {
+    const state = mongoose.connection.readyState;
+    state === 1 ? next() : res.sendStatus(500)
+}
 
 const Throwing = mongoose.model('Throwing', throwingSchema);
 
-exports.createThrowing = async (req, res, next) => {
-    const newThrowing = new Throwing(req.body);
-    await newThrowing.save().
-        then(() => res.sendStatus(200)).
-        catch(err => res.status(500).send(err));
+exports.createThrowing = (req, res, next) => {
+    console.log('create throwing')
+    const throwing = new Throwing(req.body);
+    throwing.save(err => {if(err) console.log(err)});
+    res.sendStatus(200);
 }

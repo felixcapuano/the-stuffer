@@ -19,11 +19,12 @@ const app = express();
 const { validate } = require('./middleware/validation/validation');
 const { documentsFormatting } = require('./middleware/request-formatting');
 const { stcSchema, stuSchema } = require('./middleware/validation/throwing-schema');
-const { createThrowing, mongoConnect } = require('./middleware/mongo/mongo')
+const { createThrowing, isMongoConnected, connectDatabase } = require('./middleware/mongo/mongo')
 
 app.use(express.json());
 
 const stuffRouter = express.Router();
+stuffRouter.use(isMongoConnected);
 app.use('/stuff', stuffRouter);
 
 const throwingRouter = express.Router();
@@ -41,8 +42,10 @@ stuffRouter.use('/throwing', throwingRouter);
 //landingRouter.put( '/update', validate(sluSchema), handler(sluProcess));
 //stuffRouter.use('/landing', landingRouter);
 
-app.listen(process.env.PORT, async () => {
-  console.log(`Listening at http://${process.env.HOST}:${process.env.PORT}`);
+const launchServer = () => {
+  app.listen(process.env.PORT, () => {
+    console.log(`Listening at http://${process.env.HOST}:${process.env.PORT}`);
+  });
+}
 
-  await mongoConnect();
-})
+connectDatabase().then(launchServer, e => console.log('Cannot reach the database.'));
