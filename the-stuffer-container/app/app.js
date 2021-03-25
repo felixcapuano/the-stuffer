@@ -48,4 +48,5 @@ const launchServer = () => {
   });
 }
 
-connectDatabase().then(launchServer, e => console.log('Cannot reach the database.'));
+launchServer();
+connectDatabase();

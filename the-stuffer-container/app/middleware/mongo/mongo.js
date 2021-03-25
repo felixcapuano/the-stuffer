@@ -16,21 +16,19 @@ const options = {
 }
 
 const uri = `mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`;
-
-const db = mongoose.connection;
-db.on('error', e => console.log('Mongo error : ' + e.message));
-db.on('disconnected', () => console.log('Connection interrupted'));
-db.once('open', () => console.log('Mongo connection established!'));
-console.log(mongoose.connection)
-
 exports.connectDatabase = () => {
     console.log('Mongo trying to connect to : ' + uri);
     return mongoose.connect(uri, options);
 }
 
+const db = mongoose.connection;
+db.on('error', e => console.log('Mongo error : ' + e.message));
+db.on('disconnected', () => console.log('Connection interrupted'));
+db.once('open', () => console.log('Mongo connection established!'));
+
 exports.isMongoConnected = (req,res, next) => {
     const state = mongoose.connection.readyState;
-    state === 1 ? next() : res.sendStatus(500)
+    state === 1 ? next() : res.sendStatus(500);
 }
 
 const Throwing = mongoose.model('Throwing', throwingSchema);
