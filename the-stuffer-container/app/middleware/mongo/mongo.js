@@ -13,17 +13,22 @@ const options = {
     socketTimeoutMS: 5000,
     serverSelectionTimeoutMS: 5000,
     heartbeatFrequencyMS: 5000,
+    bufferCommands: false,
 }
 
 exports.mongoConnect = async () => {
-    mongoose.connect(`mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`, options)
-        .catch(e => console.log(e.message))
+
+    const uri = `mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`;
+    console.log('Mongo trying to connect to : ' + uri);
+    mongoose.connect(uri, options)
+        .catch(e => {})
 }
 
 const db = mongoose.connection;
 db.on('error', e => console.error('Mongo error : ' + e.message));
 db.on('disconnected', async () => {
-    console.log('Mongo connection interrupt.');
+    console.log('Mongo connection interrupted!');
+    await this.mongoConnect();
 });
 db.once('open', async () => {
     console.log('Mongo connection established!');
