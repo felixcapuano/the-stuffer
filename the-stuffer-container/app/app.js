@@ -1,3 +1,13 @@
+const dotenv = require('dotenv').config();
+if (dotenv.error) throw dotenv.error
+if(!process.env.HOST) throw "Environment variable HOST not set."
+if(!process.env.PORT) throw "Environment variable PORT not set."
+if(!process.env.MONGO_HOST) throw "Environment variable MONGO_HOST not set."
+if(!process.env.MONGO_PORT) throw "Environment variable MONGO_PORT not set."
+if(!process.env.MONGO_DATABASE) throw "Environment variable MONGO_DATABASE not set."
+if(!process.env.MONGO_USERNAME) throw "Environment variable MONGO_USERNAME not set."
+if(!process.env.MONGO_PASSWORD) throw "Environment variable MONGO_PASSWORD nt set."
+
 const express = require('express');
 const app = express();
 
@@ -5,44 +15,34 @@ const app = express();
 //const dirname = __dirname + '\\front';
 //app.use(express.static(path.join(dirname, 'build')));
 
-const { validate } = require('./validation/validation');
-const { handler } = require('./routes/handler');
-
-const { slcSchema, sluSchema } = require('./validation/stuff/landing-schema');
-const { stcSchema, stuSchema } = require('./validation/stuff/throwing-schema');
-
-const { stcProcess } = require('./routes/stuff/throwing/st-create');
-const { stdProcess } = require('./routes/stuff/throwing/st-delete');
-const { stgProcess } = require('./routes/stuff/throwing/st-get');
-const { stuProcess } = require('./routes/stuff/throwing/st-update');
-
-const { slcProcess } = require('./routes/stuff/landing/sl-create');
-const { sldProcess } = require('./routes/stuff/landing/sl-delete');
-const { slgProcess } = require('./routes/stuff/landing/sl-get');
-const { sluProcess } = require('./routes/stuff/landing/sl-update');
-
-const PORT = process.env.PORT || 9000;
+// middleware
+const { validate } = require('./middleware/validation/validation');
+const { documentsFormatting } = require('./middleware/request-formatting');
+const { stcSchema, stuSchema } = require('./middleware/validation/throwing-schema');
+const { createThrowing, mongoConnect } = require('./middleware/mongo/mongo')
 
 app.use(express.json());
 
 const stuffRouter = express.Router();
+app.use('/stuff', stuffRouter);
 
 const throwingRouter = express.Router();
-app.use('/stuff', stuffRouter);
-stuffRouter.use('/throwing', throwingRouter)
-throwingRouter.post( '/create', validate(stcSchema), handler(stcProcess));
-throwingRouter.delete( '/delete/:id', handler(stdProcess));
-throwingRouter.get( '/get/', handler(stgProcess));
-throwingRouter.get( '/get/:id', handler(stgProcess));
-throwingRouter.put( '/update/:id', validate(stuSchema), handler(stuProcess));
+throwingRouter.post( '/create', validate(stcSchema), createThrowing);
+throwingRouter.delete( '/delete/:id');
+throwingRouter.get( '/get/');
+throwingRouter.get( '/get/:id');
+throwingRouter.put( '/update/:id', validate(stuSchema));
+stuffRouter.use('/throwing', throwingRouter);
 
 //const landingRouter = express.Router();
-//stuffRouter.use('/landing', landingRouter)
 //landingRouter.post( '/create', validate(slcSchema), handler(slcProcess));
 //landingRouter.delete( '/delete', validate(sldSchema), handler(sldProcess));
 //landingRouter.get( '/get', validate(slgSchema), handler(slgProcess));
 //landingRouter.put( '/update', validate(sluSchema), handler(sluProcess));
+//stuffRouter.use('/landing', landingRouter);
 
-app.listen(PORT, () => {
-  console.log(`Listening at http://localhost:${PORT}`);
+app.listen(process.env.PORT, async () => {
+  console.log(`Listening at http://${process.env.HOST}:${process.env.PORT}`);
+
+  await mongoConnect();
 })
