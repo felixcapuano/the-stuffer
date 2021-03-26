@@ -18,7 +18,10 @@ const options = {
 const uri = `mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`;
 exports.connectDatabase = () => {
     console.log('Mongo trying to connect to : ' + uri);
-    return mongoose.connect(uri, options);
+    mongoose.connect(uri, options).then(
+        () => console.log('connected'),
+        () => console.log('disconnected')
+    );
 }
 
 const db = mongoose.connection;

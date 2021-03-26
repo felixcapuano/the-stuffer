@@ -17,14 +17,14 @@ const app = express();
 
 // middleware
 const { validate } = require('./middleware/validation/validation');
-const { documentsFormatting } = require('./middleware/request-formatting');
+const { updateFormatting } = require('./middleware/request-formatting');
 const { stcSchema, stuSchema } = require('./middleware/validation/throwing-schema');
 const { createThrowing, isMongoConnected, connectDatabase } = require('./middleware/mongo/mongo')
 
 app.use(express.json());
 
 const stuffRouter = express.Router();
-stuffRouter.use(isMongoConnected);
+//stuffRouter.use(isMongoConnected);
 app.use('/stuff', stuffRouter);
 
 const throwingRouter = express.Router();
@@ -32,7 +32,7 @@ throwingRouter.post( '/create', validate(stcSchema), createThrowing);
 throwingRouter.delete( '/delete/:id');
 throwingRouter.get( '/get/');
 throwingRouter.get( '/get/:id');
-throwingRouter.put( '/update/:id', validate(stuSchema));
+throwingRouter.put( '/update/:id', validate(stuSchema), updateFormatting);
 stuffRouter.use('/throwing', throwingRouter);
 
 //const landingRouter = express.Router();

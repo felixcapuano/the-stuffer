@@ -18,7 +18,8 @@ exports.throwingSchema = new Schema({
         "128": Boolean,
     },
     "description": String,
-    "modification_date": {"type": [{ "type": Date, "default": Date.now}], "default":[]},
-    "reaction": [{"hyped": Boolean, "user": String, "hidden": { "type": Boolean, "default": false}}],
-    "hidden": {"type": Boolean, "default": false},
+    "creation_date": { "type": Date, "default": Date.now },
+    "last_update_date": { "type": Date, "default": Date.now},
+    "reactions": [{"hyped": Boolean, "user": String, "hidden": { "type": Boolean, "default": false}}],
+    "deleted": {"type": Boolean, "default": false},
 });
