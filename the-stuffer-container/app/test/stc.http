@@ -8,7 +8,7 @@ Content-Type: application/json
     "position": {
         "lat": 0,
         "lng": 0,
-        "floor": null
+        "floor": 0
     },
     "video": {
         "id": "Gu064JTzQu8",

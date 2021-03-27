@@ -19,20 +19,20 @@ const app = express();
 const { validate } = require('./middleware/validation/validation');
 const { updateFormatting } = require('./middleware/request-formatting');
 const { stcSchema, stuSchema } = require('./middleware/validation/throwing-schema');
-const { createThrowing, isMongoConnected, connectDatabase } = require('./middleware/mongo/mongo')
+const db = require('./middleware/mongo/mongo');
 
 app.use(express.json());
 
 const stuffRouter = express.Router();
-//stuffRouter.use(isMongoConnected);
 app.use('/stuff', stuffRouter);
+stuffRouter.use(db.isConnected);
 
 const throwingRouter = express.Router();
-throwingRouter.post( '/create', validate(stcSchema), createThrowing);
-throwingRouter.delete( '/delete/:id');
+throwingRouter.post( '/create', validate(stcSchema), db.createThrowing);
 throwingRouter.get( '/get/');
-throwingRouter.get( '/get/:id');
-throwingRouter.put( '/update/:id', validate(stuSchema), updateFormatting);
+throwingRouter.delete( '/delete/:id', db.isIdValid, db.deleteThrowingStuff);
+throwingRouter.get( '/get/:id', db.isIdValid, db.getThrowingByID);
+throwingRouter.put( '/update/:id', validate(stuSchema), db.isIdValid, db.updateThrowing);
 stuffRouter.use('/throwing', throwingRouter);
 
 //const landingRouter = express.Router();
@@ -49,4 +49,4 @@ const launchServer = () => {
 }
 
 launchServer();
-connectDatabase();
+db.connect();

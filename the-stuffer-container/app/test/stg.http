@@ -2,4 +2,4 @@ GET http://localhost:9000/stuff/throwing/get?map=inferno&type=smoke&floor=0
 
 ###
 
-GET http://localhost:9000/stuff/throwing/get/mongoid
+GET http://localhost:9000/stuff/throwing/get/605ef240cea7f82848e82b8b
