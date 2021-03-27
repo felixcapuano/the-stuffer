@@ -1,5 +1,3 @@
-const { reactionsValidator } = require('./validator');
-
 exports.stcSchema = {
     "landing_id": {
         isString: { errorMessage: "not string" },
@@ -137,5 +135,32 @@ exports.stuSchema = {
         isString: { errorMessage: "not string" },
         isLength: { options: { max: 255 } },
         optional: { options: { nullable: true } }
-    }
+    },
+    "new_reaction": {
+        isObject: { errorMessage: "not object" },
+        optional: { options: { nullable: true } },
+        custom: {
+            options: (reaction, { req, location, path }) => {
+                if (req.body.new_reaction.hyped === undefined)
+                    throw 'new_reaction.hyped field missing';
+                if (req.body.new_reaction.user === undefined)
+                    throw 'new_reaction.user field missing';
+                if (req.body.new_reaction.hidden === undefined)
+                    throw 'new_reaction.hidden field missing';
+                return reaction;
+            }
+        }
+    },
+"new_reaction.hyped": {
+    isBoolean: { errorMessage: "not boolean" },
+    optional: { options: { nullable: true } }
+},
+"new_reaction.user": {
+    isString: { errorMessage: "not string" },
+    optional: { options: { nullable: true } }
+},
+"new_reaction.hidden": {
+    isBoolean: { errorMessage: "not boolean" },
+    optional: { options: { nullable: true } }
+},
 };

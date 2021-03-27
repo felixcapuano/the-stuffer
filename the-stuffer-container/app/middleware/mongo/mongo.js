@@ -63,6 +63,11 @@ exports.getThrowingByID = async (req, res) => {
 
 exports.updateThrowing = async (req, res) => {
     const id = req.params.id;
+    if (req.body.new_reaction) {
+        req.body.$push = { reactions: req.body.new_reaction };
+        delete req.body.new_reaction;
+    }
+
     await Throwing.findByIdAndUpdate(id, req.body).then(
         doc => {
             if (!doc) res.sendStatus(404);

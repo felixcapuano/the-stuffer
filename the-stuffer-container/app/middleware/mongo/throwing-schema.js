@@ -1,5 +1,11 @@
 const { Schema } = require('mongoose');
 
+const reactionSchema = new Schema({
+    "hyped": { "type": Boolean },
+    "user": { "type": String },
+    "hidden": { "type": Boolean, "default": false }
+});
+
 exports.throwingSchema = new Schema({
     "landing_id": String,
     "type": {"type": String},
@@ -20,6 +26,6 @@ exports.throwingSchema = new Schema({
     "description": String,
     "creation_date": { "type": Date, "default": Date.now },
     "last_update_date": { "type": Date, "default": Date.now},
-    "reactions": [{"hyped": Boolean, "user": String, "hidden": { "type": Boolean, "default": false}}],
+    "reactions": { "type": [reactionSchema], "default": []},
     "deleted": {"type": Boolean, "default": false},
 });

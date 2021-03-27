@@ -1,22 +1,11 @@
-PUT http://localhost:9000/stuff/throwing/update/605ef240cea7f82848e82b8b
+PUT http://localhost:9000/stuff/throwing/update/605f7217f25b9e3e488c879b
 Content-Type: application/json
 
 {
-    "landing_id": "azerty",
-    "type": "smoke",
-    "movement": "throw",
-    "position": {
-        "lat": 0,
-        "lng": 0,
-        "floor": 0
-    },
-    "video": {
-        "id": "Gu064JTzQu8",
-        "time": 100
-    },
-    "tickrate": {
-        "64": true,
-        "128": true
-    },
-    "description": "je suis "
+    "description": "slt",
+    "new_reaction": {
+        "hyped": true,
+        "user": "azerty",
+        "hidden": false
+    }
 }

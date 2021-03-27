@@ -17,7 +17,6 @@ const app = express();
 
 // middleware
 const { validate } = require('./middleware/validation/validation');
-const { updateFormatting } = require('./middleware/request-formatting');
 const { stcSchema, stuSchema } = require('./middleware/validation/throwing-schema');
 const db = require('./middleware/mongo/mongo');
 
