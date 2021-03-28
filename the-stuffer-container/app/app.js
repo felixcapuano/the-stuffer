@@ -16,12 +16,9 @@ const app = express();
 //app.use(express.static(path.join(dirname, 'build')));
 
 // middleware
-const { validate } = require('./middleware/validation/validation');
-const { stcSchema, stuSchema } = require('./middleware/validation/throwing-schema');
 const db = require('./middleware/mongo/mongo');
-
 // validation bis
-const { validationBis } = require('./middleware/validation-bis/validation')
+const { validation } = require('./middleware/validation/validation')
 
 app.use(express.json());
 
@@ -33,15 +30,15 @@ stuffRouter.use(db.isConnected);
 //stuffRouter.use(db.isIdValid);
 
 // create
-stuffRouter.post( '/:collection/:method', validationBis, db.createThrowing);
+stuffRouter.post( '/:collection/:method', validation, db.createThrowing);
 // delete
 stuffRouter.delete( '/:collection/:method/:id', db.isIdValid, db.deleteThrowingStuff);
 // get
 stuffRouter.get( '/:collection/:method/:id', db.isIdValid, db.getThrowingByID);
 // update
-stuffRouter.put( '/:collection/:method/:id', validationBis, db.isIdValid, db.updateThrowing);
+stuffRouter.put( '/:collection/:method/:id', validation, db.isIdValid, db.updateThrowing);
 //search
-stuffRouter.post( '/:collection/:method', validationBis);
+stuffRouter.post( '/:collection/:method', validation);
 
 
 //const landingRouter = express.Router();
