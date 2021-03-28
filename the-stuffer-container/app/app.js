@@ -1,12 +1,12 @@
 const dotenv = require('dotenv').config();
 if (dotenv.error) throw dotenv.error
-if(!process.env.HOST) throw "Environment variable HOST not set."
-if(!process.env.PORT) throw "Environment variable PORT not set."
-if(!process.env.MONGO_HOST) throw "Environment variable MONGO_HOST not set."
-if(!process.env.MONGO_PORT) throw "Environment variable MONGO_PORT not set."
-if(!process.env.MONGO_DATABASE) throw "Environment variable MONGO_DATABASE not set."
-if(!process.env.MONGO_USERNAME) throw "Environment variable MONGO_USERNAME not set."
-if(!process.env.MONGO_PASSWORD) throw "Environment variable MONGO_PASSWORD nt set."
+if (!process.env.HOST) throw "Environment variable HOST not set."
+if (!process.env.PORT) throw "Environment variable PORT not set."
+if (!process.env.MONGO_HOST) throw "Environment variable MONGO_HOST not set."
+if (!process.env.MONGO_PORT) throw "Environment variable MONGO_PORT not set."
+if (!process.env.MONGO_DATABASE) throw "Environment variable MONGO_DATABASE not set."
+if (!process.env.MONGO_USERNAME) throw "Environment variable MONGO_USERNAME not set."
+if (!process.env.MONGO_PASSWORD) throw "Environment variable MONGO_PASSWORD nt set."
 
 const express = require('express');
 const app = express();
@@ -17,7 +17,6 @@ const app = express();
 
 // middleware
 const db = require('./middleware/mongo/mongo');
-// validation bis
 const { validation } = require('./middleware/validation/validation')
 
 app.use(express.json());
@@ -29,17 +28,11 @@ stuffRouter.use(db.isConnected);
 // TO TEST
 //stuffRouter.use(db.isIdValid);
 
-// create
-stuffRouter.post( '/:collection/:method', validation, db.createThrowing);
-// delete
-stuffRouter.delete( '/:collection/:method/:id', db.isIdValid, db.deleteThrowingStuff);
-// get
-stuffRouter.get( '/:collection/:method/:id', db.isIdValid, db.getThrowingByID);
-// update
-stuffRouter.put( '/:collection/:method/:id', validation, db.isIdValid, db.updateThrowing);
-//search
-stuffRouter.post( '/:collection/:method', validation);
-
+stuffRouter.post('/:collection/create', validation('create'), db.createStuff);
+stuffRouter.delete('/:collection/delete/:id', db.isIdValid, db.deleteStuff);
+stuffRouter.get('/:collection/get/:id', db.isIdValid, db.getStuff);
+stuffRouter.put('/:collection/update/:id', validation('update'), db.isIdValid, db.updateStuff);
+stuffRouter.post('/:collection/search', validation('search'), db.searchStuff);
 
 //const landingRouter = express.Router();
 //landingRouter.post( '/create', validate(slcSchema), handler(slcProcess));

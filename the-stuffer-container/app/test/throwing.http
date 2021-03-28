@@ -1,0 +1,47 @@
+POST http://localhost:9000/stuff/throwing/create
+Content-Type: application/json
+
+{
+    "landing_id": "azerty",
+    "type": "smoke",
+    "movement": "throw",
+    "position": {
+        "lat": 0,
+        "lng": 0,
+        "floor": 0
+    },
+    "video": {
+        "id": "Gu064JTzQu8",
+        "time": 100
+    },
+    "tickrate": {
+        "64": true,
+        "128": true
+    },
+    "description": "perfect smoke"
+}
+###
+DELETE  http://localhost:9000/stuff/landing/delete/6060fb4ccced86316c3a866c
+###
+PUT http://localhost:9000/stuff/throwing/update/6060fb4ccced86316c3a866c
+Content-Type: application/json
+
+{
+    "description": "slt",
+    "new_reaction": {
+        "hyped": true,
+        "user": "azerty",
+        "hidden": false
+    }
+}
+###
+POST http://localhost:9000/stuff/throwing/search
+Content-Type: application/json
+
+{
+    "landing_id": ""
+}
+
+###
+
+GET http://localhost:9000/stuff/throwing/get/6060fb4ccced86316c3a866c
