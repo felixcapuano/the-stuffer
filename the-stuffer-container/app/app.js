@@ -20,18 +20,28 @@ const { validate } = require('./middleware/validation/validation');
 const { stcSchema, stuSchema } = require('./middleware/validation/throwing-schema');
 const db = require('./middleware/mongo/mongo');
 
+// validation bis
+const { validationBis } = require('./middleware/validation-bis/validation')
+
 app.use(express.json());
 
 const stuffRouter = express.Router();
+app.use('/stuff', stuffRouter);
 
 stuffRouter.use(db.isConnected);
 // TO TEST
 //stuffRouter.use(db.isIdValid);
-stuffRouter.post( '/:collection/create', validate(stcSchema), db.createThrowing);
-stuffRouter.post( '/:collection/search');
-stuffRouter.delete( '/:collection/delete/:id', db.isIdValid, db.deleteThrowingStuff);
-stuffRouter.get( '/:collection/get/:id', db.isIdValid, db.getThrowingByID);
-stuffRouter.put( '/:collectionupdate/:id', validate(stuSchema), db.isIdValid, db.updateThrowing);
+
+// create
+stuffRouter.post( '/:collection/:method', validationBis, db.createThrowing);
+// delete
+stuffRouter.delete( '/:collection/:method/:id', db.isIdValid, db.deleteThrowingStuff);
+// get
+stuffRouter.get( '/:collection/:method/:id', db.isIdValid, db.getThrowingByID);
+// update
+stuffRouter.put( '/:collection/:method/:id', validationBis, db.isIdValid, db.updateThrowing);
+//search
+stuffRouter.post( '/:collection/:method', validationBis);
 
 
 //const landingRouter = express.Router();

@@ -2,7 +2,8 @@ POST http://localhost:9000/stuff/throwing/search
 Content-Type: application/json
 
 {
-
+    "foo": 12,
+    "hello": 1
 }
 
 ###
