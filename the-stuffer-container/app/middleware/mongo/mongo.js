@@ -41,6 +41,10 @@ exports.isIdValid = (req, res, next) => {
 }
 
 const Throwing = mongoose.model('Throwing', throwingSchema);
+const models = {
+    throwing: undefined,
+    landing: undefined
+}
 
 exports.createThrowing = async (req, res) => {
     const throwing = new Throwing(req.body);

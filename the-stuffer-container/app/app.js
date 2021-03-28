@@ -23,16 +23,16 @@ const db = require('./middleware/mongo/mongo');
 app.use(express.json());
 
 const stuffRouter = express.Router();
-app.use('/stuff', stuffRouter);
-stuffRouter.use(db.isConnected);
 
-const throwingRouter = express.Router();
-throwingRouter.post( '/create', validate(stcSchema), db.createThrowing);
-throwingRouter.get( '/get/');
-throwingRouter.delete( '/delete/:id', db.isIdValid, db.deleteThrowingStuff);
-throwingRouter.get( '/get/:id', db.isIdValid, db.getThrowingByID);
-throwingRouter.put( '/update/:id', validate(stuSchema), db.isIdValid, db.updateThrowing);
-stuffRouter.use('/throwing', throwingRouter);
+stuffRouter.use(db.isConnected);
+// TO TEST
+//stuffRouter.use(db.isIdValid);
+stuffRouter.post( '/:collection/create', validate(stcSchema), db.createThrowing);
+stuffRouter.post( '/:collection/search');
+stuffRouter.delete( '/:collection/delete/:id', db.isIdValid, db.deleteThrowingStuff);
+stuffRouter.get( '/:collection/get/:id', db.isIdValid, db.getThrowingByID);
+stuffRouter.put( '/:collectionupdate/:id', validate(stuSchema), db.isIdValid, db.updateThrowing);
+
 
 //const landingRouter = express.Router();
 //landingRouter.post( '/create', validate(slcSchema), handler(slcProcess));
