@@ -18,5 +18,5 @@ exports.validation = (req, res, next) => {
         if (valid) next()
         else res.status(400).send(validate.errors);
     }
-    else res.sendStatus(404);
+    else next();
 }
