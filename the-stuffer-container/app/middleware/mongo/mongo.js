@@ -1,6 +1,8 @@
-const { throwingSchema } = require('./throwing-schema');
 const mongoose = require('mongoose');
-var ObjectID = require("mongodb").ObjectID
+var ObjectID = require("mongodb").ObjectID;
+
+const { landingSchema } = require('./landing-schema');
+const { throwingSchema } = require('./throwing-schema');
 
 const USERNAME = process.env.MONGO_USERNAME;
 const PASSWORD = process.env.MONGO_PASSWORD;
@@ -40,26 +42,28 @@ exports.isIdValid = (req, res, next) => {
   (id && ObjectID.isValid(id)) ? next() : res.sendStatus(404)
 }
 
-const Throwing = mongoose.model('Throwing', throwingSchema);
-const Models = {
+const models = {
   throwing: mongoose.model('Throwing', throwingSchema),
-  landing: undefined,
+  landing: mongoose.model('Landing', landingSchema),
 }
 
 exports.createStuff = async (req, res) => {
-  const Throwing = Models[req.params.collection];
-  if (Throwing) {
-    const throwing = new Throwing(req.body);
-    await throwing.save().then(
-      doc => res.status(200).send(doc),
-      err => res.sendStatus(500)
-    );
-  } else res.sendStatus(404);
+  const Model = models[req.params.collection];
+  if (!Model) return res.sendStatus(404);
+
+  const model = new Model(req.body);
+  await model.save().then(
+    doc => res.status(200).send(doc),
+    err => res.sendStatus(500)
+  );
 }
 
 exports.getStuff = async (req, res) => {
+  const Model = models[req.params.collection];
+  if (!Model) return res.sendStatus(404);
+
   const id = req.params.id;
-  await Throwing.findById(id).then(
+  await Model.findById(id).then(
     doc => {
       if (!doc) res.sendStatus(404);
       else res.status(200).send(doc);
@@ -69,11 +73,15 @@ exports.getStuff = async (req, res) => {
 }
 
 exports.updateStuff = async (req, res) => {
+  // TODO change reaction pushing
   const id = req.params.id;
   if (req.body.new_reaction) {
     req.body.$push = { reactions: req.body.new_reaction };
     delete req.body.new_reaction;
   }
+
+  const Model = models[req.params.collection];
+  if (!Model) return res.sendStatus(404);
 
   await Throwing.findByIdAndUpdate(id, req.body).then(
     doc => {
@@ -82,12 +90,14 @@ exports.updateStuff = async (req, res) => {
     },
     err => res.sendStatus(500)
   );
-
 }
 
 exports.deleteStuff = async (req, res) => {
+  const Model = models[req.params.collection];
+  if (!Model) return res.sendStatus(404);
+
   const id = req.params.id;
-  await Throwing.findById(id).then(
+  await Model.findById(id).then(
     async doc => {
       if (!doc) res.sendStatus(404);
       else {
@@ -105,5 +115,26 @@ exports.deleteStuff = async (req, res) => {
 }
 
 exports.searchStuff = async (req, res) => {
-  res.sendStatus(200);
+  const Model = models[req.params.collection];
+  if (!Model) return res.sendStatus(404);
+
+  const pos = req.body.position;
+  if (pos) {
+    req.body["position.lat"] = { $gte: pos.lat?.gt, $lte: pos.lat?.lt };
+    req.body["position.lng"] = { $gte: pos.lng?.gt, $lte: pos.lng?.lt };
+    delete req.body.position;
+  }
+
+  if (req.body.tickrate?.['64'] !== undefined) {
+    req.body["tickrate.64"] = req.body.tickrate['64'];
+  }
+  if (req.body.tickrate?.['128'] !== undefined) {
+    req.body["tickrate.128"] = req.body.tickrate['128'];
+  }
+  delete req.body.tickrate;
+
+  await Model.find(req.body).then(
+    doc => res.status(200).send(doc),
+    err => res.sendStatus(500)
+  )
 }

@@ -8,7 +8,6 @@ const reactionSchema = new Schema({
 
 exports.throwingSchema = new Schema({
   "landing_id": String,
-  "type": { "type": String },
   "movement": String,
   "position": {
     "lat": Number,

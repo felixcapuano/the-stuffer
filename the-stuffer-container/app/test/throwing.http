@@ -3,7 +3,6 @@ Content-Type: application/json
 
 {
     "landing_id": "azerty",
-    "type": "smoke",
     "movement": "throw",
     "position": {
         "lat": 0,
@@ -21,11 +20,10 @@ Content-Type: application/json
     "description": "perfect smoke"
 }
 ###
-DELETE  http://localhost:9000/stuff/landing/delete/6060fb4ccced86316c3a866c
+DELETE  http://localhost:9000/stuff/throwing/delete/6060fb4ccced86316c3a866c
 ###
 PUT http://localhost:9000/stuff/throwing/update/6060fb4ccced86316c3a866c
 Content-Type: application/json
-
 {
     "description": "slt",
     "new_reaction": {
@@ -39,9 +37,12 @@ POST http://localhost:9000/stuff/throwing/search
 Content-Type: application/json
 
 {
-    "landing_id": ""
+    "landing_id": "azerty",
+    "tickrate": {
+        "64": true,
+        "128": true
+    }
 }
 
 ###
-
 GET http://localhost:9000/stuff/throwing/get/6060fb4ccced86316c3a866c

@@ -1,6 +1,9 @@
 const properties = {
-  landing_id: { type: "string" },
-  movement: { type: "string", enum: ["throw", "jumpthrow", "runjumpthrow"] },
+  type: { type: "string", enum: ["smoke", "flash", "molotov"] },
+  map: {
+    type: "string",
+    enum: ["mirage", "dust2", "inferno", "nuke", "vertigo", "overpass", "train"],
+  },
   position: {
     type: "object",
     properties: {
@@ -11,36 +14,14 @@ const properties = {
     required: ["lat", "lng", "floor"],
     additionalProperties: false,
   },
-  video: {
-    type: "object",
-    properties: {
-      id: { type: "string" },
-      time: { type: "integer" },
-    },
-    required: ["id", "time"],
-    additionalProperties: false,
-  },
-  tickrate: {
-    type: "object",
-    properties: {
-      "64": { type: "boolean" },
-      "128": { type: "boolean" },
-    },
-    required: ["64", "128"],
-    additionalProperties: false,
-  },
-  description: { type: "string", maxLength: 255 },
 };
 
 exports.create = {
   type: "object",
   properties: properties,
-  required: ["landing_id",
-    "movement",
-    "description",
+  required: ["type",
+    "map",
     "position",
-    "video",
-    "tickrate",
   ],
   additionalProperties: false,
 };
@@ -54,8 +35,11 @@ exports.update = {
 exports.search = {
   type: "object",
   properties: {
-    landing_id: { type: "string" },
-    movement: { type: "string", enum: ["throw", "jumpthrow", "runjumpthrow"] },
+    map: {
+      type: "string",
+      enum: ["mirage", "dust2", "inferno", "nuke", "vertigo", "overpass", "train"],
+    },
+    type: { type: "string", enum: ["smoke", "flash", "molotov"] },
     position: {
       type: "object",
       properties: {
@@ -65,6 +49,7 @@ exports.search = {
             gt: { type: "number" },
             lt: { type: "number" },
           },
+          required: ["gt","lt"],
           additionalProperties: false,
         },
         lng: {
@@ -73,6 +58,7 @@ exports.search = {
             gt: { type: "number" },
             lt: { type: "number" },
           },
+          required: ["gt","lt"],
           additionalProperties: false,
         },
         floor: { type: "integer", minimum: 0 },
@@ -80,15 +66,7 @@ exports.search = {
       required: ["lat", "lng", "floor"],
       additionalProperties: false,
     },
-    tickrate: {
-      type: "object",
-      properties: {
-        "64": { type: "boolean"},
-        "128": { type: "boolean"},
-      },
-      additionalProperties: false,
-    },
   },
-  //required: ["landing_id"],
+  required: ["map"],
   additionalProperties: false,
 };
