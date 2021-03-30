@@ -1,19 +1,21 @@
 version: "3.9"
 services: 
-  #the-stuffer:
-  #  build: ./the-stuffer
-  #  ports:
-  #    - 3000:3000
-  #  environment:
-  #    MONGO_URL: http://main:27017
-  #    ME_CONFIG_MONGODB_ADMINUSERNAME: root
-  #    ME_CONFIG_MONGODB_ADMINPASSWORD: example
-  #  networks: 
-  #    - main
+  stuff:
+    build: ./stuff-container
+    container_name: stuff
+    depends_on: 
+      - mongo
+    ports:
+      - 3000:3000
+    environment:
+      HOST: stuff
+      PORT: 3000
+      MONGO_HOST: mongo
+      MONGO_DATABASE: ${MONGO_DATABASE}
 
   mongo:
     image: mongo:4.4.4
-    container_name: mongo-thestuffer
+    container_name: mongo
     environment: 
       MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
@@ -22,4 +24,4 @@ services:
       - ./mongo/init-scripts:/docker-entrypoint-initdb.d:ro
       - ./mongo/mongo-volume:/data/db
     ports: 
-      - 27017-27019:27017-27019
+      - 27017:27017

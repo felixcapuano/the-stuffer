@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:15.12.0
 
 WORKDIR /app
 
@@ -7,6 +7,5 @@ EXPOSE 3000
 COPY app .
 
 RUN npm i
-RUN npm i -g nodemon
 
-CMD [ "nodemon", "server.js"]
+CMD [ "npm", "run", "dev-start"]

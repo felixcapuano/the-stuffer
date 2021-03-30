@@ -13,7 +13,7 @@ const DATABASE = process.env.MONGO_DATABASE;
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  socketTimeoutMS: 5000,
+  socketTimeoutMS: 60000,
   serverSelectionTimeoutMS: 5000,
   heartbeatFrequencyMS: 5000,
   useFindAndModify: false,
