@@ -19,6 +19,12 @@ const NavBar = () => {
         <li>
           <Link to='/stuff/create/landing'>/stuff/create/landing</Link>
         </li>
+        <li>
+          <Link to='/user'>/user</Link>
+        </li>
+        <li>
+          <Link to='/user/login'>/user/login</Link>
+        </li>
       </ul>
     </div>
   );
