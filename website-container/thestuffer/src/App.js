@@ -3,8 +3,9 @@ import { Home } from './components/Home';
 import { Stuff } from './components/Stuff';
 import { NavBar } from './components/NavBar';
 import { CreateStuff } from './components/CreateStuff';
-import { Login } from './components/Login'
-import { User } from './components/User'
+import { Login } from './components/Login';
+import { User } from './components/User';
+import { Register } from './components/Register';
 
 import './App.css';
 
@@ -22,6 +23,7 @@ function App() {
       <Switch>
         <Route exact path='/user' component={User} />
         <Route path='/user/login' component={Login} />
+        <Route path='/user/register' component={Register} />
       </Switch>
     </BrowserRouter>
   );

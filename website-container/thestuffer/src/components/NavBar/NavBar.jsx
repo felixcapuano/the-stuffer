@@ -25,6 +25,9 @@ const NavBar = () => {
         <li>
           <Link to='/user/login'>/user/login</Link>
         </li>
+        <li>
+          <Link to='/user/register'>/user/register</Link>
+        </li>
       </ul>
     </div>
   );
