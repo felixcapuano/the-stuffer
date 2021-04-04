@@ -47,7 +47,20 @@ exports.create = {
 
 exports.update = {
   type: "object",
-  properties: properties,
+  properties: {
+    ...properties,
+    reaction: {
+      type: "object",
+      properties: {
+        hyped: { type: "boolean" },
+        user: { type: "string" },
+        hidden: { type: "boolean"},
+      },
+      required: ["hyped","user","hidden"],
+      additionalProperties: false,
+    },
+
+  },
   additionalProperties: false,
 };
 

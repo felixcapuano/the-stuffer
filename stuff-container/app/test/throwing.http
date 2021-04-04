@@ -22,11 +22,12 @@ Content-Type: application/json
 ###
 DELETE  http://localhost:9000/stuff/throwing/delete/6060fb4ccced86316c3a866c
 ###
-PUT http://localhost:9000/stuff/throwing/update/6060fb4ccced86316c3a866c
+PUT http://localhost:9000/stuff/throwing/update/60606de708fc3a3e006f7f94
 Content-Type: application/json
+
 {
-    "description": "slt",
-    "new_reaction": {
+    "description": "1",
+    "reaction": {
         "hyped": true,
         "user": "azerty",
         "hidden": false

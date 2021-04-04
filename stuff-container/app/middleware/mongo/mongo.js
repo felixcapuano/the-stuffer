@@ -75,15 +75,15 @@ exports.getStuff = async (req, res) => {
 exports.updateStuff = async (req, res) => {
   // TODO change reaction pushing
   const id = req.params.id;
-  if (req.body.new_reaction) {
-    req.body.$push = { reactions: req.body.new_reaction };
-    delete req.body.new_reaction;
+  if (req.body.reaction) {
+    req.body.$push = { reactions: req.body.reaction };
+    delete req.body.reaction;
   }
 
   const Model = models[req.params.collection];
   if (!Model) return res.sendStatus(404);
 
-  await Throwing.findByIdAndUpdate(id, req.body).then(
+  await Model.findByIdAndUpdate(id, req.body).then(
     doc => {
       if (!doc) res.sendStatus(404);
       else res.status(200).send(doc);
