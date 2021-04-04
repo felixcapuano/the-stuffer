@@ -14,10 +14,32 @@ const ThrowingForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Submit');
-    fetch(`http://localhost:9000/throwing/create`, {
+
+    const formFormatted = {
+        "landing_id": form.landingId,
+        "movement": form.movement,
+        "position": {
+            "lat": parseFloat(form.lat),
+            "lng": parseFloat(form.lng),
+            "floor": parseInt(form.floor),
+        },
+        "video": {
+            "id": form.videoId,
+            "time": parseInt(form.videoTime),
+        },
+        "tickrate": {
+            "64": form.ticks64 ? true:false,
+            "128": form.ticks128 ? true:false,
+        },
+        "description": form.description,
+    }
+
+    fetch(`http://localhost:9000/stuff/throwing/create`, {
       method: 'POST',
-      body: JSON.stringify(form),
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(formFormatted),
     }).then(res => res.json())
       .then(console.log);
   }
@@ -33,25 +55,27 @@ const ThrowingForm = () => {
     <form onSubmit={handleSubmit}>
       <h1>Throwing form</h1>
       <fieldset>
-        <label htmlFor="landingId">Landing ID</label>
+        <label>Landing ID</label>
         <input type="text" name="landingId" id="landingId" onChange={handleChange}/>
       </fieldset>
       <fieldset>
-        <label htmlFor="video">Position</label>
-        <label htmlFor="lat">lat</label>
+        <label>Position</label>
+        <label>lat</label>
         <input type="number" name="lat" id="lat" onChange={handleChange}/>
-        <label htmlFor="lng">lng</label>
+        <label>lng</label>
         <input type="number" name="lng" id="lng" onChange={handleChange}/>
+        <label>floor</label>
+        <input type="number" name="floor" id="floor" onChange={handleChange}/>
       </fieldset>
       <fieldset>
-        <label htmlFor="video">Video</label>
-        <label htmlFor="videoId">id</label>
+        <label>Video</label>
+        <label>id</label>
         <input type="text" name="videoId" id="videoId" onChange={handleChange}/>
-        <label htmlFor="videoTime">time</label>
+        <label>time</label>
         <input type="number" name="videoTime" id="videoTime" onChange={handleChange}/>
       </fieldset>
       <fieldset>
-        <label htmlFor="movement">Movement</label>
+        <label>Movement</label>
         <select name="movement" id="movement" onChange={handleChange}>
           <option value="throw">Throw</option>
           <option value="jumpthrow">Jumpthow</option>
@@ -59,11 +83,15 @@ const ThrowingForm = () => {
         </select>
       </fieldset>
       <fieldset>
-        <label htmlFor="ticks">Tickrate</label>
-        <label htmlFor="64ticks">64</label>
-        <input type="checkbox" name="64ticks" id="64ticks" onChange={handleChange}/>
-        <label htmlFor="128ticks">128</label>
-        <input type="checkbox" name="128ticks" id="128ticks" onChange={handleChange}/>
+        <label>Tickrate</label>
+        <label>64</label>
+        <input type="checkbox" name="ticks64" id="ticks64" onChange={handleChange}/>
+        <label>128</label>
+        <input type="checkbox" name="ticks128" id="ticks128" onChange={handleChange}/>
+      </fieldset>
+      <fieldset>
+        <label>Description</label>
+        <textarea name="description" id="description" cols="50" rows="3" onChange={handleChange}/>
       </fieldset>
       <input type="submit" value="submit" />
     </form>

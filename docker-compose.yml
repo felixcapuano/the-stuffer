@@ -1,17 +1,17 @@
 version: "3.9"
 services: 
-  stuff:
-    build: ./stuff-container
-    container_name: stuff
-    depends_on: 
-      - mongo
-    ports:
-      - 3000:3000
-    environment:
-      HOST: stuff
-      PORT: 3000
-      MONGO_HOST: mongo
-      MONGO_DATABASE: ${MONGO_DATABASE}
+#  stuff:
+#    build: ./stuff-container
+#    container_name: stuff
+#    depends_on: 
+#      - mongo
+#    ports:
+#      - 3000:3000
+#    environment:
+#      HOST: stuff
+#      PORT: 3000
+#      MONGO_HOST: mongo
+#      MONGO_DATABASE: ${MONGO_DATABASE}
 
   mongo:
     image: mongo:4.4.4

@@ -6,6 +6,7 @@ envs.forEach(env => {
   console.log(env+'='+process.env[env]);
 });
 
+const cors = require('cors');
 const express = require('express');
 const app = express();
 
@@ -14,6 +15,7 @@ const db = require('./middleware/mongo/mongo');
 const { validation } = require('./middleware/validation/validation')
 
 app.use(express.json());
+app.use(cors());
 
 const stuffRouter = express.Router();
 app.use('/stuff', stuffRouter);
