@@ -83,6 +83,8 @@ exports.updateStuff = async (req, res) => {
   const Model = models[req.params.collection];
   if (!Model) return res.sendStatus(404);
 
+  req.body.last_update_date = Date.now();
+
   await Model.findByIdAndUpdate(id, req.body).then(
     doc => {
       if (!doc) res.sendStatus(404);
