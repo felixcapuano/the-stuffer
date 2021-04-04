@@ -49,18 +49,18 @@ const models = {
 
 exports.createStuff = async (req, res) => {
   const Model = models[req.params.collection];
-  if (!Model) return res.sendStatus(404);
+  if (!Model) return res.sendStatus(500);
 
   const model = new Model(req.body);
   await model.save().then(
-    doc => res.status(200).send(doc),
+    doc => res.status(201).send(doc),
     err => res.sendStatus(500)
   );
 }
 
 exports.getStuff = async (req, res) => {
   const Model = models[req.params.collection];
-  if (!Model) return res.sendStatus(404);
+  if (!Model) return res.sendStatus(500);
 
   const id = req.params.id;
   await Model.findById(id).then(
@@ -81,7 +81,7 @@ exports.updateStuff = async (req, res) => {
   }
 
   const Model = models[req.params.collection];
-  if (!Model) return res.sendStatus(404);
+  if (!Model) return res.sendStatus(500);
 
   req.body.last_update_date = Date.now();
 
@@ -96,7 +96,7 @@ exports.updateStuff = async (req, res) => {
 
 exports.deleteStuff = async (req, res) => {
   const Model = models[req.params.collection];
-  if (!Model) return res.sendStatus(404);
+  if (!Model) return res.sendStatus(500);
 
   const id = req.params.id;
   await Model.findById(id).then(
