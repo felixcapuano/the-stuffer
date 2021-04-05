@@ -1,0 +1,30 @@
+POST http://localhost:3002/register
+Content-Type: application/json
+
+{
+  "username": "felix",
+  "email": "felix@gmail.com",
+  "password": "capuano"
+}
+###
+POST http://localhost:3002/login
+Content-Type: application/json
+
+{
+  "email": "felix@gmail.com",
+  "password": "capuano"
+}
+###
+POST http://localhost:3002/token
+Content-Type: application/json
+
+{
+  "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZiMGNjNTJhYmU4MTQ4ZDQzMTNmY2MiLCJpYXQiOjE2MTc2Mjg4MDR9.REwUpHO3jBlbGpwttVP9mh3zT58y1mRIeByMAhzMsQ"
+}
+###
+DELETE http://localhost:3002/logout
+Content-Type: application/json
+
+{
+  "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZiMGNjNTJhYmU4MTQ4ZDQzMTNmY2MiLCJpYXQiOjE2MTc2MzA2OTR9.SffAONgG2yNRYT4qVkKrI9um7sQOS36dDioXAZ94QMg"
+}

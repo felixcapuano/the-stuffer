@@ -21,3 +21,12 @@ exports.login = ajv.compile({
   required: ['email', 'password'],
   additionalProperties: false,
 })
+
+exports.token = ajv.compile({
+  type: 'object',
+  properties: {
+    'token': { type: 'string' },
+  },
+  required: ['token'],
+  additionalProperties: false,
+})

@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const validation = require('../validation');
+
 const { User } = require('../mongo/model');
+
 
 module.exports = async (req, res) => {
   const valid = validation.register(req.body);
