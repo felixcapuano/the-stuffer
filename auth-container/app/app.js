@@ -1,6 +1,6 @@
 const dotenv = require('dotenv').config();
 if (dotenv.error) throw dotenv.error
-const envs = ['HOST','PORT'];
+const envs = ['HOST','PORT','MONGO_HOST','MONGO_PORT','MONGO_DATABASE','MONGO_USERNAME','MONGO_PASSWORD'];
 envs.forEach(env => {
   if (!process.env[env]) throw "Environment variable HOST not set."
   console.log(env+'='+process.env[env]);
@@ -9,6 +9,9 @@ envs.forEach(env => {
 const cors = require('cors');
 const express = require('express');
 const app = express();
+
+const mongo = require('./mongo/core');
+mongo.connect();
 
 const loginRoute = require('./routes/login')
 const registerRoute = require('./routes/register')
