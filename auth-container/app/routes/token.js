@@ -6,7 +6,7 @@ const { generateAccessToken } = require('../utils');
 
 
 module.exports = async (req, res) => {
-  const valid = validation.auth(req.body);
+  const valid = validation.token(req.body);
   if (!valid) return res.sendStatus(401);
 
   const refreshToken = req.body.token;
