@@ -10,31 +10,17 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 
-// middleware
-const db = require('./middleware/mongo/mongo');
-const { validation } = require('./middleware/validation/validation')
+require('./mongo/core').connect();
 
 app.use(express.json());
 app.use(cors());
 
-const stuffRouter = express.Router();
+const stuffRouter = require('./routes/stuff')
+
 app.use('/stuff', stuffRouter);
 
-stuffRouter.use(db.isConnected);
-// TO TEST
-//stuffRouter.use(db.isIdValid);
 
-stuffRouter.post('/:collection/create', validation('create'), db.createStuff);
-stuffRouter.delete('/:collection/delete/:id', db.isIdValid, db.deleteStuff);
-stuffRouter.get('/:collection/get/:id', db.isIdValid, db.getStuff);
-stuffRouter.put('/:collection/update/:id', validation('update'), db.isIdValid, db.updateStuff);
-stuffRouter.post('/:collection/search', validation('search'), db.searchStuff);
+app.listen(process.env.PORT, () => {
+  console.log(`Listening at http://${process.env.HOST}:${process.env.PORT}`);
+});
 
-const launchServer = () => {
-  app.listen(process.env.PORT, () => {
-    console.log(`Listening at http://${process.env.HOST}:${process.env.PORT}`);
-  });
-}
-
-launchServer();
-db.connect();

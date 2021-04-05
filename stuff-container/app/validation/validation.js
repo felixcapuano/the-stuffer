@@ -17,13 +17,14 @@ const schema = {
   }
 }
 
-exports.validation = (_method) => {
+module.exports = (_method) => {
   return (req, res, next) => {
+
     const validate = schema[req.params.collection]?.[_method];
-    if (validate) {
-      if (validate(req.body)) next();
-      else res.status(400).send(validate.errors);
-    }
-    else res.sendStatus(404);
+    if (!validate) return res.sendStatus(404);
+
+    if (!validate(req.body)) return res.status(400).send(validate.errors);
+
+    next();
   }
 }

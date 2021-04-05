@@ -19,7 +19,7 @@ const uri = `mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`;
 
 exports.connect = () => {
   mongoose.connect(uri, options).then(
-    () => console.log('Mongo connection established!'),
-    () => { throw Error('Connection time out!'); }
+    () => console.log('Mongo connection establish!'),
+    () => console.log('Mongo connection fail!')
   );
 }

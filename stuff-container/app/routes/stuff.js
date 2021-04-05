@@ -1,54 +1,9 @@
-const mongoose = require('mongoose');
-var ObjectID = require("mongodb").ObjectID;
+const stuffRouter = require('express').Router();
+const validation = require('../validation/validation');
 
-const { landingSchema } = require('./landing-schema');
-const { throwingSchema } = require('./throwing-schema');
 
-const USERNAME = process.env.MONGO_USERNAME;
-const PASSWORD = process.env.MONGO_PASSWORD;
-const PORT = process.env.MONGO_PORT;
-const HOST = process.env.MONGO_HOST;
-const DATABASE = process.env.MONGO_DATABASE;
-
-const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  socketTimeoutMS: 60000,
-  serverSelectionTimeoutMS: 5000,
-  heartbeatFrequencyMS: 5000,
-  useFindAndModify: false,
-}
-
-const uri = `mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`;
-exports.connect = () => {
-  console.log('Mongo trying to connect to : ' + uri);
-  mongoose.connect(uri, options).then(
-    () => console.log('Mongo connection established!'),
-    () => console.log('Mongo connection failed!')
-  );
-}
-
-const db = mongoose.connection;
-db.on('error', e => console.log('Mongo error : ' + e.message));
-db.on('disconnected', () => console.log('Connection interrupted'));
-
-exports.isConnected = (req, res, next) => {
-  const state = mongoose.connection.readyState;
-  state === 1 ? next() : res.sendStatus(500)
-}
-
-exports.isIdValid = (req, res, next) => {
-  const id = req.params.id;
-  (id && ObjectID.isValid(id)) ? next() : res.sendStatus(404)
-}
-
-const models = {
-  throwing: mongoose.model('Throwing', throwingSchema),
-  landing: mongoose.model('Landing', landingSchema),
-}
-
-exports.createStuff = async (req, res) => {
-  const Model = models[req.params.collection];
+stuffRouter.post('/:collection/create', validation('create'), async (req, res) => {
+  const Model = moels[req.params.collection];
   if (!Model) return res.sendStatus(500);
 
   const model = new Model(req.body);
@@ -56,10 +11,10 @@ exports.createStuff = async (req, res) => {
     doc => res.status(201).send(doc),
     err => res.sendStatus(500)
   );
-}
+});
 
-exports.getStuff = async (req, res) => {
-  const Model = models[req.params.collection];
+stuffRouter.get('/:collection/get/:id', async (req, res) => {
+  const Model = mdels[req.params.collection];
   if (!Model) return res.sendStatus(500);
 
   const id = req.params.id;
@@ -70,9 +25,9 @@ exports.getStuff = async (req, res) => {
     },
     err => res.status(500)
   );
-}
+});
 
-exports.updateStuff = async (req, res) => {
+stuffRouter.put('/:collection/update/:id', validation('update'), async (req, res) => {
   // TODO change reaction pushing
   const id = req.params.id;
   if (req.body.reaction) {
@@ -92,9 +47,9 @@ exports.updateStuff = async (req, res) => {
     },
     err => res.sendStatus(500)
   );
-}
+});
 
-exports.deleteStuff = async (req, res) => {
+stuffRouter.delete('/:collection/delete/:id', async (req, res) => {
   const Model = models[req.params.collection];
   if (!Model) return res.sendStatus(500);
 
@@ -114,10 +69,10 @@ exports.deleteStuff = async (req, res) => {
     },
     err => res.sendStatus(500)
   );
-}
+});
 
-exports.searchStuff = async (req, res) => {
-  const Model = models[req.params.collection];
+stuffRouter.post('/:collection/search', validation('search'), async (req, res) => {
+  const Model = modls[req.params.collection];
   if (!Model) return res.sendStatus(404);
 
   const pos = req.body.position;
@@ -139,4 +94,6 @@ exports.searchStuff = async (req, res) => {
     doc => res.status(200).send(doc),
     err => res.sendStatus(500)
   )
-}
+});
+
+module.exports = stuffRouter;

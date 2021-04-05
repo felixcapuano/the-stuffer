@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
 const reactionSchema = new Schema({
@@ -6,7 +7,7 @@ const reactionSchema = new Schema({
   "hidden": { "type": Boolean, "default": false }
 });
 
-exports.throwingSchema = new Schema({
+const throwingSchema = new Schema({
   "landing_id": String,
   "movement": String,
   "position": {
@@ -28,3 +29,21 @@ exports.throwingSchema = new Schema({
   "reactions": { "type": [reactionSchema], "default": [] },
   "deleted": { "type": Boolean, "default": false },
 });
+
+const landingSchema = new Schema({
+  "map": String,
+  "type": String,
+  "position": {
+    "lat": Number,
+    "lng": Number,
+    "floor": Number,
+  },
+  "creation_date": { "type": Date, "default": Date.now },
+  "last_update_date": { "type": Date, "default": Date.now },
+  "deleted": { "type": Boolean, "default": false },
+});
+
+module.exports = {
+  throwing: mongoose.model('Throwing', throwingSchema),
+  landing: mongoose.model('Landing', landingSchema),
+}
