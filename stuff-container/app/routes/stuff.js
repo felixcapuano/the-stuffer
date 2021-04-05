@@ -1,35 +1,40 @@
-const stuffRouter = require('express').Router();
 const validation = require('../validation/validation');
+const models = require('../mongo/models');
 
+const stuffRouter = require('express').Router();
 
 stuffRouter.post('/:collection/create', validation('create'), async (req, res) => {
-  const Model = moels[req.params.collection];
+  const Model = models[req.params.collection];
   if (!Model) return res.sendStatus(500);
 
   const model = new Model(req.body);
-  await model.save().then(
-    doc => res.status(201).send(doc),
-    err => res.sendStatus(500)
-  );
+  try {
+    const doc = await model.save();
+    return res.status(201).send({ _id: doc._id});
+  }
+  catch(err) {
+    return res.status(500).send(err);
+  }
 });
 
 stuffRouter.get('/:collection/get/:id', async (req, res) => {
-  const Model = mdels[req.params.collection];
+  const Model = models[req.params.collection];
   if (!Model) return res.sendStatus(500);
 
   const id = req.params.id;
-  await Model.findById(id).then(
-    doc => {
-      if (!doc) res.sendStatus(404);
-      else res.status(200).send(doc);
-    },
-    err => res.status(500)
-  );
+  try {
+    const doc = await Model.findById(id);
+    if (!doc) return res.sendStatus(404);
+
+    return res.status(200).send(doc);
+  }
+  catch(err) {
+    return res.status(500).send(err);
+  }
 });
 
 stuffRouter.put('/:collection/update/:id', validation('update'), async (req, res) => {
   // TODO change reaction pushing
-  const id = req.params.id;
   if (req.body.reaction) {
     req.body.$push = { reactions: req.body.reaction };
     delete req.body.reaction;
@@ -40,13 +45,16 @@ stuffRouter.put('/:collection/update/:id', validation('update'), async (req, res
 
   req.body.last_update_date = Date.now();
 
-  await Model.findByIdAndUpdate(id, req.body).then(
-    doc => {
-      if (!doc) res.sendStatus(404);
-      else res.status(200).send(doc);
-    },
-    err => res.sendStatus(500)
-  );
+  const id = req.params.id;
+  try {
+    const doc = await Model.findByIdAndUpdate(id, req.body);
+    if (!doc) return res.sendStatus(404);
+
+    return res.status(200).send(doc);
+  }
+  catch(err) {
+    return res.status(500).send(err);
+  }
 });
 
 stuffRouter.delete('/:collection/delete/:id', async (req, res) => {
@@ -54,21 +62,19 @@ stuffRouter.delete('/:collection/delete/:id', async (req, res) => {
   if (!Model) return res.sendStatus(500);
 
   const id = req.params.id;
-  await Model.findById(id).then(
-    async doc => {
-      if (!doc) res.sendStatus(404);
-      else {
-        if (!doc.deleted) doc.deleted = true;
-        else doc.deleted = !doc.deleted;
+  try {
+    const doc = await Model.findById(id);
+    if (!doc) return res.sendStatus(404);
 
-        await doc.save().then(
-          doc => res.status(200).send(doc),
-          err => res.sendStatus(500)
-        );
-      }
-    },
-    err => res.sendStatus(500)
-  );
+    doc.deleted = (!doc.deleted) ? true:!doc.deleted;
+
+    await doc.save();
+
+    return res.status(200).send(doc);
+  }
+  catch(err) {
+    return res.status(500).send(err);
+  }
 });
 
 stuffRouter.post('/:collection/search', validation('search'), async (req, res) => {
@@ -90,10 +96,14 @@ stuffRouter.post('/:collection/search', validation('search'), async (req, res) =
   }
   delete req.body.tickrate;
 
-  await Model.find(req.body).then(
-    doc => res.status(200).send(doc),
-    err => res.sendStatus(500)
-  )
+  try {
+    const doc = await Model.find(req.body);
+
+    return res.status(200).send(doc);
+  }
+  catch(err) {
+    return res.status(500).send(err);
+  }
 });
 
 module.exports = stuffRouter;

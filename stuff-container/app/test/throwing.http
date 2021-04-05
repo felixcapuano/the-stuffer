@@ -20,7 +20,7 @@ Content-Type: application/json
     "description": "perfect smoke"
 }
 ###
-DELETE  http://localhost:9000/stuff/throwing/delete/6060fb4ccced86316c3a866c
+DELETE  http://localhost:9000/stuff/throwing/delete/606b5ecc74b86f27b4f59e16
 ###
 PUT http://localhost:9000/stuff/throwing/update/60606de708fc3a3e006f7f94
 Content-Type: application/json
@@ -46,4 +46,4 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:9000/stuff/throwing/get/6060fb4ccced86316c3a866c
+GET http://localhost:9000/stuff/throwing/get/606b5ecc74b86f27b4f59e16

@@ -9,7 +9,7 @@ services:
 #      - 3000:3000
 #    environment:
 #      HOST: stuff
-#      PORT: 3000
+#      PORT: 3001
 #      MONGO_HOST: mongo
 #      MONGO_DATABASE: ${MONGO_DATABASE}
 

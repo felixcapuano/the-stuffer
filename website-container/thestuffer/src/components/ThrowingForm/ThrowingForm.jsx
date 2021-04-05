@@ -34,7 +34,7 @@ const ThrowingForm = () => {
         "description": form.description,
     }
 
-    fetch(`http://localhost:9000/stuff/throwing/create`, {
+    fetch(`http://localhost:3001/stuff/throwing/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
