@@ -1,11 +1,18 @@
 const validation = require('../validation/validation');
 const models = require('../mongo/models');
+const { landingIdExist } = require('../mongo/core');
 
 const stuffRouter = require('express').Router();
 
 stuffRouter.post('/:collection/create', validation('create'), async (req, res) => {
-  const Model = models[req.params.collection];
+  const collection = req.params.collection;
+  const Model = models[collection];
   if (!Model) return res.sendStatus(500);
+
+  if (collection==='throwing') {
+    const idExist = await landingIdExist(req.body.landing_id);
+    if (!idExist) return res.sendStatus(400);
+  }
 
   const model = new Model(req.body);
   try {

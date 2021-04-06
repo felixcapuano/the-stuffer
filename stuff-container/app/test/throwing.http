@@ -2,7 +2,7 @@ POST http://localhost:9000/stuff/throwing/create
 Content-Type: application/json
 
 {
-    "landing_id": "azerty",
+    "landing_id": "6061b03eb0a5185be49b4f6b",
     "movement": "throw",
     "position": {
         "lat": 0,

@@ -26,6 +26,7 @@ const throwingSchema = new Schema({
   "description": String,
   "creation_date": { "type": Date, "default": Date.now },
   "last_update_date": { "type": Date, "default": Date.now },
+  "creator": String,
   "reactions": { "type": [reactionSchema], "default": [] },
   "deleted": { "type": Boolean, "default": false },
 });
@@ -39,6 +40,7 @@ const landingSchema = new Schema({
     "floor": Number,
   },
   "creation_date": { "type": Date, "default": Date.now },
+  "creator": String,
   "last_update_date": { "type": Date, "default": Date.now },
   "deleted": { "type": Boolean, "default": false },
 });

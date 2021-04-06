@@ -1,10 +1,7 @@
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv').config({ path: '../../.env'});
 if (dotenv.error) throw dotenv.error
-const envs = ['HOST','PORT','MONGO_HOST','MONGO_PORT','MONGO_DATABASE','MONGO_USERNAME','MONGO_PASSWORD'];
-envs.forEach(env => {
-  if (!process.env[env]) throw "Environment variable HOST not set."
-  console.log(env+'='+process.env[env]);
-});
+const HOST = process.env.STUFF_PORT;
+const PORT = process.env.STUFF_HOST;
 
 const cors = require('cors');
 const express = require('express');
@@ -19,8 +16,7 @@ const stuffRouter = require('./routes/stuff')
 
 app.use('/stuff', stuffRouter);
 
-
 app.listen(process.env.PORT, () => {
-  console.log(`Listening at http://${process.env.HOST}:${process.env.PORT}`);
+  console.log(`Listening at http://${HOST}:${PORT}`);
 });
 

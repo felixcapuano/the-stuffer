@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const USERNAME = process.env.MONGO_USERNAME;
-const PASSWORD = process.env.MONGO_PASSWORD;
-const PORT = process.env.MONGO_PORT;
-const HOST = process.env.MONGO_HOST;
+const USERNAME = process.env.AUTH_MONGO_USERNAME;
+const PASSWORD = process.env.AUTH_MONGO_PASSWORD;
+const PORT =     process.env.AUTH_MONGO_PORT;
+const HOST =     process.env.AUTH_MONGO_HOST;
 const DATABASE = process.env.MONGO_DATABASE;
 
 const options = {

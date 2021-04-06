@@ -1,7 +1,7 @@
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv').config({ path: '../../.env'});
 if (dotenv.error) throw dotenv.error
-['HOST','PORT','MONGO_HOST','MONGO_PORT','MONGO_DATABASE','MONGO_USERNAME','MONGO_PASSWORD','ACCESS_TOKEN','REFRESH_TOKEN']
-  .forEach(env => { if (!process.env[env]) throw `Environment variable ${env} not set.` }); 
+const HOST = process.env.AUTH_HOST;
+const PORT = process.env.AUTH_PORT;
 
 const cors = require('cors');
 const express = require('express');
@@ -24,5 +24,5 @@ app.post('/token', tokenRoute);
 app.delete('/logout', logoutRoute);
 
 app.listen(process.env.PORT, () => {
-  console.log(`Listening at http://${process.env.HOST}:${process.env.PORT}`);
+  console.log(`Listening at http://${HOST}:${PORT}`);
 });
