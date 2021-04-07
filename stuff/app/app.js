@@ -1,7 +1,7 @@
 const dotenv = require('dotenv').config({ path: '../../.env'});
 if (dotenv.error) throw dotenv.error
-const HOST = process.env.STUFF_PORT;
-const PORT = process.env.STUFF_HOST;
+const HOST = process.env.STUFF_HOST;
+const PORT = process.env.STUFF_PORT;
 
 const cors = require('cors');
 const express = require('express');
@@ -16,7 +16,7 @@ const stuffRouter = require('./routes/stuff')
 
 app.use('/stuff', stuffRouter);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Listening at http://${HOST}:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Stuff server listening at http://${HOST}:${PORT}`);
 });
 

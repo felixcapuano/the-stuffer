@@ -1,4 +1,4 @@
-POST http://localhost:9000/stuff/throwing/create
+POST http://localhost:3001/stuff/throwing/create
 Content-Type: application/json
 
 {

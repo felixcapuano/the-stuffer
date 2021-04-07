@@ -12,7 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "ajv": "^8.0.5",
+    "ajv-formats": "^2.0.2",
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

@@ -2,10 +2,10 @@ const { Token } = require('../mongo/model');
 const validation = require('../validation');
 
 module.exports = async (req, res) => {
-  const valid = validation.token(req.body);
-  if (!valid) return res.sendStatus(401);
+  const refreshToken = req.cookies.jid;
+  if (!refreshToken) return res.status(401).send({ok: false, message: 'Try to login.'})
 
-  const tokenDeleted = await Token.deleteOne({ token: req.body.token });
-  if(tokenDeleted.n === 0) return res.sendStatus(404);
-  res.sendStatus(204);
+  const tokenDeleted = await Token.deleteOne({ token: refreshToken });
+  if(tokenDeleted.n === 0) return res.status(404).send({ok: false, message: 'Try to login'});
+  res.status(204).send({ok: true, message:''});
 }

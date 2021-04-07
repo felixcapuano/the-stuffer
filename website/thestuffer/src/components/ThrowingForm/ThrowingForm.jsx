@@ -8,11 +8,14 @@ const formReducer = (state, event) => {
    [event.name]: event.value
  }
 }
+const STUFF_HOST = process.env.REACT_APP_STUFF_HOST;
+const STUFF_PORT = process.env.REACT_APP_STUFF_PORT;
+const url = `http://${STUFF_HOST}:${STUFF_PORT}/stuff/throwing/create`
 
 const ThrowingForm = () => {
   const [form, setForm] = useReducer(formReducer, {});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formFormatted = {
@@ -34,7 +37,7 @@ const ThrowingForm = () => {
         "description": form.description,
     }
 
-    fetch(`http://localhost:3001/stuff/throwing/create`, {
+    await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
