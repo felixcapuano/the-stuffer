@@ -17,8 +17,11 @@ const tokenRoute = require('./routes/token');
 const logoutRoute = require('./routes/logout');
 
 app.use(express.json());
-app.use(cors());
 app.use(cookieParser());
+app.use(cors({
+  origin: `http://${process.env.THESTUFFER_HOST}:${process.env.THESTUFFER_PORT}`,
+  credentials: true,
+}));
 
 app.post('/login', loginRoute);
 app.post('/register', registerRoute);
@@ -26,12 +29,11 @@ app.post('/token', tokenRoute);
 app.delete('/logout', logoutRoute);
 
 const { verify } = require('jsonwebtoken');
-app.get('/testing', async (req, res) => {
-  console.log(req)
-  //if (!req.body.token) return res.send({ ok: false, msg:'no token'})
+app.post('/testing', async (req, res) => {
+  if (!req.body.token) return res.send({ ok: false, msg:'no token'})
 
-  //const valid = verify(req.cookies.jid, process.env.ACCESS_TOKEN);
-  //if (!valid) return res.send({ ok: false, msg:'invalid token'})
+  const valid = verify(req.cookies.jid, process.env.ACCESS_TOKEN);
+  if (!valid) return res.send({ ok: false, msg:'invalid token'})
 
   res.send({ ok: true, msg: ''});
 });

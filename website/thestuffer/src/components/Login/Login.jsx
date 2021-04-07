@@ -1,4 +1,5 @@
 import React, { useState, useReducer, useContext } from 'react';
+import { authInstance } from '../../axios';
 
 import AuthContext from '../../context/AuthContext';
 
@@ -11,10 +12,6 @@ const formReducer = (state, event) => {
    [event.name]: event.value
  }
 }
-
-const AUTH_HOST = process.env.REACT_APP_AUTH_HOST;
-const AUTH_PORT = process.env.REACT_APP_AUTH_PORT;
-const url = `http://${AUTH_HOST}:${AUTH_PORT}/login`;
 
 const Login = () => {
   const [form, setForm] = useReducer(formReducer, {});
@@ -31,18 +28,12 @@ const Login = () => {
         "password": form.password,
     }
 
-    await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(formFormatted),
-    }).then(res => res.json())
+    authInstance.post('/login', formFormatted)
       .then(res => {
-        setMessage(res.message);
-        if (res.ok) {
+        setMessage(res.data.message);
+        if(res.data.ok) {
           updateLogged(true);
-          updateToken(res.accessToken);
+          updateToken(res.data.accessToken);
         }
       });
   }
