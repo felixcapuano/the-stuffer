@@ -32,7 +32,9 @@ const Register = () => {
       },
       body: JSON.stringify(formFormatted),
     }).then(res => res.json())
-      .then(console.log);
+      .then(() => {
+        
+      });
   }
 
   const handleChange = event => {

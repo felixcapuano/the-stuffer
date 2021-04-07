@@ -26,7 +26,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={loggedContextValue}>
-      user is login : { logged.toString() }
+      user is login : { logged.toString() } { token }
       <BrowserRouter>
         <NavBar />
         <Switch>

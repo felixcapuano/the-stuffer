@@ -19,7 +19,7 @@ const url = `http://${AUTH_HOST}:${AUTH_PORT}/login`;
 const Login = () => {
   const [form, setForm] = useReducer(formReducer, {});
 
-  const { token, updateToken, updateLogged } = useContext(AuthContext);
+  const { updateToken, updateLogged } = useContext(AuthContext);
 
   const [message, setMessage] = useState('');
 
@@ -39,7 +39,11 @@ const Login = () => {
       body: JSON.stringify(formFormatted),
     }).then(res => res.json())
       .then(res => {
-        console.log(res)
+        setMessage(res.message);
+        if (res.ok) {
+          updateLogged(true);
+          updateToken(res.accessToken);
+        }
       });
   }
 
@@ -71,9 +75,6 @@ const Login = () => {
       <input type="submit" value="login" />
       <p>
         message : {message}
-      </p>
-      <p>
-        token : {token}
       </p>
     </form>
   );

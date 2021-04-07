@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
 
   return res.status(201).cookie('jid', refreshToken, { httpOnly: true }).send({
     ok: true,
-    message: '',
+    message: 'Success',
     accessToken: generateAccessToken(userObject),
   });
 };
