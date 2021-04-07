@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { Logout } from '../Logout'
+
 import './NavBar.css';
 
 const NavBar = () => {
@@ -28,6 +30,7 @@ const NavBar = () => {
         <li>
           <Link to='/user/register'>/user/register</Link>
         </li>
+        <Logout/>
       </ul>
     </div>
   );

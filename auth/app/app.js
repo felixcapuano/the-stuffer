@@ -26,11 +26,12 @@ app.post('/token', tokenRoute);
 app.delete('/logout', logoutRoute);
 
 const { verify } = require('jsonwebtoken');
-app.post('/testing', async (req, res) => {
-  if (!req.body.token) return res.send({ ok: false, msg:'no token'})
+app.get('/testing', async (req, res) => {
+  console.log(req)
+  //if (!req.body.token) return res.send({ ok: false, msg:'no token'})
 
-  const valid = verify(req.cookies.jid, process.env.ACCESS_TOKEN);
-  if (!valid) return res.send({ ok: false, msg:'invalid token'})
+  //const valid = verify(req.cookies.jid, process.env.ACCESS_TOKEN);
+  //if (!valid) return res.send({ ok: false, msg:'invalid token'})
 
   res.send({ ok: true, msg: ''});
 });
