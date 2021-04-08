@@ -1,19 +1,17 @@
 const Ajv = require('ajv');
 const ajv = new Ajv({useDefaults: true, allErrors: true});
 
-const { landingIdExist } = require('../mongo/core');
+const { isIdExist } = require('../mongo/core');
 const throwingSchema = require('./throwing-schema');
 const landingSchema = require('./landing-schema');
 
 ajv.addKeyword({
-  keyword: 'isLandingIdExist',
+  keyword: 'isIdExist',
   async: true,
   type: 'string',
   validate: async (schema, id, type, { parentData }) => {
-    if (parentData.collection === 'throwing') {
-      const idExist = await landingIdExist(id);
-      return idExist;
-    }
+    const idExist = await isIdExist(parentData.collection, id);
+    return idExist;
   }
 });
 
@@ -39,7 +37,7 @@ module.exports = (_method) => {
     try {
       const data = await validate(req.body);
     } catch (error) {
-      console.erros(error.errors);
+      console.error(error.errors);
       return res.send({ ok: false, message: 'Bad format', errors: error.errors});
     }
     next();

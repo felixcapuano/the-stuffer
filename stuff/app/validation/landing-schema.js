@@ -1,74 +1,74 @@
 const properties = {
-  collection: { type: "string", enum: ["twrowing", "landing"] },
-  type: { type: "string", enum: ["smoke", "flash", "molotov"] },
+  collection: { type: 'string', enum: ['twrowing', 'landing'] },
+  type: { type: 'string', enum: ['smoke', 'flash', 'molotov'] },
   map: {
-    type: "string",
-    enum: ["mirage", "dust2", "inferno", "nuke", "vertigo", "overpass", "train"],
+    type: 'string',
+    enum: ['mirage', 'dust2', 'inferno', 'nuke', 'vertigo', 'overpass', 'train'],
   },
   position: {
-    type: "object",
+    type: 'object',
     properties: {
-      lat: { type: "number" },
-      lng: { type: "number" },
-      floor: { type: "integer", minimum: 0 },
+      lat: { type: 'number' },
+      lng: { type: 'number' },
+      floor: { type: 'integer', minimum: 0 },
     },
-    required: ["lat", "lng", "floor"],
+    required: ['lat', 'lng', 'floor'],
     additionalProperties: false,
   },
 };
 
 exports.create = {
-  type: "object",
+  type: 'object',
   properties: properties,
   required: [
     'collection',
-    "type",
-    "map",
-    "position",
+    'type',
+    'map',
+    'position',
   ],
   additionalProperties: false,
 };
 
 exports.update = {
-  type: "object",
+  type: 'object',
   properties: properties,
   required: ['collection'],
   additionalProperties: false,
 };
 
 exports.search = {
-  type: "object",
+  type: 'object',
   properties: {
     collection: { type: 'string', enum: ['twrowing', 'landing'] },
     map: {
-      type: "string",
-      enum: ["mirage", "dust2", "inferno", "nuke", "vertigo", "overpass", "train"],
+      type: 'string',
+      enum: ['mirage', 'dust2', 'inferno', 'nuke', 'vertigo', 'overpass', 'train'],
     },
-    type: { type: "string", enum: ["smoke", "flash", "molotov"] },
+    type: { type: 'string', enum: ['smoke', 'flash', 'molotov'] },
     position: {
-      type: "object",
+      type: 'object',
       properties: {
         lat: {
-          type: "object",
+          type: 'object',
           properties: {
-            gt: { type: "number" },
-            lt: { type: "number" },
+            gt: { type: 'number' },
+            lt: { type: 'number' },
           },
-          required: ["gt","lt"],
+          required: ['gt','lt'],
           additionalProperties: false,
         },
         lng: {
-          type: "object",
+          type: 'object',
           properties: {
-            gt: { type: "number" },
-            lt: { type: "number" },
+            gt: { type: 'number' },
+            lt: { type: 'number' },
           },
-          required: ["gt","lt"],
+          required: ['gt','lt'],
           additionalProperties: false,
         },
-        floor: { type: "integer", minimum: 0 },
+        floor: { type: 'integer', minimum: 0 },
       },
-      required: ["lat", "lng", "floor"],
+      required: ['lat', 'lng', 'floor'],
       additionalProperties: false,
     },
   },

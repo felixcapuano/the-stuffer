@@ -1,6 +1,6 @@
 const properties = {
   collection: { type: 'string', enum: ['throwing', 'landing'] },
-  landing_id: { type: 'string', isLandingIdExist: true},
+  landing_id: { type: 'string', isIdExist: true},
   movement: { type: 'string', enum: ['throw', 'jumpthrow', 'runjumpthrow'] },
   position: {
     type: 'object',
@@ -74,7 +74,7 @@ exports.search = {
   type: 'object',
   properties: {
     collection: { type: 'string', enum: ['throwing', 'landing'] },
-    landing_id: { type: 'string' },
+    landing_id: { type: 'string', isIdExist: true },
     movement: { type: 'string', enum: ['throw', 'jumpthrow', 'runjumpthrow'] },
     position: {
       type: 'object',
@@ -109,7 +109,6 @@ exports.search = {
       additionalProperties: false,
     },
   },
-  //required: ['landing_id'],
   required: ['collection'],
   additionalProperties: false,
 };

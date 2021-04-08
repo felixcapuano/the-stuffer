@@ -32,9 +32,9 @@ exports.connect = () => {
 
 }
 
-exports.landingIdExist = async ( id) => {
+exports.isIdExist = async (model, id) => {
   try {
-    const doc = await models.landing.findById(id);
+    const doc = await models[model].findById(id);
     return doc ? true: false;
   } catch (error) {
     return false;
