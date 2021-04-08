@@ -25,18 +25,22 @@ app.use(cors({
 
 app.post('/login', loginRoute);
 app.post('/register', registerRoute);
-app.post('/token', tokenRoute);
+app.get('/token', tokenRoute);
 app.delete('/logout', logoutRoute);
 
 const { verify } = require('jsonwebtoken');
 app.post('/testing', async (req, res) => {
-  console.log(req.headers)
-  if (!req.body.token) return res.send({ ok: false, msg:'no token'})
+  const accessToken = req.headers.authorization?.split(' ')[1]
+  if (!accessToken) return res.send({ ok: false, message:'need to login'})
 
-  const valid = verify(req.cookies.jid, process.env.ACCESS_TOKEN);
-  if (!valid) return res.send({ ok: false, msg:'invalid token'})
+  try {
+    const valid = verify(accessToken, process.env.ACCESS_TOKEN);
+  } catch (error) {
+    console.error(error)
+    return res.send({ ok: false, message:''})
+  }
 
-  res.send({ ok: true, msg: ''});
+  res.send({ ok: true, message: ''});
 });
 
 app.listen(PORT, () => {

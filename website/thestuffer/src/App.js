@@ -1,26 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Router from './Router';
 import AuthContext from './context/AuthContext'
 
 import './App.css';
+import { authInstance } from './axios';
+import { setToken } from './token';
 
 
 const App = () => {
 
   const [logged, setLogged] = useState(false);
-  const [token, setToken] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const loggedContextValue = {
     logged: logged,
     updateLogged: setLogged,
-    token: token,
-    updateToken: setToken,
   };
+
+  useEffect(() => {
+    authInstance.get('/token')
+      .then(async res => {
+        setToken(res.data.accessToken);
+        setLoading(false);
+        if (res.data.ok) setLogged(true);
+      })
+    
+  }, []);
+
+  if (loading) {
+    return <div>loading...</div>
+  }
 
   return (
     <AuthContext.Provider value={loggedContextValue}>
-      user is login : { logged.toString() } { token }
+      user is login : { logged.toString() }
       <Router/>
     </AuthContext.Provider>
   );

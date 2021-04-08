@@ -1,7 +1,8 @@
 import React, { useState, useReducer, useContext } from 'react';
 
-import { authHeaders, authInstance } from '../../axios';
+import { authInstance } from '../../axios';
 import AuthContext from '../../context/AuthContext';
+import { setToken } from '../../token';
 
 import './Login.css';
 
@@ -16,7 +17,7 @@ const formReducer = (state, event) => {
 const Login = () => {
   const [form, setForm] = useReducer(formReducer, {});
 
-  const { token, updateToken, updateLogged } = useContext(AuthContext);
+  const { updateLogged } = useContext(AuthContext);
 
   const [message, setMessage] = useState('');
 
@@ -33,7 +34,7 @@ const Login = () => {
         setMessage(res.data.message);
         if (res.data.ok) {
           updateLogged(true);
-          updateToken(res.data.accessToken);
+          setToken(res.data.accessToken);
         }
       });
   }
@@ -70,7 +71,7 @@ const Login = () => {
         </p>
       </form>
       <button onClick={() => {
-        authInstance.post('/testing',{}, authHeaders(token))
+        authInstance.post('/testing',{})
           .then(res => {
             console.log(res)
           });

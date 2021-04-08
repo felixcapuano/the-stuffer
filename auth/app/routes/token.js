@@ -6,21 +6,26 @@ const { generateAccessToken } = require('../utils');
 
 
 module.exports = async (req, res) => {
+  const badRequest = { ok: false, message: '', accessToken: ''}
+
   const refreshToken = req.cookies.jid;
-  if (!refreshToken) return res.send({ok: false, message: ''});
+  if (!refreshToken) return res.send(badRequest);
 
   const tokenExist = await Token.findOne({ token: refreshToken });
-  if (!tokenExist) return res.send({ok: false, message: ''});
+  if (!tokenExist) return res.send(badRequest);
 
   try {
     const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
+
+    const user = await User.findOne({ _id: payload._id });
+    if (!user) return res.send(badRequest);
+
+    const accessToken = generateAccessToken({ _id: payload._id });
+    return res.send({ ok: true, message: '', accessToken: accessToken });
+
   } catch (error) {
-    return res.send({ok: false, message: ''});
+    console.error(error)
+    return res.send(badRequest);
   }
 
-  const user = await User.findOne({ _id: payload._id});
-  if (!user) return res.send({ok: false, message: ''});
-
-  const accessToken = generateAccessToken({ _id: payload._id });
-  return res.send({ok: true, message: '', accessToken: accessToken });
 }
