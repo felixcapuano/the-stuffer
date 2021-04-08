@@ -2,7 +2,7 @@ import React from 'react';
 
 export default React.createContext({
   logged: false,
-  updateLogged: (isLogged) => {},
-  token: "",
-  updateToken: (newToken) => {},
+  updateLogged: (_logged) => {},
+  token: '',
+  updateToken: (_token) => {},
 });

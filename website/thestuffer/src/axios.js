@@ -1,5 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
+
+export const authHeaders = (_token) => {
+  return { headers: { Authorization: 'Bearer ' + _token }
+}}
 
 const AUTH_HOST = process.env.REACT_APP_AUTH_HOST;
 const AUTH_PORT = process.env.REACT_APP_AUTH_PORT;

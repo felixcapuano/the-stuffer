@@ -1,25 +1,21 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useContext } from 'react';
 
 import './Logout.css';
-
-const AUTH_HOST = process.env.REACT_APP_AUTH_HOST;
-const AUTH_PORT = process.env.REACT_APP_AUTH_PORT;
-const url = `http://${AUTH_HOST}:${AUTH_PORT}/logout`;
+import { authInstance } from '../../axios';
+import AuthContext from '../../context/AuthContext';
 
 const Logout = () => {
+
+  const { updateLogged } = useContext(AuthContext);
 
   const logout = (e) => {
     e.preventDefault()
 
-    axios.delete(url)
+    authInstance.delete('/logout')
       .then(res => {
-        console.log(res);
-
-      }, console.error)
-      .catch(err => {
-        console.error(err.message);
-      });
+        if (!res.data.ok) return alert(res.data.message);
+        updateLogged(false);
+      })
   }
 
   return (
