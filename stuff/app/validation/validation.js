@@ -21,9 +21,10 @@ module.exports = (_method) => {
   return (req, res, next) => {
 
     const validate = schema[req.params.collection]?.[_method];
-    if (!validate) return res.sendStatus(404);
+    if (!validate) return res.sendStatus({ ok: false, message: '' });
 
-    if (!validate(req.body)) return res.status(400).send(validate.errors);
+    const valid = validate(req.body)
+    if (!valid) return res.send({ ok: false, message: '', errors: validate.errors});
 
     next();
   }

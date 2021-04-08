@@ -7,6 +7,8 @@ const { generateAccessToken, generateRefreshToken } = require('../utils');
 
 
 module.exports = async (req, res) => {
+  if (req.cookies.jid) return res.send({ok: false, message: 'You already login'})
+
   const valid = validation.login(req.body);
   if (!valid) return res.send({ ok: false, message: 'Bad format', errors: validation.login.errors})
 
@@ -16,7 +18,10 @@ module.exports = async (req, res) => {
   const validPass = await bcrypt.compare(req.body.password, user.password);
   if (!validPass) return res.send({ok: false, message: 'Email or password is wrong' })
 
-  const userObject = { _id: user._id };
+  const userObject = { 
+    id: user._id,
+    role: 'user',
+  };
 
   // save the refreshtoken
   const refreshToken = generateRefreshToken(userObject);

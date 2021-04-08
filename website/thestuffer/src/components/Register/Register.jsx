@@ -1,4 +1,5 @@
-import React, { useReducer } from 'react';
+import React, { useState, useReducer } from 'react';
+import { authInstance } from '../../axios';
 
 import './Register.css';
 
@@ -9,12 +10,9 @@ const formReducer = (state, event) => {
  }
 }
 
-const AUTH_PORT = process.env.REACT_APP_AUTH_PORT;
-const AUTH_HOST = process.env.REACT_APP_AUTH_HOST;
-const url = `http://${AUTH_HOST}:${AUTH_PORT}/register`;
-
 const Register = () => {
   const [form, setForm] = useReducer(formReducer, {});
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,16 +23,11 @@ const Register = () => {
       "password": form.password,
     }
 
-    await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(formFormatted),
-    }).then(res => res.json())
-      .then(() => {
-        
+    authInstance.post('/register', formFormatted)
+      .then(res => {
+        setMessage(res.data.message);
       });
+
   }
 
   const handleChange = event => {
@@ -71,6 +64,7 @@ const Register = () => {
           onChange={handleChange} />
       </div>
       <input type="submit" value="login" />
+      <p>Message: {message}</p>
     </form>
   );
 }

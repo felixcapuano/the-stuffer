@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import './Logout.css';
 import { authInstance } from '../../axios';
 import AuthContext from '../../context/AuthContext';
+import { setToken } from '../../token';
 
 const Logout = () => {
 
@@ -13,8 +14,9 @@ const Logout = () => {
 
     authInstance.delete('/logout')
       .then(res => {
-        if (!res.data.ok) return alert(res.data.message);
+        if (!res.data.ok) return console.log(res.data.message);
         updateLogged(false);
+        setToken('')
       })
   }
 

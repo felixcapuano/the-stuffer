@@ -28,21 +28,6 @@ app.post('/register', registerRoute);
 app.get('/token', tokenRoute);
 app.delete('/logout', logoutRoute);
 
-const { verify } = require('jsonwebtoken');
-app.post('/testing', async (req, res) => {
-  const accessToken = req.headers.authorization?.split(' ')[1]
-  if (!accessToken) return res.send({ ok: false, message:'need to login'})
-
-  try {
-    const valid = verify(accessToken, process.env.ACCESS_TOKEN);
-  } catch (error) {
-    console.error(error)
-    return res.send({ ok: false, message:''})
-  }
-
-  res.send({ ok: true, message: ''});
-});
-
 app.listen(PORT, () => {
   console.log(`Auth server listening at http://${HOST}:${PORT}`);
 });

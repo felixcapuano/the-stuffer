@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
 
   try {
     const savedUser = await user.save();
-    return res.send({ok: true, message: '', user: user._id });
+    return res.send({ok: true, message: 'Success', user: user._id });
   } catch(err) {
     return res.send({ok: false, message: 'Internal error'});
   }

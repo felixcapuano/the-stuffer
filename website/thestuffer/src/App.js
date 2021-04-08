@@ -21,6 +21,7 @@ const App = () => {
   useEffect(() => {
     authInstance.get('/token')
       .then(async res => {
+        console.log(res.data)
         setToken(res.data.accessToken);
         setLoading(false);
         if (res.data.ok) setLogged(true);

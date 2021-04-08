@@ -17,10 +17,11 @@ module.exports = async (req, res) => {
   try {
     const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
 
-    const user = await User.findOne({ _id: payload._id });
+    const user = await User.findOne({ _id: payload.id });
+    console.log(user)
     if (!user) return res.send(badRequest);
 
-    const accessToken = generateAccessToken({ _id: payload._id });
+    const accessToken = generateAccessToken({ _id: payload.id });
     return res.send({ ok: true, message: '', accessToken: accessToken });
 
   } catch (error) {

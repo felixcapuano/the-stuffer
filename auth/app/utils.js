@@ -5,5 +5,5 @@ exports.generateAccessToken = (object) => {
 }
 
 exports.generateRefreshToken = (object) => {
-  return jwt.sign(object, process.env.REFRESH_TOKEN, { expiresIn: '7d'});
+  return jwt.sign(object, process.env.REFRESH_TOKEN);
 }
