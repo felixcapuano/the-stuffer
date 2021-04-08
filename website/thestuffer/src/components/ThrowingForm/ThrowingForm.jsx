@@ -1,4 +1,6 @@
-import React, { useReducer } from 'react';
+import React, { useState, useReducer } from 'react';
+
+import { stuffInstance } from '../../axios';
 
 import './ThrowingForm.css';
 
@@ -8,17 +10,16 @@ const formReducer = (state, event) => {
    [event.name]: event.value
  }
 }
-const STUFF_HOST = process.env.REACT_APP_STUFF_HOST;
-const STUFF_PORT = process.env.REACT_APP_STUFF_PORT;
-const url = `http://${STUFF_HOST}:${STUFF_PORT}/stuff/throwing/create`
 
 const ThrowingForm = () => {
   const [form, setForm] = useReducer(formReducer, {});
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formFormatted = {
+        'collection': 'throwing',
         "landing_id": form.landingId,
         "movement": form.movement,
         "position": {
@@ -37,14 +38,11 @@ const ThrowingForm = () => {
         "description": form.description,
     }
 
-    await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(formFormatted),
-    }).then(res => res.json())
-      .then(console.log);
+    stuffInstance.post('/stuff/create', formFormatted)
+      .then(res => {
+        console.log(res.data)
+        setMessage(res.data.message);
+      });
   }
 
   const handleChange = event => {
@@ -97,6 +95,7 @@ const ThrowingForm = () => {
         <textarea name="description" id="description" cols="50" rows="3" onChange={handleChange}/>
       </fieldset>
       <input type="submit" value="submit" />
+      <p>{message}</p>
     </form>
   );
 }

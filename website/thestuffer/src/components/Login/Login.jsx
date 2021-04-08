@@ -47,36 +47,28 @@ const Login = () => {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input type="text"
-            name="email"
-            placeholder='Email...'
-            id="email"
-            onChange={handleChange} />
-        </div>
-        <div>
-          <label>Password</label>
-          <input type="password"
-            name="password"
-            id="password"
-            placeholder="Password..."
-            onChange={handleChange} />
-        </div>
-        <input type="submit" value="login" />
-        <p>
-          message : {message}
-        </p>
-      </form>
-      <button onClick={() => {
-        authInstance.post('/testing',{})
-          .then(res => {
-            console.log(res)
-          });
-      }}>testing</button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Email</label>
+        <input type="text"
+          name="email"
+          placeholder='Email...'
+          id="email"
+          onChange={handleChange} />
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password"
+          name="password"
+          id="password"
+          placeholder="Password..."
+          onChange={handleChange} />
+      </div>
+      <input type="submit" value="login" />
+      <p>
+        message : {message}
+      </p>
+    </form>
   );
 }
 

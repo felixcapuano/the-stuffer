@@ -1,8 +1,21 @@
 const Ajv = require('ajv');
-const ajv = new Ajv({useDefaults: true}); // options can be passed, e.g. {allErrors: true}
+const ajv = new Ajv({useDefaults: true, allErrors: true});
 
+const { landingIdExist } = require('../mongo/core');
 const throwingSchema = require('./throwing-schema');
 const landingSchema = require('./landing-schema');
+
+ajv.addKeyword({
+  keyword: 'isLandingIdExist',
+  async: true,
+  type: 'string',
+  validate: async (schema, id, type, { parentData }) => {
+    if (parentData.collection === 'throwing') {
+      const idExist = await landingIdExist(id);
+      return idExist;
+    }
+  }
+});
 
 const schema = {
   'throwing': {
@@ -18,14 +31,17 @@ const schema = {
 }
 
 module.exports = (_method) => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
 
-    const validate = schema[req.params.collection]?.[_method];
-    if (!validate) return res.sendStatus({ ok: false, message: '' });
+    const validate = schema[req.body.collection]?.[_method];
+    if (!validate) return res.sendStatus(404);
 
-    const valid = validate(req.body)
-    if (!valid) return res.send({ ok: false, message: '', errors: validate.errors});
-
+    try {
+      const data = await validate(req.body);
+    } catch (error) {
+      console.erros(error.errors);
+      return res.send({ ok: false, message: 'Bad format', errors: error.errors});
+    }
     next();
   }
 }

@@ -1,4 +1,5 @@
 const properties = {
+  collection: { type: "string", enum: ["twrowing", "landing"] },
   type: { type: "string", enum: ["smoke", "flash", "molotov"] },
   map: {
     type: "string",
@@ -19,7 +20,9 @@ const properties = {
 exports.create = {
   type: "object",
   properties: properties,
-  required: ["type",
+  required: [
+    'collection',
+    "type",
     "map",
     "position",
   ],
@@ -29,12 +32,14 @@ exports.create = {
 exports.update = {
   type: "object",
   properties: properties,
+  required: ['collection'],
   additionalProperties: false,
 };
 
 exports.search = {
   type: "object",
   properties: {
+    collection: { type: 'string', enum: ['twrowing', 'landing'] },
     map: {
       type: "string",
       enum: ["mirage", "dust2", "inferno", "nuke", "vertigo", "overpass", "train"],
@@ -67,6 +72,6 @@ exports.search = {
       additionalProperties: false,
     },
   },
-  required: ["map"],
+  required: ['map', 'collection'],
   additionalProperties: false,
 };

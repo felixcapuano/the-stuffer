@@ -10,7 +10,10 @@ const app = express();
 require('./mongo/core').connect();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: `http://${process.env.THESTUFFER_HOST}:${process.env.THESTUFFER_PORT}`,
+  credentials: true,
+}));
 
 const stuffRouter = require('./routes/stuff')
 

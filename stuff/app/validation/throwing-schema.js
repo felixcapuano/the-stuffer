@@ -1,107 +1,115 @@
 const properties = {
-  landing_id: { type: "string" },
-  movement: { type: "string", enum: ["throw", "jumpthrow", "runjumpthrow"] },
+  collection: { type: 'string', enum: ['throwing', 'landing'] },
+  landing_id: { type: 'string', isLandingIdExist: true},
+  movement: { type: 'string', enum: ['throw', 'jumpthrow', 'runjumpthrow'] },
   position: {
-    type: "object",
+    type: 'object',
     properties: {
-      lat: { type: "number" },
-      lng: { type: "number" },
-      floor: { type: "integer", minimum: 0 },
+      lat: { type: 'number' },
+      lng: { type: 'number' },
+      floor: { type: 'integer', minimum: 0 },
     },
-    required: ["lat", "lng", "floor"],
+    required: ['lat', 'lng', 'floor'],
     additionalProperties: false,
   },
   video: {
-    type: "object",
+    type: 'object',
     properties: {
-      id: { type: "string" },
-      time: { type: "integer" },
+      id: { type: 'string' },
+      time: { type: 'integer' },
     },
-    required: ["id", "time"],
+    required: ['id', 'time'],
     additionalProperties: false,
   },
   tickrate: {
-    type: "object",
+    type: 'object',
     properties: {
-      "64": { type: "boolean" },
-      "128": { type: "boolean" },
+      '64': { type: 'boolean' },
+      '128': { type: 'boolean' },
     },
-    required: ["64", "128"],
+    required: ['64', '128'],
     additionalProperties: false,
   },
-  description: { type: "string", maxLength: 255 },
+  description: { type: 'string', maxLength: 255 },
 };
 
 exports.create = {
-  type: "object",
+  $async: true,
+  type: 'object',
   properties: properties,
-  required: ["landing_id",
-    "movement",
-    "description",
-    "position",
-    "video",
-    "tickrate",
+  required: [
+    'collection',
+    'landing_id',
+    'movement',
+    'description',
+    'position',
+    'video',
+    'tickrate',
   ],
   additionalProperties: false,
 };
 
 exports.update = {
-  type: "object",
+  $async: true,
+  type: 'object',
   properties: {
     ...properties,
     reaction: {
-      type: "object",
+      type: 'object',
       properties: {
-        hyped: { type: "boolean" },
-        user: { type: "string" },
-        hidden: { type: "boolean"},
+        hyped: { type: 'boolean' },
+        user: { type: 'string' },
+        hidden: { type: 'boolean'},
       },
-      required: ["hyped","user","hidden"],
+      required: ['hyped','user','hidden'],
       additionalProperties: false,
     },
-
   },
+  required: ['collection'],
   additionalProperties: false,
 };
 
 exports.search = {
-  type: "object",
+  $async: true,
+  type: 'object',
   properties: {
-    landing_id: { type: "string" },
-    movement: { type: "string", enum: ["throw", "jumpthrow", "runjumpthrow"] },
+    collection: { type: 'string', enum: ['throwing', 'landing'] },
+    landing_id: { type: 'string' },
+    movement: { type: 'string', enum: ['throw', 'jumpthrow', 'runjumpthrow'] },
     position: {
-      type: "object",
+      type: 'object',
       properties: {
         lat: {
-          type: "object",
+          type: 'object',
           properties: {
-            gt: { type: "number" },
-            lt: { type: "number" },
+            gt: { type: 'number' },
+            lt: { type: 'number' },
           },
           additionalProperties: false,
         },
         lng: {
-          type: "object",
+          type: 'object',
           properties: {
-            gt: { type: "number" },
-            lt: { type: "number" },
+            gt: { type: 'number' },
+            lt: { type: 'number' },
           },
           additionalProperties: false,
         },
-        floor: { type: "integer", minimum: 0 },
+        floor: { type: 'integer', minimum: 0 },
       },
-      required: ["lat", "lng", "floor"],
+      required: ['lat', 'lng', 'floor'],
       additionalProperties: false,
     },
     tickrate: {
-      type: "object",
+      type: 'object',
       properties: {
-        "64": { type: "boolean"},
-        "128": { type: "boolean"},
+        '64': { type: 'boolean'},
+        '128': { type: 'boolean'},
       },
       additionalProperties: false,
     },
   },
-  //required: ["landing_id"],
+  //required: ['landing_id'],
+  required: ['collection'],
   additionalProperties: false,
 };
