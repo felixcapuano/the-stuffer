@@ -6,11 +6,11 @@ const { User } = require('../mongo/model');
 
 module.exports = async (req, res) => {
   const valid = validation.register(req.body);
-  if (!valid) return res.status(400).send({ ok: false, message: 'Bad format', errors: validation.login.errors})
+  if (!valid) return res.send({ ok: false, message: 'Bad format', errors: validation.login.errors})
 
   // TODO maybe add try/catch
   const emailExist = await User.findOne({ email: req.body.email });
-  if (emailExist) return res.status(400).send({ok: false, message: 'Email already exist' });
+  if (emailExist) return res.send({ok: false, message: 'Email already exist' });
 
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
@@ -23,9 +23,8 @@ module.exports = async (req, res) => {
 
   try {
     const savedUser = await user.save();
-    return res.status(201).send({ok: true, message: '', user: user._id });
+    return res.send({ok: true, message: '', user: user._id });
   } catch(err) {
-    return res.status(500).send({ok: false, message: 'Internal error'});
+    return res.send({ok: false, message: 'Internal error'});
   }
-
 };
