@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
@@ -6,11 +6,13 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 
+import AuthContext from '../../context/AuthContext';
 import { Logout } from '../Logout';
 
 import './NavBar.css';
 
 const NavBar = () => {
+  const { logged } = useContext(AuthContext);
   const maps = [
     { key: 'de_mirage', name: 'Mirage' },
     { key: 'de_dust2', name: 'Dust 2' },
@@ -46,15 +48,18 @@ const NavBar = () => {
               {dropdownItems}
             </NavDropdown>
           </Nav>
-          <div inline='true'>
-            <LinkContainer to='/user/register'>
-              <Button variant='outline-secondary'>Register</Button>
-            </LinkContainer>
-            <LinkContainer to='/user/login'>
-              <Button variant='secondary'>Login</Button>
-            </LinkContainer>
+          {logged ? (
             <Logout />
-          </div>
+          ) : (
+            <div>
+              <LinkContainer to='/user/register'>
+                <Button variant='outline-secondary'>Register</Button>
+              </LinkContainer>
+              <LinkContainer to='/user/login'>
+                <Button variant='secondary'>Login</Button>
+              </LinkContainer>
+            </div>
+          )}
         </Navbar.Collapse>
       </Navbar>
       <ul>
