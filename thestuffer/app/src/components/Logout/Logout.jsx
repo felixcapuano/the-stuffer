@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { authInstance } from '../../axios';
 import AuthContext from '../../context/AuthContext';
@@ -9,14 +10,16 @@ import './Logout.css';
 
 const Logout = () => {
   const { updateLogged } = useContext(AuthContext);
+  const history = useHistory();
 
   const logout = (e) => {
     e.preventDefault();
 
     authInstance.delete('/logout').then((res) => {
-      if (!res.data.ok) return console.log(res.data.message);
+      if (!res.data.ok) return console.error(res.data.message);
       updateLogged(false);
       setToken('');
+      history.push('/');
     });
   };
 

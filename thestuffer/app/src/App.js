@@ -31,10 +31,12 @@ const App = () => {
   }
 
   return (
-    <AuthContext.Provider value={loggedContextValue}>
-      user is login : {logged.toString()}
-      <Router />
-    </AuthContext.Provider>
+    <div className='App'>
+      <AuthContext.Provider value={loggedContextValue}>
+        user is login : {logged.toString()}
+        <Router />
+      </AuthContext.Provider>
+    </div>
   );
 };
 
