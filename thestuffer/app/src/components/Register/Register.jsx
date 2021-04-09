@@ -1,10 +1,9 @@
 import React, { useState, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 
+import { InputGroup } from '../InputGroup';
 import { authInstance } from '../../axios';
 
 import './Register.css';
@@ -32,7 +31,7 @@ const Register = () => {
 
     authInstance.post('/register', formFormatted).then((res) => {
       setMessage(res.data.message);
-      history.push('/');
+      if (res.data.ok) history.push('/user/login');
     });
   };
 
@@ -45,32 +44,18 @@ const Register = () => {
 
   return (
     <Form className='RegisterForm' onSubmit={handleSubmit}>
-      <Form.Group as={Row} controlId='username' onChange={handleChange}>
-        <Form.Label column sm='2'>
-          Username
-        </Form.Label>
-        <Col sm='10'>
-          <Form.Control type='text' placeholder='Username' />
-        </Col>
-      </Form.Group>
+      <InputGroup name='username' type='text' handleChange={handleChange}>
+        Username
+      </InputGroup>
 
-      <Form.Group as={Row} controlId='email' onChange={handleChange}>
-        <Form.Label column sm='2'>
-          Email
-        </Form.Label>
-        <Col sm='10'>
-          <Form.Control type='email' placeholder='Email' />
-        </Col>
-      </Form.Group>
+      <InputGroup name='email' type='email' handleChange={handleChange}>
+        Email
+      </InputGroup>
 
-      <Form.Group as={Row} controlId='password' onChange={handleChange}>
-        <Form.Label column sm='2'>
-          Password
-        </Form.Label>
-        <Col sm='10'>
-          <Form.Control type='password' placeholder='Password' />
-        </Col>
-      </Form.Group>
+      <InputGroup name='password' type='password' handleChange={handleChange}>
+        Password
+      </InputGroup>
+
       <Button variant='primary' type='submit'>
         Submit
       </Button>
