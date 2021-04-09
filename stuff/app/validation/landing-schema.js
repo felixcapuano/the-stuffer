@@ -3,7 +3,15 @@ const properties = {
   type: { type: 'string', enum: ['smoke', 'flash', 'molotov'] },
   map: {
     type: 'string',
-    enum: ['mirage', 'dust2', 'inferno', 'nuke', 'vertigo', 'overpass', 'train'],
+    enum: [
+      'mirage',
+      'dust2',
+      'inferno',
+      'nuke',
+      'vertigo',
+      'overpass',
+      'train',
+    ],
   },
   position: {
     type: 'object',
@@ -20,12 +28,7 @@ const properties = {
 exports.create = {
   type: 'object',
   properties: properties,
-  required: [
-    'collection',
-    'type',
-    'map',
-    'position',
-  ],
+  required: ['collection', 'type', 'map', 'position'],
   additionalProperties: false,
 };
 
@@ -42,7 +45,15 @@ exports.search = {
     collection: { type: 'string', enum: ['twrowing', 'landing'] },
     map: {
       type: 'string',
-      enum: ['mirage', 'dust2', 'inferno', 'nuke', 'vertigo', 'overpass', 'train'],
+      enum: [
+        'mirage',
+        'dust2',
+        'inferno',
+        'nuke',
+        'vertigo',
+        'overpass',
+        'train',
+      ],
     },
     type: { type: 'string', enum: ['smoke', 'flash', 'molotov'] },
     position: {
@@ -54,7 +65,7 @@ exports.search = {
             gt: { type: 'number' },
             lt: { type: 'number' },
           },
-          required: ['gt','lt'],
+          required: ['gt', 'lt'],
           additionalProperties: false,
         },
         lng: {
@@ -63,7 +74,7 @@ exports.search = {
             gt: { type: 'number' },
             lt: { type: 'number' },
           },
-          required: ['gt','lt'],
+          required: ['gt', 'lt'],
           additionalProperties: false,
         },
         floor: { type: 'integer', minimum: 0 },

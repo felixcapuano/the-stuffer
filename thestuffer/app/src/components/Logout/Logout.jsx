@@ -1,32 +1,30 @@
 import React, { useContext } from 'react';
 
-import './Logout.css';
 import { authInstance } from '../../axios';
 import AuthContext from '../../context/AuthContext';
 import { setToken } from '../../token';
+import Button from 'react-bootstrap/Button';
+
+import './Logout.css';
 
 const Logout = () => {
-
   const { updateLogged } = useContext(AuthContext);
 
   const logout = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    authInstance.delete('/logout')
-      .then(res => {
-        if (!res.data.ok) return console.log(res.data.message);
-        updateLogged(false);
-        setToken('')
-      })
-  }
+    authInstance.delete('/logout').then((res) => {
+      if (!res.data.ok) return console.log(res.data.message);
+      updateLogged(false);
+      setToken('');
+    });
+  };
 
   return (
-    <button
-      type='button'
-      onClick={logout}>
+    <Button variant='outline-danger' onClick={logout}>
       Logout
-    </button>
+    </Button>
   );
-}
+};
 
 export default Logout;

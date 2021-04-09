@@ -5,6 +5,7 @@ const userSchema = mongoose.Schema({
   email: String,
   username: String,
   password: String,
+  role: { type: String, default: 'user' },
 });
 
 const tokenSchema = mongoose.Schema({

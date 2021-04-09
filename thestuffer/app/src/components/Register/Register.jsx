@@ -63,7 +63,7 @@ const Register = () => {
           placeholder="Password..."
           onChange={handleChange} />
       </div>
-      <input type="submit" value="login" />
+      <input type="submit" value="register" />
       <p>Message: {message}</p>
     </form>
   );
