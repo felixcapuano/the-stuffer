@@ -11,6 +11,8 @@ stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {
     if (!(req.body._user.role === 'admin')) return res.send({ok: false, message: 'Access denied'});
   }
 
+  req.body.creator = req.body._user.id;
+
   const model = new models[collection](req.body);
   try {
     const doc = await model.save();
@@ -23,9 +25,8 @@ stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {
 });
 
 stuffRouter.get('/get/:id', async (req, res) => {
-  const Model = models[req.body.collection];
-  if (!Model) return res.sendStatus(404);
 
+  const Model = models[req.body.collection];
   const id = req.params.id;
   try {
     const doc = await Model.findById(id);

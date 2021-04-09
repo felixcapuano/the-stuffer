@@ -8,7 +8,8 @@ const userSchema = mongoose.Schema({
 });
 
 const tokenSchema = mongoose.Schema({
-  token: String
+  date: { type: Date, default: Date.now },
+  token: String,
 });
 
 exports.User = mongoose.model('User', userSchema);
