@@ -1,27 +1,27 @@
-version: "3.9"
-services: 
-#  stuff:
-#    build: ./stuff
-#    container_name: stuff
-#    depends_on: 
-#      - mongo
-#    ports:
-#      - 3001:3001
-#    environment:
-#      STUFF_HOST: stuff
-#      STUFF_PORT: 3001
-#      STUFF_MONGO_HOST: mongo
-#      STUFF_MONGO_DATABASE: ${MONGO_DATABASE}
+version: '3.9'
+services:
+  #  stuff:
+  #    build: ./stuff
+  #    container_name: stuff
+  #    depends_on:
+  #      - mongo
+  #    ports:
+  #      - 3001:3001
+  #    environment:
+  #      STUFF_HOST: stuff
+  #      STUFF_PORT: 3001
+  #      STUFF_MONGO_HOST: mongo
+  #      STUFF_MONGO_DATABASE: ${MONGO_DATABASE}
 
   mongo:
     image: mongo:4.4.4
     container_name: mongo
-    environment: 
+    environment:
       MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
-    volumes: 
+    volumes:
       - ./mongo/init-scripts:/docker-entrypoint-initdb.d:ro
       - ./mongo/mongo-volume:/data/db
-    ports: 
+    ports:
       - 27017:27017
