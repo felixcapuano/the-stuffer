@@ -25,7 +25,7 @@ const NavBar = () => {
 
   const dropdownItems = maps.map((m) => {
     return (
-      <LinkContainer to={'/stuff?m=' + m.key} key={m.key}>
+      <LinkContainer to={'/stuff/' + m.key} key={m.key}>
         <NavDropdown.Item>{m.name}</NavDropdown.Item>
       </LinkContainer>
     );

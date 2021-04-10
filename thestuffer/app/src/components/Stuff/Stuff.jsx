@@ -1,16 +1,16 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Map } from '../Map';
 
 import './Stuff.css';
 
 const Stuff = () => {
-  const search = useLocation().search;
-  const mapParams = new URLSearchParams(search).get('m');
+  const params = useParams();
 
   return (
     <div>
-      <Map mapName={mapParams}></Map>
+      Stuff 
+      <Map></Map>
     </div>
   );
 };

@@ -1,12 +1,13 @@
 import L from 'leaflet';
 
+const _urlOrigin = window.location.origin;
 // ############ MAP CONFIG ############
 const corner1 = L.latLng(180, -180);
 const corner2 = L.latLng(-180, 180);
 const limitBounds = L.latLngBounds(corner1, corner2);
 const MAP_CONFIG = {
   center: [0, 0],
-  zoom: 2,
+  zoom: 1,
   maxBounds: limitBounds,
   maxBoundsViscosity: 0.5,
   inertia: false,
@@ -15,20 +16,20 @@ const MAP_CONFIG = {
 
 // ############ TILES ############
 const createTilesLayer = (mapName) =>
-  L.tileLayer('images/maps/{map}/{z}/{y}/{x}.png', {
+  L.tileLayer(_urlOrigin + '/images/maps/{map}/{z}/{y}/{x}.png', {
     map: mapName,
     minZoom: 0,
     maxZoom: 3,
     noWrap: true,
-    errorTileUrl: 'images/maps/tiles/empty.png',
+    errorTileUrl: _urlOrigin + 'images/maps/tiles/empty.png',
   });
 
 // ############ MARKERS ############
 const ICON_SIZE = 40;
 const mrk_ico = {
-  smoke: 'images/icons/smoke.png',
-  flash: 'images/icons/flash.png',
-  molotov: 'images/icons/molotov.png',
+  smoke: _urlOrigin + 'images/icons/smoke.png',
+  flash: _urlOrigin + 'images/icons/flash.png',
+  molotov: _urlOrigin + 'images/icons/molotov.png',
 };
 const createIcon = (type) =>
   L.icon({

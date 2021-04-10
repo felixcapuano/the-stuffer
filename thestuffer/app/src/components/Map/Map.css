@@ -1,3 +1,4 @@
-#map {
-  height: 500px;
+.leaflet-container {
+    height: 700px;
+    background-color: black;
 }
