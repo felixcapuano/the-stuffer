@@ -21,9 +21,7 @@ const ThrowingLayer = ({ target }) => {
 
   throwingLayer.addLayer(heatmap);
 
-  useEffect(() => {
-    return () => throwingLayer.clearLayers();
-  });
+  useEffect(() => () => throwingLayer.clearLayers());
 
   return null;
 };
