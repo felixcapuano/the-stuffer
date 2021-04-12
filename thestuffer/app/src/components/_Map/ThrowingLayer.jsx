@@ -9,6 +9,9 @@ import 'leaflet.heat';
 const ThrowingLayer = ({ target }) => {
   const { getThrowingData } = useContext(StuffDataContext);
 
+  // TODO !!!!!!!!
+  // createt state/ref to save heatmap when re rendering
+  // the component
   const throwingData = getThrowingData(target);
   const data = throwingData.map((d) => [d.lat, d.lng, 100]);
 
