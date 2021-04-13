@@ -4,13 +4,13 @@ const properties = {
   map: {
     type: 'string',
     enum: [
-      'mirage',
-      'dust2',
-      'inferno',
-      'nuke',
-      'vertigo',
-      'overpass',
-      'train',
+      'de_mirage',
+      'de_dust2',
+      'de_inferno',
+      'de_nuke',
+      'de_vertigo',
+      'de_overpass',
+      'de_train',
     ],
   },
   position: {

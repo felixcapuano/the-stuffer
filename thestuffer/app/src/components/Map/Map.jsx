@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { MapContainer } from 'react-leaflet';
 import L from 'leaflet';
 
