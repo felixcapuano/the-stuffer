@@ -21,15 +21,17 @@ const mapConfig = {
   scrollWheelZoom: true,
 };
 
-function Map({ landSelected, throwSelected }) {
-  const params = useParams();
-
+function Map({ mapName }) {
   const [landingTarget, setLandingTarget] = useState(null);
 
   return (
     <MapContainer id='map' {...mapConfig}>
-      <TilesLayer mapName={params.map} />
-      <LandingLayer setTarget={setLandingTarget} target={landingTarget} />
+      <TilesLayer mapName={mapName} />
+      <LandingLayer
+        mapName={mapName}
+        setTarget={setLandingTarget}
+        target={landingTarget}
+      />
       {landingTarget && <ThrowingLayer target={landingTarget} />}
     </MapContainer>
   );

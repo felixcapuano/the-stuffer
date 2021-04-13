@@ -27,8 +27,8 @@ const getLandingData = (mapName, id = null) => {
   return land_data.filter((data) => data.map === mapName && data.id === id);
 };
 
-const LandingLayer = ({ setTarget, target }) => {
-  const landingData = getLandingData('de_mirage', target);
+const LandingLayer = ({ mapName, setTarget, target }) => {
+  const landingData = getLandingData(mapName, target);
 
   const handlerMarker = {
     click: (e) => {
