@@ -1,17 +1,22 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { LayerGroup, Marker } from 'react-leaflet';
 
-import StuffDataContext from '../../context/StuffDataContext';
+import { land_data } from './data';
+
+const getLandingData = (mapName, id = null) => {
+  if (id) {
+    return land_data.filter((data) => data.map === mapName && data.id === id);
+  }
+  return land_data.filter((data) => data.map === mapName);
+};
 
 const LandingLayer = ({ setTarget, target }) => {
-  const { getLandingData } = useContext(StuffDataContext);
-
   const landingData = getLandingData('de_mirage', target);
 
   const handlerMarker = {
     click: (e) => {
-      const throwingId = e.target.options.dataId;
-      setTarget(target ? null : throwingId);
+      const landingId = e.target.options.dataId;
+      setTarget(target ? null : landingId);
     },
   };
 

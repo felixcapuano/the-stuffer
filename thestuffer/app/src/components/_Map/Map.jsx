@@ -5,6 +5,7 @@ import L from 'leaflet';
 
 import LandingLayer from './LandingLayer';
 import ThrowingLayer from './ThrowingLayer';
+import TilesLayer from './TilesLayer';
 
 import './Map.css';
 
@@ -20,32 +21,14 @@ const mapConfig = {
   scrollWheelZoom: true,
 };
 
-function Map() {
+function Map({ landSelected, throwSelected }) {
   const params = useParams();
 
   const [landingTarget, setLandingTarget] = useState(null);
 
-  const [tileGroupLayer] = useState(L.layerGroup);
-  const handlerCreate = (map) => map.addLayer(tileGroupLayer);
-
-  const TileLayer = ({ mapName, tileLayer }) => {
-    tileLayer.clearLayers();
-
-    const url = window.location.origin + '/images/maps/{map}/{z}/{y}/{x}.png';
-    const newTileLayer = L.tileLayer(url, {
-      map: mapName,
-      minZoom: 0,
-      maxZoom: 3,
-      noWrap: true,
-    });
-    tileLayer.addLayer(newTileLayer);
-
-    return null;
-  };
-
   return (
-    <MapContainer id='map' {...mapConfig} whenCreated={handlerCreate}>
-      <TileLayer mapName={params.map} tileLayer={tileGroupLayer} />
+    <MapContainer id='map' {...mapConfig}>
+      <TilesLayer mapName={params.map} />
       <LandingLayer setTarget={setLandingTarget} target={landingTarget} />
       {landingTarget && <ThrowingLayer target={landingTarget} />}
     </MapContainer>
