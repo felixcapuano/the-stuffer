@@ -1,7 +1,8 @@
-POST http://localhost:9000/stuff/landing/create
+POST http://localhost:3001/stuff/create
 Content-Type: application/json
 
 {
+    "collection": "landing",
     "type": "smoke",
     "map": "inferno",
     "position": {
@@ -11,32 +12,33 @@ Content-Type: application/json
     }
 }
 ###
-DELETE  http://localhost:9000/stuff/landing/delete/6060fb4ccced86316c3a866c
+DELETE  http://localhost:3001/stuff/landing/delete/6060fb4ccced86316c3a866c
 ###
-PUT http://localhost:9000/stuff/landing/update/6060fb4ccced86316c3a866c
+PUT http://localhost:3001/stuff/landing/update/6060fb4ccced86316c3a866c
 Content-Type: application/json
 
 {
     "map": "inferno"
 }
 ###
-POST http://localhost:9000/stuff/landing/search
+POST http://localhost:3001/stuff/search
 Content-Type: application/json
 
 {
+    "collection": "landing",
     "map": "inferno",
     "position": {
         "lat": {
-            "gt": 0,
-            "lt": 0
+            "gt": -90,
+            "lt": 90
         },
         "lng": {
-            "gt": 0,
-            "lt": 0
+            "gt": -90,
+            "lt": 90
         },
         "floor": 0
     }
 }
 
 ###
-GET http://localhost:9000/stuff/landing/get/6060fb4ccced86316c3a866c
+GET http://localhost:3001/stuff/landing/get/6060fb4ccced86316c3a866c

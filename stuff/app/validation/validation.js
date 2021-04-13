@@ -31,7 +31,12 @@ const schema = {
 module.exports = (_method) => {
   return async (req, res, next) => {
     const validate = schema[req.body.collection]?.[_method];
-    if (!validate) return res.sendStatus(404);
+    if (!validate)
+      return res.send({
+        ok: false,
+        message:
+          "Field 'collection' required in the body {values: [landing, throwing]}.",
+      });
 
     try {
       const data = await validate(req.body);
