@@ -24,14 +24,16 @@ stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {
   }
 });
 
-stuffRouter.get('/get/:id', async (req, res) => {
-  const Model = models[req.body.collection];
+stuffRouter.get('/:collection/get/:id', async (req, res) => {
+  const Model = models[req.params.collection];
+  if (!Model) return res.sendStatus(404);
+
   const id = req.params.id;
   try {
     const doc = await Model.findById(id);
-    if (!doc) return res.send({ ok: false, message: '' });
+    if (!doc || doc.deleted) return res.sendStatus(404);
 
-    return res.send({ ok: true, message: 'Success', _id: doc._id });
+    return res.send({ ok: true, message: 'Success', data: doc });
   } catch (err) {
     console.error(err);
     return res.send({ ok: false, message: '' });
