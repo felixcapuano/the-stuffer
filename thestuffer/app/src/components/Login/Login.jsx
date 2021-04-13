@@ -42,7 +42,6 @@ const Login = () => {
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setForm({
       name: e.target.id,
       value: e.target.value,
