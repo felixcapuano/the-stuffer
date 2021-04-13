@@ -1,8 +1,9 @@
+const stuffRouter = require('express').Router();
+
 const validation = require('../validation/validation');
 const models = require('../mongo/models');
 const { isAuth } = require('../auth');
-
-const stuffRouter = require('express').Router();
+const { cleanEmpty } = require('../../utils');
 
 stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {
   const collection = req.body.collection;
@@ -87,11 +88,20 @@ stuffRouter.delete('/delete/:id', async (req, res) => {
 
 stuffRouter.post('/search', validation('search'), async (req, res) => {
   const Model = models[req.body.collection];
+  delete req.body.collection;
 
   const pos = req.body.position;
   if (pos) {
-    req.body['position.lat'] = { $gte: pos.lat?.gt, $lte: pos.lat?.lt };
-    req.body['position.lng'] = { $gte: pos.lng?.gt, $lte: pos.lng?.lt };
+    // TODO improve sytax
+    req.body['position.lat'] = cleanEmpty({
+      $gte: pos.lat?.gt,
+      $lte: pos.lat?.lt,
+    });
+    req.body['position.lng'] = cleanEmpty({
+      $gte: pos.lng?.gt,
+      $lte: pos.lng?.lt,
+    });
+
     delete req.body.position;
   }
 
@@ -104,7 +114,9 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
   delete req.body.tickrate;
 
   try {
-    const doc = await Model.find(req.body);
+    console.log(req.body);
+    const doc = await Model.find(req.body, {});
+    console.log(doc.length);
 
     return res.send({ ok: true, message: 'Success', data: doc });
   } catch (err) {

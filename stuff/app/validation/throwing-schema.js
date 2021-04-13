@@ -1,6 +1,6 @@
 const properties = {
   collection: { type: 'string', enum: ['throwing', 'landing'] },
-  landing_id: { type: 'string', isIdExist: true},
+  landing_id: { type: 'string', isIdExist: true },
   movement: { type: 'string', enum: ['throw', 'jumpthrow', 'runjumpthrow'] },
   position: {
     type: 'object',
@@ -24,8 +24,8 @@ const properties = {
   tickrate: {
     type: 'object',
     properties: {
-      '64': { type: 'boolean' },
-      '128': { type: 'boolean' },
+      64: { type: 'boolean' },
+      128: { type: 'boolean' },
     },
     required: ['64', '128'],
     additionalProperties: false,
@@ -59,9 +59,9 @@ exports.update = {
       properties: {
         hyped: { type: 'boolean' },
         user: { type: 'string' },
-        hidden: { type: 'boolean'},
+        hidden: { type: 'boolean' },
       },
-      required: ['hyped','user','hidden'],
+      required: ['hyped', 'user', 'hidden'],
       additionalProperties: false,
     },
   },
@@ -103,8 +103,8 @@ exports.search = {
     tickrate: {
       type: 'object',
       properties: {
-        '64': { type: 'boolean'},
-        '128': { type: 'boolean'},
+        64: { type: 'boolean' },
+        128: { type: 'boolean' },
       },
       additionalProperties: false,
     },

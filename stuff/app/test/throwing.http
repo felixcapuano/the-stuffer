@@ -38,10 +38,18 @@ POST http://localhost:3001/stuff/search
 Content-Type: application/json
 
 {
-    "landing_id": "azerty",
-    "tickrate": {
-        "64": true,
-        "128": true
+    "collection": "throwing",
+    "landing_id": "60758945036ab206c8e5ad0f",
+    "position": {
+        "lat": {
+            "gt": -90,
+            "lt": 90
+        },
+        "lng": {
+            "gt": -90,
+            "lt": 90
+        },
+        "floor": 1
     }
 }
 
