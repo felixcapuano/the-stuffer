@@ -1,17 +1,11 @@
+const CONST = require('./const');
+
 const properties = {
-  collection: { type: 'string', enum: ['twrowing', 'landing'] },
-  type: { type: 'string', enum: ['smoke', 'flash', 'molotov'] },
+  collection: { type: 'string', enum: CONST.COLLECTION_LIST },
+  type: { type: 'string', enum: CONST.STUFF_LIST },
   map: {
     type: 'string',
-    enum: [
-      'de_mirage',
-      'de_dust2',
-      'de_inferno',
-      'de_nuke',
-      'de_vertigo',
-      'de_overpass',
-      'de_train',
-    ],
+    enum: CONST.MAP_LIST,
   },
   position: {
     type: 'object',
@@ -42,20 +36,12 @@ exports.update = {
 exports.search = {
   type: 'object',
   properties: {
-    collection: { type: 'string', enum: ['twrowing', 'landing'] },
+    collection: { type: 'string', enum: CONST.COLLECTION_LIST },
     map: {
       type: 'string',
-      enum: [
-        'mirage',
-        'dust2',
-        'inferno',
-        'nuke',
-        'vertigo',
-        'overpass',
-        'train',
-      ],
+      enum: CONST.MAP_LIST,
     },
-    type: { type: 'string', enum: ['smoke', 'flash', 'molotov'] },
+    type: { type: 'string', enum: CONST.STUFF_LIST },
     position: {
       type: 'object',
       properties: {

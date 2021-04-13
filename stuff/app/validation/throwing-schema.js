@@ -1,7 +1,9 @@
+const CONST = require('./const');
+
 const properties = {
-  collection: { type: 'string', enum: ['throwing', 'landing'] },
+  collection: { type: 'string', enum: CONST.COLLECTION_LIST },
   landing_id: { type: 'string', isIdExist: true },
-  movement: { type: 'string', enum: ['throw', 'jumpthrow', 'runjumpthrow'] },
+  movement: { type: 'string', enum: CONST.MOVEMENT_LIST },
   position: {
     type: 'object',
     properties: {
@@ -73,9 +75,9 @@ exports.search = {
   $async: true,
   type: 'object',
   properties: {
-    collection: { type: 'string', enum: ['throwing', 'landing'] },
+    collection: { type: 'string', enum: CONST.COLLECTION_LIST },
     landing_id: { type: 'string', isIdExist: true },
-    movement: { type: 'string', enum: ['throw', 'jumpthrow', 'runjumpthrow'] },
+    movement: { type: 'string', enum: CONST.MOVEMENT_LIST },
     position: {
       type: 'object',
       properties: {
