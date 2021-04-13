@@ -25,7 +25,7 @@ const throwingFiller = async (rep) => {
       description: 'je suis une description',
     };
 
-    const res = await stuffInstance.post('/stuff/create', throwData);
+    await stuffInstance.post('/stuff/create', throwData);
     console.log('throwing');
   }
 };

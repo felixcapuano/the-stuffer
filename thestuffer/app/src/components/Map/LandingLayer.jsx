@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LayerGroup, Marker } from 'react-leaflet';
 import L from 'leaflet';
 
-import { land_data } from './data';
+import { stuffInstance } from '../../axios';
 
 // ############ MARKERS ############
 const _urlOrigin = window.location.origin;
@@ -20,15 +20,37 @@ const icons = {
   molotov: createIcon('images/icons/molotov.png'),
 };
 
-const getLandingData = (mapName, id = null) => {
-  if (!id) {
-    return land_data.filter((data) => data.map === mapName);
-  }
-  return land_data.filter((data) => data.map === mapName && data.id === id);
-};
-
 const LandingLayer = ({ mapName, setTarget, target }) => {
-  const landingData = getLandingData(mapName, target);
+  const [{ hits, isLoading, error }, setData] = useState({
+    hits: [],
+    isLoading: true,
+    error: null,
+  });
+
+  useEffect(() => {
+    setData({ isLoading: true });
+
+    if (target) {
+      stuffInstance
+        .get(`/stuff/landing/get/${target}`)
+        .then((res) => {
+          setData({ isLoading: false, hits: [res.data.hit] });
+        })
+        .catch((error) => setData({ isLoading: false, error }));
+    } else {
+      const payload = { collection: 'landing', map: mapName };
+      stuffInstance
+        .post('/stuff/search', payload)
+        .then((res) => {
+          if (!res.data.ok) throw new Error(res.data.message);
+          setData({ isLoading: false, hits: res.data.hits });
+        })
+        .catch((error) => setData({ isLoading: false, error }));
+    }
+  }, [setData, mapName, target]);
+
+  if (isLoading) return 'Loading...';
+  if (error) return 'Error';
 
   const handlerMarker = {
     click: (e) => {
@@ -37,17 +59,18 @@ const LandingLayer = ({ mapName, setTarget, target }) => {
     },
   };
 
-  const landingMarkers = landingData.map((data) => {
+  const landingMarkers = hits.map((hit) => {
     return (
       <Marker
-        dataId={data.id}
-        key={data.id}
-        position={[data.lat, data.lng]}
+        dataId={hit._id}
+        key={hit._id}
+        position={[hit.position.lat, hit.position.lng]}
         eventHandlers={handlerMarker}
-        icon={icons[data.type]}
+        icon={icons[hit.type]}
       ></Marker>
     );
   });
+
   return <LayerGroup>{landingMarkers}</LayerGroup>;
 };
 

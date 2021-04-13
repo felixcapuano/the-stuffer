@@ -27,7 +27,7 @@ const App = () => {
   }, []);
 
   if (loading) {
-    return <div>loading...</div>;
+    return <div>Waiting for server response...</div>;
   }
 
   return (

@@ -1,36 +1,49 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useMap, useMapEvent } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.heat';
 
-import { throw_data } from './data';
+import { stuffInstance } from '../../axios';
 
 const throwingLayer = L.layerGroup();
-
-const getThrowingData = (landingId) => {
-  return throw_data.filter((data) => data.hit_id === landingId);
-};
 
 const ThrowingLayer = ({ target }) => {
   // if no add the throwing layer on the map
   const map = useMap();
+  useMapEvent({
+    click: (e) => {
+      console.log(e.latlng);
+    },
+  });
   if (!map.hasLayer(throwingLayer)) map.addLayer(throwingLayer);
 
+  const [{ hits, isLoading, error }, setData] = useState({
+    hits: [],
+    isLoading: true,
+    error: null,
+  });
   // on destroy props clear heatmap
-  useEffect(() => () => throwingLayer.clearLayers());
+  useEffect(() => {
+    const payload = { collection: 'throwing', landing_id: target };
+    stuffInstance
+      .post('/stuff/search', payload)
+      .then((res) => {
+        if (!res.data.ok) throw new Error(res.data.message);
+        setData({ isLoading: false, hits: res.data.hits });
+      })
+      .catch((error) => setData({ isLoading: false, error }));
+    return () => throwingLayer.clearLayers();
+  }, [setData, target]);
 
-  // load data
-  const throwingData = getThrowingData(target);
+  if (isLoading) return 'Loading...';
+  if (error) return 'Error';
 
   // parse data
-  const data = throwingData.map((d) => [d.lat, d.lng, 1]);
+  const data = hits.map((d) => [d.position.lat, d.position.lng, 1]);
 
   // create heatmap
   let heatmap = L.heatLayer(data, { radius: 25 });
 
-  useMapEvent({ click: (e) => {
-    console.log(e.latlng)
-  } });
 
   // add heatmap on the map
   throwingLayer.addLayer(heatmap);
