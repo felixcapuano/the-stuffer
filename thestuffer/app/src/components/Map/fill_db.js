@@ -1,9 +1,9 @@
 import { stuffInstance } from '../../axios';
 
-const HIT_LEN = 1;
-const THROW_LEN = 1;
+const HIT_LEN = 10;
+const THROW_LEN = 100;
 
-const throwingFiller = (rep) => {
+const throwingFiller = async (rep) => {
   for (let i = 0; i < THROW_LEN; i++) {
     const throwData = {
       collection: 'throwing',
@@ -25,13 +25,12 @@ const throwingFiller = (rep) => {
       description: 'je suis une description',
     };
 
-    stuffInstance.post('/stuff/create', throwData).then((rep) => {
-      console.log(rep.data);
-    });
+    const res = await stuffInstance.post('/stuff/create', throwData);
+    console.log('throwing');
   }
 };
 
-const filler = () => {
+const filler = async () => {
   for (let i = 0; i < HIT_LEN; i++) {
     const landData = {
       collection: 'landing',
@@ -43,10 +42,10 @@ const filler = () => {
         floor: 0,
       },
     };
-    stuffInstance.post('/stuff/create', landData).then((rep) => {
-      throwingFiller(rep);
-      console.log(rep.data._id);
-    });
+    const res = await stuffInstance.post('/stuff/create', landData);
+    console.log('landing');
+
+    await throwingFiller(res);
   }
 };
 

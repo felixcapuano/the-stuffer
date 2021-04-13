@@ -12,7 +12,7 @@ const Stuff = () => {
   return (
     <div>
       Stuff {params.map} 
-      <button onClick={filler}>Fill test data</button>
+      <button disabled onClick={filler}>Fill test data</button>
       {/* <Map
         mapName={params.map}
         landSelected={landSelected}
