@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useMap, useMapEvent } from 'react-leaflet';
+import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.heat';
 
@@ -10,11 +10,6 @@ const throwingLayer = L.layerGroup();
 const ThrowingLayer = ({ target }) => {
   // if no add the throwing layer on the map
   const map = useMap();
-  useMapEvent({
-    click: (e) => {
-      console.log(e.latlng);
-    },
-  });
   if (!map.hasLayer(throwingLayer)) map.addLayer(throwingLayer);
 
   const [{ hits, isLoading, error }, setData] = useState({
@@ -43,7 +38,6 @@ const ThrowingLayer = ({ target }) => {
 
   // create heatmap
   let heatmap = L.heatLayer(data, { radius: 25 });
-
 
   // add heatmap on the map
   throwingLayer.addLayer(heatmap);

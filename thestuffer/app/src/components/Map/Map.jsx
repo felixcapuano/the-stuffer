@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapContainer } from 'react-leaflet';
+import { MapContainer, useMapEvent } from 'react-leaflet';
 import L from 'leaflet';
 
 import LandingLayer from './LandingLayer';
@@ -20,11 +20,23 @@ const mapConfig = {
   scrollWheelZoom: true,
 };
 
-function Map({ mapName }) {
+function Map({ mapName, clickHandler }) {
   const [landingTarget, setLandingTarget] = useState(null);
+
+  const MapEvent = () => {
+    useMapEvent('click', (e) => {
+      if (clickHandler)
+        clickHandler({
+          event: e,
+          landingTarget: landingTarget,
+        });
+    });
+    return null;
+  };
 
   return (
     <MapContainer id='map' {...mapConfig}>
+      <MapEvent />
       <TilesLayer mapName={mapName} />
       <LandingLayer
         mapName={mapName}
