@@ -1,29 +1,30 @@
-import L, { tileLayer } from 'leaflet';
 import { useEffect, useRef, useState } from 'react';
-import { LayersControl, useMap, TileLayer } from 'react-leaflet';
+import { LayersControl, TileLayer } from 'react-leaflet';
 
-const tilesLayerGroup = L.layerGroup();
+const floors = {
+  de_mirage: 1,
+  de_dust2: 1,
+  de_inferno: 1,
+  de_nuke: 2,
+  de_vertigo: 2,
+  de_overpass: 1,
+  de_train: 1,
+};
 
-const TilesLayer = ({ mapName }) => {
-  // const map = useMap();
-  // if (!map.hasLayer(tilesLayerGroup)) map.addLayer(tilesLayerGroup);
-
-  // const newTilesLayer = L.tileLayer();
-  useState(mapName);
-
+const TilesLayer = ({ mapName, setFloor }) => {
   const tileLayer = useRef();
-  const tilesUrl = (m) =>
-    window.location.origin + '/images/maps/' + m + '/{z}/{y}/{x}.png';
-
-  // tilesLayerGroup.clearLayers();
-  // tilesLayerGroup.addLayer(newTilesLayer);
   useEffect(() => {
-    tileLayer.current.setUrl(tilesUrl(mapName), false);
+    tileLayer.current.setUrl(_url(mapName), false);
   });
 
-  //console.log(url('de_inferno'));
+  useState(mapName);
+
+  const _url = (m) =>
+    window.location.origin + '/images/maps/' + m + '/{z}/{y}/{x}.png';
+
+
   const tileLayerConfig = {
-    url: tilesUrl(mapName),
+    url: _url(mapName),
     minZoom: 0,
     maxZoom: 3,
     noWrap: true,
