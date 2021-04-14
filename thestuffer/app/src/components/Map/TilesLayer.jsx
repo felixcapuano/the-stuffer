@@ -4,7 +4,6 @@ import L from 'leaflet';
 
 const TilesLayer = ({ map }) => {
   useState(map);
-  console.log(map)
 
   const tileLayer = useRef();
   useEffect(() => {

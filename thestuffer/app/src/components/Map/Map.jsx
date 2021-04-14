@@ -50,7 +50,7 @@ function Map({ mapName, clickHandler, onChangeTarget }) {
         setTarget={setLandingTarget}
         target={landingTarget}
       />
-      {/* {landingTarget && <ThrowingLayer target={landingTarget} />} */}
+      {landingTarget && <ThrowingLayer target={landingTarget} />}
     </MapContainer>
   );
 }
