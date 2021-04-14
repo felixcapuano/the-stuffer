@@ -1,4 +1,4 @@
-exports.COLLECTION_LIST = ['twrowing', 'landing'];
+exports.COLLECTION_LIST = ['throwing', 'landing'];
 
 exports.STUFF_LIST = ['smoke', 'flash', 'molotov'];
 

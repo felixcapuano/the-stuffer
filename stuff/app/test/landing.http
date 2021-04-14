@@ -29,12 +29,12 @@ Content-Type: application/json
     "map": "de_mirage",
     "position": {
         "lat": {
-            "gt": -90,
-            "lt": 90
+            "gt": 0,
+            "lt": 0
         },
         "lng": {
-            "gt": -90,
-            "lt": 90
+            "gt": 0,
+            "lt": 0
         },
         "floor": 0
     }

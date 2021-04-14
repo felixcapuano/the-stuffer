@@ -34,7 +34,7 @@ stuffRouter.get('/:collection/get/:id', async (req, res) => {
     const doc = await Model.findById(id);
     if (!doc || doc.deleted) return res.sendStatus(404);
 
-    return res.send({ ok: true, message: 'Success', data: doc });
+    return res.send({ ok: true, message: 'Success', hit: doc });
   } catch (err) {
     console.error(err);
     return res.send({ ok: false, message: '' });
@@ -114,11 +114,9 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
   delete req.body.tickrate;
 
   try {
-    console.log(req.body);
     const doc = await Model.find(req.body, {});
-    console.log(doc.length);
 
-    return res.send({ ok: true, message: 'Success', data: doc });
+    return res.send({ ok: true, message: 'Success', hits: doc });
   } catch (err) {
     return res.send({ ok: false, message: '' });
   }
