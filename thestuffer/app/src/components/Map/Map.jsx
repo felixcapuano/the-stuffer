@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, useMapEvent } from 'react-leaflet';
 import L from 'leaflet';
 
@@ -20,19 +20,19 @@ const mapConfig = {
   scrollWheelZoom: true,
 };
 
-function Map({ mapName, clickHandler }) {
+function Map({ mapName, clickHandler, onChangeTarget }) {
   const [landingTarget, setLandingTarget] = useState(null);
 
   const MapEvent = () => {
-    useMapEvent('click', (e) => {
-      if (clickHandler)
-        clickHandler({
-          event: e,
-          landingTarget: landingTarget,
-        });
+    useMapEvent('click', (event) => {
+      if (clickHandler) clickHandler({ event });
     });
     return null;
   };
+
+  useEffect(() => {
+    if (onChangeTarget) onChangeTarget(landingTarget);
+  }, [landingTarget, onChangeTarget]);
 
   return (
     <MapContainer id='map' {...mapConfig}>

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { stuffInstance } from '../../axios';
+import Button from 'react-bootstrap/Button';
+import { LinkContainer } from 'react-router-bootstrap';
 
+import { stuffInstance } from '../../axios';
 import { Map } from '../Map';
-import { filler } from '../Map/fill_db';
+import { Showcase } from '../Showcase';
+import { ThrowingCard } from '../ThrowingCard';
 
 import './Stuff.css';
 
@@ -11,15 +14,17 @@ const CLICK_RADIUS = 5;
 
 const Stuff = () => {
   const params = useParams();
+  const [landingTarget, setLandingTarget] = useState(null);
 
   const [{ hits, isLoading, error }, setData] = useState({
     hits: [],
-    isLoading: true,
+    isLoading: false,
     error: null,
+    landingTarget: null,
   });
 
-  const clickHandler = ({ event, landingTarget }) => {
-    if (landingTarget === null) return null;
+  const clickHandler = ({ event }) => {
+    if (landingTarget === null) return;
     const pos = event.latlng;
     const payload = {
       collection: 'throwing',
@@ -38,25 +43,49 @@ const Stuff = () => {
     };
 
     setData({ isLoading: true });
-
     stuffInstance
       .post('/stuff/search', payload)
       .then((res) => {
-        console.log(res.data.hits);
         if (!res.data.ok) throw new Error(res.data.message);
-        setData({ isLoading: false, hits: res.data.hits });
+        setData({
+          isLoading: false,
+          hits: res.data.hits,
+        });
       })
       .catch((error) => setData({ isLoading: false, error }));
   };
 
+  const cards =
+    hits &&
+    hits.map((data) => {
+      return <ThrowingCard key={data._id} data={data} />;
+    });
+
+  const createButton = () => {
+    const type = landingTarget ? 'throwing?id=' + landingTarget : 'landing';
+
+    return (
+      <LinkContainer to={'/stuff/create/' + type}>
+        <Button variant='light'>Create new</Button>
+      </LinkContainer>
+    );
+  };
+
   return (
     <div>
-      Stuff {params.map}
-      <button disabled onClick={filler}>
-        Fill test data
-      </button>
-      <Map mapName={params.map} clickHandler={clickHandler} />
-      {JSON.stringify(hits)}
+      <h1>{landingTarget ? 'Throwing spot' : 'Landing spot'}</h1>
+      <Map
+        mapName={params.map}
+        clickHandler={clickHandler}
+        onChangeTarget={setLandingTarget}
+      />
+      {!isLoading && !error && (
+        <div>
+          {createButton()}
+          <Showcase>{cards}</Showcase>
+        </div>
+      )}
+      {error && 'Something goes wrong!'}
     </div>
   );
 };

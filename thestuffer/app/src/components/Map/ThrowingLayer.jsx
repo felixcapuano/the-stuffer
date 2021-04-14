@@ -17,6 +17,7 @@ const ThrowingLayer = ({ target }) => {
     isLoading: true,
     error: null,
   });
+
   // on destroy props clear heatmap
   useEffect(() => {
     const payload = { collection: 'throwing', landing_id: target };
@@ -37,7 +38,7 @@ const ThrowingLayer = ({ target }) => {
   const data = hits.map((d) => [d.position.lat, d.position.lng, 1]);
 
   // create heatmap
-  let heatmap = L.heatLayer(data, { radius: 25 });
+  const heatmap = L.heatLayer(data, { radius: 10 });
 
   // add heatmap on the map
   throwingLayer.addLayer(heatmap);

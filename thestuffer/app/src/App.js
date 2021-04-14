@@ -24,7 +24,7 @@ const App = () => {
       setLoading(false);
       if (res.data.ok) setLogged(true);
     });
-  }, []);
+  }, [setLoading, setLogged]);
 
   if (loading) {
     return <div>Waiting for server response...</div>;

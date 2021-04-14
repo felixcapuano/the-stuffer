@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -62,17 +61,6 @@ const NavBar = () => {
           )}
         </Navbar.Collapse>
       </Navbar>
-      <ul>
-        <li>
-          <Link to='/stuff/create/throwing'>/stuff/create/throwing</Link>
-        </li>
-        <li>
-          <Link to='/stuff/create/landing'>/stuff/create/landing</Link>
-        </li>
-        <li>
-          <Link to='/user'>/user</Link>
-        </li>
-      </ul>
     </div>
   );
 };
