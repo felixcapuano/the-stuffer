@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import { useMap } from 'react-leaflet';
+import { LayersControl, useMap } from 'react-leaflet';
 
 const tilesLayerGroup = L.layerGroup();
 const url = window.location.origin + '/images/maps/{map}/{z}/{y}/{x}.png';
@@ -18,7 +18,12 @@ const TilesLayer = ({ mapName }) => {
   tilesLayerGroup.clearLayers();
   tilesLayerGroup.addLayer(newTilesLayer);
 
-  return null;
+  // TODO watch for react leaflet Tile Layer to replace with useRef
+  return (
+    <LayersControl position='topleft' collapsed={false}>
+      <LayersControl.BaseLayer name={'1'}></LayersControl.BaseLayer>
+    </LayersControl>
+  );
 };
 
 export default TilesLayer;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LayerGroup, Marker } from 'react-leaflet';
+import { LayerGroup, LayersControl, Marker } from 'react-leaflet';
 import L from 'leaflet';
 
 import { stuffInstance } from '../../axios';
@@ -14,11 +14,14 @@ const createIcon = (path) =>
     iconAnchor: [ICON_SIZE / 2, ICON_SIZE / 2], // point of the icon which will correspond to marker's location
     popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor
   });
+
 const icons = {
   smoke: createIcon('images/icons/smoke.png'),
   flash: createIcon('images/icons/flash.png'),
   molotov: createIcon('images/icons/molotov.png'),
 };
+
+const markerTypes = ['smoke', 'molotov', 'flash'];
 
 const LandingLayer = ({ mapName, setTarget, target }) => {
   const [{ hits, isLoading, error }, setData] = useState({
@@ -59,19 +62,31 @@ const LandingLayer = ({ mapName, setTarget, target }) => {
     },
   };
 
-  const landingMarkers = hits.map((hit) => {
-    return (
-      <Marker
-        dataId={hit._id}
-        key={hit._id}
-        position={[hit.position.lat, hit.position.lng]}
-        eventHandlers={handlerMarker}
-        icon={icons[hit.type]}
-      ></Marker>
-    );
-  });
+  const createMarker = (hit) => (
+    <Marker
+      dataId={hit._id}
+      key={hit._id}
+      position={[hit.position.lat, hit.position.lng]}
+      eventHandlers={handlerMarker}
+      icon={icons[hit.type]}
+    />
+  );
 
-  return <LayerGroup>{landingMarkers}</LayerGroup>;
+  const landingMarkers = (_type) => {
+    return hits.map((h) => (h.type === _type ? createMarker(h) : null));
+  };
+
+  const stuffOverLay = (markersList) => {
+    return markersList.map((mrk) => (
+      <LayersControl.Overlay checked name={mrk} key={mrk}>
+        <LayerGroup>{landingMarkers(mrk)}</LayerGroup>
+      </LayersControl.Overlay>
+    ));
+  };
+
+  return (
+    <LayersControl collapsed={false}>{stuffOverLay(markerTypes)}</LayersControl>
+  );
 };
 
 export default LandingLayer;
