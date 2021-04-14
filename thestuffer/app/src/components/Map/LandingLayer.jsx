@@ -23,7 +23,7 @@ const icons = {
 
 const markerTypes = ['smoke', 'molotov', 'flash'];
 
-const LandingLayer = ({ mapName, setTarget, target }) => {
+const LandingLayer = ({ map, setTarget, target }) => {
   const [{ hits, isLoading, error }, setData] = useState({
     hits: [],
     isLoading: true,
@@ -41,19 +41,27 @@ const LandingLayer = ({ mapName, setTarget, target }) => {
         })
         .catch((error) => setData({ isLoading: false, error }));
     } else {
-      const payload = { collection: 'landing', map: mapName };
+      const payload = {
+        collection: 'landing',
+        map: map.name,
+        position: { floor: map.floor },
+      };
+
       stuffInstance
         .post('/stuff/search', payload)
         .then((res) => {
           if (!res.data.ok) throw new Error(res.data.message);
           setData({ isLoading: false, hits: res.data.hits });
         })
-        .catch((error) => setData({ isLoading: false, error }));
+        .catch((error) => {
+          console.log(error);
+          setData({ isLoading: false, error });
+        });
     }
-  }, [setData, mapName, target]);
+  }, [setData, map, target]);
 
   if (isLoading) return 'Loading...';
-  if (error) return 'Error';
+  if (error) return 'error';
 
   const handlerMarker = {
     click: (e) => {

@@ -1,4 +1,4 @@
-const CONST = require('./const');
+const CONST = require('./schema');
 
 const properties = {
   collection: { type: 'string', enum: CONST.COLLECTION_LIST },
@@ -78,30 +78,7 @@ exports.search = {
     collection: { type: 'string', enum: CONST.COLLECTION_LIST },
     landing_id: { type: 'string', isIdExist: true },
     movement: { type: 'string', enum: CONST.MOVEMENT_LIST },
-    position: {
-      type: 'object',
-      properties: {
-        lat: {
-          type: 'object',
-          properties: {
-            gt: { type: 'number' },
-            lt: { type: 'number' },
-          },
-          additionalProperties: false,
-        },
-        lng: {
-          type: 'object',
-          properties: {
-            gt: { type: 'number' },
-            lt: { type: 'number' },
-          },
-          additionalProperties: false,
-        },
-        floor: { type: 'integer', minimum: 0 },
-      },
-      required: ['lat', 'lng', 'floor'],
-      additionalProperties: false,
-    },
+    position: CONST.UPDATE_POSITION,
     tickrate: {
       type: 'object',
       properties: {

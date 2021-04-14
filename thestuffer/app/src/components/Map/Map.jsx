@@ -5,6 +5,7 @@ import L from 'leaflet';
 import LandingLayer from './LandingLayer';
 import ThrowingLayer from './ThrowingLayer';
 import TilesLayer from './TilesLayer';
+import FloorControl from './FloorControl';
 
 import './Map.css';
 
@@ -22,7 +23,11 @@ const mapConfig = {
 
 function Map({ mapName, clickHandler, onChangeTarget }) {
   const [landingTarget, setLandingTarget] = useState(null);
-  const [floor, setFloor] = useState(0);
+  const [map, setMap] = useState({
+    name: mapName,
+    floor: 0,
+  });
+  if (map.name !== mapName) setMap({ ...map, name: mapName});
 
   const MapEvent = () => {
     useMapEvent('click', (event) => {
@@ -37,14 +42,15 @@ function Map({ mapName, clickHandler, onChangeTarget }) {
 
   return (
     <MapContainer id='map' {...mapConfig}>
+      <FloorControl map={map} updateMap={setMap}/>
       <MapEvent />
-      <TilesLayer mapName={mapName} updateFloor={setFloor} />
+      <TilesLayer map={map} />
       <LandingLayer
-        mapName={mapName}
+        map={map}
         setTarget={setLandingTarget}
         target={landingTarget}
       />
-      {landingTarget && <ThrowingLayer target={landingTarget} />}
+      {/* {landingTarget && <ThrowingLayer target={landingTarget} />} */}
     </MapContainer>
   );
 }

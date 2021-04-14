@@ -25,17 +25,9 @@ POST http://localhost:3001/stuff/search
 Content-Type: application/json
 
 {
-    "collection": "landing",
+    "collection": "throwing",
     "map": "de_mirage",
     "position": {
-        "lat": {
-            "gt": 0,
-            "lt": 0
-        },
-        "lng": {
-            "gt": 0,
-            "lt": 0
-        },
         "floor": 0
     }
 }
