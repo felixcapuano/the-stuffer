@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, useMapEvent } from 'react-leaflet';
+import { Circle, MapContainer, useMapEvent } from 'react-leaflet';
 import L from 'leaflet';
 
 import LandingLayer from './LandingLayer';

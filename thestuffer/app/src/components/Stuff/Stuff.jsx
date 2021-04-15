@@ -66,7 +66,7 @@ const Stuff = () => {
 
     return (
       <LinkContainer to={'/stuff/create/' + type}>
-        <Button variant='dark'>Create new</Button>
+        <Button variant='light'>Create new</Button>
       </LinkContainer>
     );
   };
