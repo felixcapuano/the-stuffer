@@ -1,4 +1,5 @@
-import Button from 'react-bootstrap/Button';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 const floors = {
   de_mirage: 1,
@@ -13,6 +14,9 @@ const floors = {
 const FloorControl = ({ map, updateMap }) => {
   const clickHandler = (e) => {
     const floor = parseInt(e.target.value);
+
+    if (isNaN(floor) || floor === map.floor) return;
+
     updateMap({ ...map, floor });
   };
 
@@ -20,9 +24,16 @@ const FloorControl = ({ map, updateMap }) => {
     const buttons = [];
     for (let f = 0; f < floors[map.name]; f++) {
       buttons.push(
-        <Button variant='dark' key={f} onClick={clickHandler} value={f}>
-          {f.toString()}
-        </Button>
+        <ToggleButton
+          variant='dark'
+          key={f}
+          type='radio'
+          onClick={clickHandler}
+          checked={f === map.floor}
+          value={f}
+        >
+          {(-f).toString()}
+        </ToggleButton>
       );
     }
     return buttons;
@@ -30,7 +41,11 @@ const FloorControl = ({ map, updateMap }) => {
 
   return (
     <div className='leaflet-bottom leaflet-center'>
-      <div className='leaflet-control leaflet-bar'>{floorButtons()}</div>
+      <div className='leaflet-control leaflet-bar'>
+        <ButtonGroup toggle vertical>
+          {floorButtons()}
+        </ButtonGroup>
+      </div>
     </div>
   );
 };
