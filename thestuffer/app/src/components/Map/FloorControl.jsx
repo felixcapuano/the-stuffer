@@ -11,11 +11,19 @@ const floors = {
 };
 
 const FloorControl = ({ map, updateMap }) => {
+  const clickHandler = (e) => {
+    const floor = parseInt(e.target.value);
+    updateMap({ ...map, floor });
+  };
 
   const floorButtons = () => {
-    const buttons = []
+    const buttons = [];
     for (let f = 0; f < floors[map.name]; f++) {
-      buttons.push(<Button variant='dark' key={f}>{f.toString()}</Button>);
+      buttons.push(
+        <Button variant='dark' key={f} onClick={clickHandler} value={f}>
+          {f.toString()}
+        </Button>
+      );
     }
     return buttons;
   };

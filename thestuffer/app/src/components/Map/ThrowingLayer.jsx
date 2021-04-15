@@ -5,12 +5,12 @@ import 'leaflet.heat';
 
 import { stuffInstance } from '../../axios';
 
-const throwingLayer = L.layerGroup();
+const heatmap = L.heatLayer([], { radius: 10 });
 
 const ThrowingLayer = ({ target }) => {
   // if no add the throwing layer on the map
   const map = useMap();
-  if (!map.hasLayer(throwingLayer)) map.addLayer(throwingLayer);
+  if (!map.hasLayer(heatmap)) map.addLayer(heatmap);
 
   const [{ hits, isLoading, error }, setData] = useState({
     hits: [],
@@ -28,7 +28,7 @@ const ThrowingLayer = ({ target }) => {
         setData({ isLoading: false, hits: res.data.hits });
       })
       .catch((error) => setData({ isLoading: false, error }));
-    return () => throwingLayer.clearLayers();
+    return () => heatmap.setLatLngs([]);
   }, [setData, target]);
 
   if (isLoading) return 'Loading...';
@@ -36,12 +36,7 @@ const ThrowingLayer = ({ target }) => {
 
   // parse data
   const data = hits.map((d) => [d.position.lat, d.position.lng, 1]);
-
-  // create heatmap
-  const heatmap = L.heatLayer(data, { radius: 10 });
-
-  // add heatmap on the map
-  throwingLayer.addLayer(heatmap);
+  heatmap.setLatLngs(data);
 
   return null;
 };

@@ -91,14 +91,14 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
   delete req.body.collection;
 
   const pos = req.body.position;
-  if (pos.lat) {
+  if (pos?.lat) {
     // TODO improve sytax
     req.body['position.lat'] = cleanEmpty({
       $gte: pos.lat?.gt,
       $lte: pos.lat?.lt,
     });
   }
-  if (pos.lng) {
+  if (pos?.lng) {
     req.body['position.lng'] = cleanEmpty({
       $gte: pos.lng?.gt,
       $lte: pos.lng?.lt,
@@ -114,8 +114,6 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
   }
   delete req.body.tickrate;
 
-
-  console.log(req.body)
   try {
     const doc = await Model.find(req.body, {});
 

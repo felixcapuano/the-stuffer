@@ -23,11 +23,16 @@ const mapConfig = {
 
 function Map({ mapName, clickHandler, onChangeTarget }) {
   const [landingTarget, setLandingTarget] = useState(null);
-  const [map, setMap] = useState({
+
+  const initialMapValue = {
     name: mapName,
     floor: 0,
-  });
-  if (map.name !== mapName) setMap({ ...map, name: mapName});
+  };
+  const [map, setMap] = useState(initialMapValue);
+  if (map.name !== mapName) {
+    setLandingTarget(null);
+    setMap(initialMapValue);
+  }
 
   const MapEvent = () => {
     useMapEvent('click', (event) => {
@@ -42,7 +47,7 @@ function Map({ mapName, clickHandler, onChangeTarget }) {
 
   return (
     <MapContainer id='map' {...mapConfig}>
-      <FloorControl map={map} updateMap={setMap}/>
+      <FloorControl map={map} updateMap={setMap} />
       <MapEvent />
       <TilesLayer map={map} />
       <LandingLayer
