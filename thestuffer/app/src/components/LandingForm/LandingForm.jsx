@@ -41,7 +41,6 @@ const LandingForm = ({ mapName }) => {
       if (!res.data.ok) return setMessage(res.data.message);
 
       history.push('/stuff/' + cursor.name);
-
     } catch (error) {
       setMessage(error);
     }
@@ -61,7 +60,11 @@ const LandingForm = ({ mapName }) => {
 
   return (
     <Form className='landingForm' onSubmit={handleSubmit}>
-      <Map mapName={cursor.name} clickHandler={posSelectionHandler} />
+      <Map
+        mapName={cursor.name}
+        clickHandler={posSelectionHandler}
+        disabledThrowing
+      />
       <Form.Group>
         <Form.Control as='select' name='map' onChange={mapChangeHandler}>
           <option value='de_dust2'>Dust 2</option>

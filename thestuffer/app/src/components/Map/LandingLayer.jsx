@@ -23,7 +23,7 @@ const icons = {
 
 const markerTypes = ['smoke', 'molotov', 'flash'];
 
-const LandingLayer = ({ map, setTarget, target, reset}) => {
+const LandingLayer = ({ map, setTarget, target, disabledMarker }) => {
   const [{ hits, isLoading, error }, setData] = useState({
     hits: [],
     isLoading: true,
@@ -62,6 +62,7 @@ const LandingLayer = ({ map, setTarget, target, reset}) => {
 
   const handlerMarker = {
     click: (e) => {
+      if (disabledMarker) return;
       const landingId = e.target.options.dataId;
       setTarget(target ? null : landingId);
     },

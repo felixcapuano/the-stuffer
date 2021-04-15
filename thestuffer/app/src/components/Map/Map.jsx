@@ -21,7 +21,7 @@ const mapConfig = {
   scrollWheelZoom: true,
 };
 
-function Map({ mapName, clickHandler, onChangeTarget }) {
+function Map({ mapName, clickHandler, onChangeTarget, disabledThrowing }) {
   const [landingTarget, setLandingTarget] = useState(null);
 
   const initialMapValue = {
@@ -54,8 +54,11 @@ function Map({ mapName, clickHandler, onChangeTarget }) {
         map={map}
         setTarget={setLandingTarget}
         target={landingTarget}
+        disabledMarker={disabledThrowing}
       />
-      {landingTarget && <ThrowingLayer target={landingTarget} />}
+      {!disabledThrowing && landingTarget && (
+        <ThrowingLayer target={landingTarget} />
+      )}
     </MapContainer>
   );
 }
