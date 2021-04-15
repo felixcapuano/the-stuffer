@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Circle, MapContainer, useMapEvent } from 'react-leaflet';
+import { MapContainer, useMapEvent } from 'react-leaflet';
 import L from 'leaflet';
 
 import LandingLayer from './LandingLayer';
@@ -25,7 +25,7 @@ function Map({ mapName, clickHandler, onChangeTarget }) {
   const [landingTarget, setLandingTarget] = useState(null);
 
   const initialMapValue = {
-    name: mapName,
+    name: mapName || 'de_dust2',
     floor: 0,
   };
   const [map, setMap] = useState(initialMapValue);
@@ -36,7 +36,7 @@ function Map({ mapName, clickHandler, onChangeTarget }) {
 
   const MapEvent = () => {
     useMapEvent('click', (event) => {
-      if (clickHandler) clickHandler({ event });
+      if (clickHandler) clickHandler({ event, map });
     });
     return null;
   };

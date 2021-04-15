@@ -20,7 +20,6 @@ const CreateStuff = () => {
 
   return (
     <div>
-      CreateStuff (type: {type})
       { formSelection() }
     </div>
   );

@@ -1,79 +1,107 @@
-import React, { useReducer, useState } from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 import { stuffInstance } from '../../axios';
+import { Map } from '../Map';
 
 import './LandingForm.css';
 
-const formReducer = (state, event) => {
-  return {
-    ...state,
-    [event.name]: event.value,
-  };
-};
+const LandingForm = ({ mapName }) => {
+  const history = useHistory();
 
-const LandingForm = () => {
-  const [form, setForm] = useReducer(formReducer, {});
   const [message, setMessage] = useState('');
+  const [cursor, setCursor] = useState({
+    name: mapName || 'de_dust2',
+    floor: 0,
+    lat: 0,
+    lng: 0,
+    type: 'smoke',
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formFormatted = {
       collection: 'landing',
-      type: form.type,
-      map: form.map,
+      type: cursor.type,
+      map: cursor.name,
       position: {
-        lat: parseFloat(form.lat),
-        lng: parseFloat(form.lng),
-        floor: parseInt(form.floor),
+        lat: parseFloat(cursor.lat.toFixed(3)),
+        lng: parseFloat(cursor.lng.toFixed(3)),
+        floor: cursor.floor,
       },
     };
 
-    stuffInstance.post('/stuff/create', formFormatted).then((res) => {
-      console.log(res.data);
-      setMessage(res.data.message);
-    });
+    try {
+      const res = await stuffInstance.post('/stuff/create', formFormatted);
+      if (!res.data.ok) return setMessage(res.data.message);
+
+      history.push('/stuff/' + cursor.name);
+
+    } catch (error) {
+      setMessage(error);
+    }
   };
 
-  const handleChange = (event) => {
-    setForm({
-      name: event.target.name,
-      value: event.target.value,
-    });
+  const posSelectionHandler = ({ event, map }) => {
+    setCursor({ ...cursor, ...event.latlng, ...map });
   };
+
+  const mapChangeHandler = (e) => {
+    setCursor({ ...cursor, name: e.target.value });
+  };
+
+  const typeChangeHandler = (e) => {
+    setCursor({ ...cursor, type: e.target.value });
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Landing form</h1>
-      <fieldset>
-        <label htmlFor='type'>Map</label>
-        <select name='map' id='map' onChange={handleChange}>
-          <option value='dust2'>dust 2</option>
-          <option value='inferno'>inferno</option>
-          <option value='mirage'>mirage</option>
-          <option value='nuke'>nuke</option>
-          <option value='vertigo'>vertigo</option>
-          <option value='train'>train</option>
-          <option value='overpass'>overpass</option>
-        </select>
-      </fieldset>
-      <fieldset>
-        <label htmlFor='video'>Position</label>
-        <label htmlFor='lat'>lat</label>
-        <input type='number' name='lat' id='lat' onChange={handleChange} />
-        <label htmlFor='lng'>lng</label>
-        <input type='number' name='lng' id='lng' onChange={handleChange} />
-      </fieldset>
-      <fieldset>
-        <label htmlFor='type'>Type</label>
-        <select name='type' id='type' onChange={handleChange}>
-          <option value='smoke'>smoke</option>
-          <option value='molotov'>molotov</option>
-          <option value='flash'>flash</option>
-        </select>
-      </fieldset>
-      <input type='submit' value='submit' />
-      <p>{message}</p>
-    </form>
+    <Form className='landingForm' onSubmit={handleSubmit}>
+      <Map mapName={cursor.name} clickHandler={posSelectionHandler} />
+      <Form.Group>
+        <Form.Control as='select' name='map' onChange={mapChangeHandler}>
+          <option value='de_dust2'>Dust 2</option>
+          <option value='de_inferno'>Inferno</option>
+          <option value='de_mirage'>Mirage</option>
+          <option value='de_nuke'>Nuke</option>
+          <option value='de_vertigo'>Vertigo</option>
+          <option value='de_train'>Train</option>
+          <option value='de_overpass'>Overpass</option>
+        </Form.Control>
+      </Form.Group>
+
+      <Form.Group as={Row}>
+        <Form.Label column className='landingLabel'>
+          Position
+        </Form.Label>
+        <Col>
+          <Form.Control readOnly name='lat' value={cursor.lat.toFixed(3)} />
+        </Col>
+        <Col>
+          <Form.Control readOnly name='lng' value={cursor.lng.toFixed(3)} />
+        </Col>
+
+        <Form.Label column className='landingLabel'>
+          Type
+        </Form.Label>
+        <Col>
+          <Form.Control name='type' as='select' onChange={typeChangeHandler}>
+            <option value='smoke'>Smoke</option>
+            <option value='flash'>Flash</option>
+            <option value='molotov'>Molotov</option>
+          </Form.Control>
+        </Col>
+        <Col>
+          <Button type='submit' variant='outline-light'>
+            Submit
+          </Button>
+        </Col>
+      </Form.Group>
+    </Form>
   );
 };
 
