@@ -62,7 +62,9 @@ const Stuff = () => {
     });
 
   const createButton = () => {
-    const type = landingTarget ? 'throwing?id=' + landingTarget : 'landing';
+    const throwQuery =
+      'throwing?id=' + landingTarget + '&map=' + params.map;
+    const type = landingTarget ? throwQuery : 'landing';
 
     return (
       <LinkContainer to={'/stuff/create/' + type}>
