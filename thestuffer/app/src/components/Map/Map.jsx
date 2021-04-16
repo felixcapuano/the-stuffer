@@ -21,8 +21,20 @@ const mapConfig = {
   scrollWheelZoom: true,
 };
 
-function Map({ mapName, clickHandler, onChangeTarget, disabledThrowing }) {
-  const [landingTarget, setLandingTarget] = useState(null);
+function Map({
+  mapName,
+  clickHandler,
+  onChangeTarget,
+  disabledThrowing,
+  targetId,
+  throwError,
+}) {
+  const [landingTarget, setLandingTarget] = useState(targetId);
+  if (!throwError) {
+    throwError = (e) => {
+      console.error(e);
+    };
+  }
 
   const initialMapValue = {
     name: mapName || 'de_dust2',
@@ -55,6 +67,7 @@ function Map({ mapName, clickHandler, onChangeTarget, disabledThrowing }) {
         setTarget={setLandingTarget}
         target={landingTarget}
         disabledMarker={disabledThrowing}
+        throwError={throwError}
       />
       {!disabledThrowing && landingTarget && (
         <ThrowingLayer target={landingTarget} />

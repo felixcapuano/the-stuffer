@@ -38,15 +38,14 @@ const ThrowingForm = () => {
     const url = action.target.value;
     //const ytRegExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
     const ytRegExp = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-_]*)(&(amp;)?‌​[\w?‌​=]*)?/;
-    const id = url.match(ytRegExp)?.[1];
+    const ytId = url.match(ytRegExp)?.[1];
 
-    if (!id || id.length !== 11) return '';
+    if (!ytId || ytId.length !== 11) return '';
 
-    form.current.video.id = id;
+    form.current.video.id = ytId;
 
-    return id;
+    return ytId;
   }, '');
-
 
   const history = useHistory();
   if (!id || !map) return history.push('/');
@@ -88,12 +87,16 @@ const ThrowingForm = () => {
       ...form.current,
       [name]: value,
     };
-    console.log(form.current);
   };
 
   return (
-    <Form className='throwingForm' onSubmit={handleSubmit}>
-      <Map mapName={map} clickHandler={posSelectionHandler} disabledThrowing />
+    <Form
+      className='throwingForm'
+      onSubmit={handleSubmit}
+      as={Col}
+      xl={{ span: 10, offset: 1 }}
+    >
+      <Map mapName={map} clickHandler={posSelectionHandler} targetId={id} disabledThrowing />
 
       <Form.Row>
         <Form.Group as={Col}>

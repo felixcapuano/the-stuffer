@@ -23,7 +23,13 @@ const icons = {
 
 const markerTypes = ['smoke', 'molotov', 'flash'];
 
-const LandingLayer = ({ map, setTarget, target, disabledMarker }) => {
+const LandingLayer = ({
+  map,
+  setTarget,
+  target,
+  disabledMarker,
+  throwError,
+}) => {
   const [{ hits, isLoading, error }, setData] = useState({
     hits: [],
     isLoading: true,
@@ -37,7 +43,8 @@ const LandingLayer = ({ map, setTarget, target, disabledMarker }) => {
       stuffInstance
         .get(`/stuff/landing/get/${target}`)
         .then((res) => {
-          setData({ isLoading: false, hits: [res.data.hit] });
+          const hits = res.data.hit ? [res.data.hit]: [];
+          setData({ isLoading: false, hits});
         })
         .catch((error) => setData({ isLoading: false, error }));
     } else {
@@ -51,7 +58,7 @@ const LandingLayer = ({ map, setTarget, target, disabledMarker }) => {
         .post('/stuff/search', payload)
         .then((res) => {
           if (!res.data.ok) throw new Error(res.data.message);
-          setData({ isLoading: false, hits: res.data.hits });
+          setData({ isLoading: false, hits: res.data.hits || [] });
         })
         .catch((error) => setData({ isLoading: false, error }));
     }
