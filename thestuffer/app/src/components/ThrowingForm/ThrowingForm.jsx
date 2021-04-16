@@ -1,5 +1,5 @@
-import React, { useState, useReducer, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useRef, useReducer } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -15,44 +15,46 @@ const ThrowingForm = () => {
   const id = query.get('id');
   const map = query.get('map');
 
-  const [message, setMessage] = useState('');
-  const [cursor, setCursor] = useState({
-    floor: 0,
-    lat: 0,
-    lng: 0,
-  });
   const form = useRef({
-    movement: 'throw',
-    64: true,
-    128: true,
-    url: '',
-    time: 0,
-    description: '',
+    landing_id: id,
+    movement: undefined,
+    position: {
+      floor: undefined,
+      lat: undefined,
+      lng: undefined,
+    },
+    tickrate: {
+      64: true,
+      128: true,
+    },
+    video: {
+      id: undefined,
+      time: undefined,
+    },
+    description: undefined,
   });
+
+  const [idDetected, setUrl] = useReducer((state, action) => {
+    const url = action.target.value;
+    //const ytRegExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    const ytRegExp = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-_]*)(&(amp;)?‌​[\w?‌​=]*)?/;
+    const id = url.match(ytRegExp)?.[1];
+
+    if (!id || id.length !== 11) return '';
+
+    form.current.video.id = id;
+
+    return id;
+  }, '');
+
+
+  const history = useHistory();
+  if (!id || !map) return history.push('/');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formFormatted = {
-      collection: 'throwing',
-      landing_id: id,
-      movement: form.current.movement,
-      position: {
-        lat: parseFloat(cursor.lat.toFixed(3)),
-        lng: parseFloat(cursor.lng.toFixed(3)),
-        floor: cursor.floor,
-      },
-      video: {
-        id: form.videoId,
-        time: parseInt(form.videoTime),
-      },
-      tickrate: {
-        64: form.current['64'] ? true : false,
-        128: form.current['128'] ? true : false,
-      },
-      description: form.current.description,
-    };
-    console.log(formFormatted);
+    console.log(form.current);
 
     // stuffInstance.post('/stuff/create', formFormatted).then((res) => {
     //   console.log(res.data);
@@ -61,110 +63,126 @@ const ThrowingForm = () => {
   };
 
   const posSelectionHandler = ({ event, map }) => {
-    setCursor({ ...cursor, ...event.latlng });
-  };
-
-  const formHandler = (e) => {
     form.current = {
       ...form.current,
-      [e.target.name]: e.target.value,
+      position: {
+        ...event.latlng,
+        floor: map.floor,
+      },
     };
     console.log(form.current);
   };
 
-  if (!id || !map) return 'Error';
+  const inputHandler = (e) => {
+    let value = e.target.value;
+    let name = e.target.name;
+    if (e.target.value === '') value = undefined;
+    if (e.target.type === 'checkbox') value = e.target.checked;
+    if (e.target.id) {
+      const object = form.current[e.target.id] || {};
+      name = e.target.id;
+      value = { ...object, [e.target.name]: value };
+    }
+
+    form.current = {
+      ...form.current,
+      [name]: value,
+    };
+    console.log(form.current);
+  };
+
   return (
     <Form className='throwingForm' onSubmit={handleSubmit}>
       <Map mapName={map} clickHandler={posSelectionHandler} disabledThrowing />
-      <Form.Group as={Row}>
-        <Form.Label column className='throwingLabel'>
-          id
-        </Form.Label>
-        <Col>
-          <Form.Control readOnly value={id} />
-        </Col>
-        <Form.Label column className='throwingLabel'>
-          Position
-        </Form.Label>
-        <Col>
-          <Form.Control readOnly name='lat' value={cursor.lat.toFixed(3)} />
-        </Col>
-        <Col>
-          <Form.Control readOnly name='lng' value={cursor.lng.toFixed(3)} />
-        </Col>
-      </Form.Group>
 
-      <Form.Group as={Row}>
-        <Form.Label column className='throwingLabel'>
-          Movement
-        </Form.Label>
-        <Col>
-          <Form.Control
-            as='select'
-            name='movement'
-            defaultValue={form.current.movement}
-          >
-            <option value='throw'>Throw</option>
-            <option value='jumpthrow'>Jumpthow</option>
-            <option value='runjumpthrow'>Run Jumpthrow</option>
-          </Form.Control>
-        </Col>
-        <Form.Label column className='throwingLabel'>
-          Tickrate
-        </Form.Label>
-        <Col>
-          <Form.Check
-            label='64'
-            type='checkbox'
-            defaultChecked={form.current['64']}
-          />
-        </Col>
-        <Col>
-          <Form.Check
-            label='128'
-            type='checkbox'
-            defaultChecked={form.current['128']}
-          />
-        </Col>
-      </Form.Group>
+      <Form.Row>
+        <Form.Group as={Col}>
+          <Form.Row>
+            <Form.Label column className='throwingLabel' md='2'>
+              Move
+            </Form.Label>
+            <Col>
+              <Form.Control as='select' name='movement' onChange={inputHandler}>
+                <option value=''>Select...</option>
+                <option value='throw'>Throw</option>
+                <option value='jumpthrow'>Jumpthow</option>
+                <option value='runjumpthrow'>Run Jumpthrow</option>
+              </Form.Control>
+            </Col>
+          </Form.Row>
+        </Form.Group>
 
-      <Form.Group as={Row}>
-        <Form.Label column className='throwingLabel'>
-          Url
+        <Form.Group as={Col} controlId='tickrate'>
+          <Form.Row>
+            <Form.Label column className='throwingLabel'>
+              Tickrate
+            </Form.Label>
+            <Col>
+              <Form.Check
+                label='64'
+                type='checkbox'
+                defaultChecked
+                name='64'
+                onChange={inputHandler}
+              />
+            </Col>
+            <Col>
+              <Form.Check
+                label='128'
+                type='checkbox'
+                defaultChecked
+                name='128'
+                onChange={inputHandler}
+              />
+            </Col>
+          </Form.Row>
+        </Form.Group>
+      </Form.Row>
+
+      <Form.Group as={Row} controlId='video'>
+        <Form.Label column className='throwingLabel' md='2'>
+          Youtube Url/Id
         </Form.Label>
-        <Col>
+        <Col md='5'>
           <Form.Control
-            defaultValue={form.current.url}
             placeholder='https://www.youtube.com/watch?v=QH2-TGUlwu4&ab_channel=NyanCat'
+            name='id'
+            onChange={setUrl}
           />
         </Col>
-        <Form.Label column className='throwingLabel'>
+        <Form.Label column className='throwingLabel' md='1'>
           Time
         </Form.Label>
-        <Col>
+        <Col md='1'>
           <Form.Control
             type='number'
-            defaultValue={form.current.time}
             min={0}
+            name='time'
+            onChange={inputHandler}
           />
+        </Col>
+        <Col md='3'>
+          <Form.Control value={idDetected} readOnly />
         </Col>
       </Form.Group>
 
       <Form.Group as={Row}>
-        <Form.Label column className='throwingLabel'>
+        <Form.Label column className='throwingLabel' md='1'>
           Description
         </Form.Label>
-        <Col>
+        <Col md='9'>
           <Form.Control
             as='textarea'
-            name='description'
             placeholder='Description...'
-            defaultValue={form.current.description}
-            onChange={formHandler}
+            maxLength={255}
+            rows={2}
+            name='description'
+            value={form.current.description}
+            onChange={inputHandler}
           />
         </Col>
         <Col>
-          <Button type='submit' variant='outline-light'>
+          <Button type='submit' variant='outline-light' className='fluid'>
             Submit
           </Button>
         </Col>
