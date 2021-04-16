@@ -73,8 +73,8 @@ const ThrowingForm = () => {
   };
 
   const inputHandler = (e) => {
-    let value = e.target.value;
-    let name = e.target.name;
+    let { value, name } = e.target;
+
     if (e.target.value === '') value = undefined;
     if (e.target.type === 'checkbox') value = e.target.checked;
     if (e.target.id) {
@@ -82,6 +82,7 @@ const ThrowingForm = () => {
       name = e.target.id;
       value = { ...object, [e.target.name]: value };
     }
+    console.log(value);
 
     form.current = {
       ...form.current,
@@ -96,7 +97,12 @@ const ThrowingForm = () => {
       as={Col}
       xl={{ span: 10, offset: 1 }}
     >
-      <Map mapName={map} clickHandler={posSelectionHandler} targetId={id} disabledThrowing />
+      <Map
+        mapName={map}
+        clickHandler={posSelectionHandler}
+        targetId={id}
+        disabledThrowing
+      />
 
       <Form.Row>
         <Form.Group as={Col}>
@@ -185,7 +191,7 @@ const ThrowingForm = () => {
           />
         </Col>
         <Col>
-          <Button type='submit' variant='outline-light' className='fluid'>
+          <Button onClick={handleSubmit} type='submit' variant='outline-light'>
             Submit
           </Button>
         </Col>
