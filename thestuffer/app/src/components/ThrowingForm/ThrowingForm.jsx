@@ -54,7 +54,6 @@ const ThrowingForm = () => {
     e.preventDefault();
 
     form.current.collection = 'throwing';
-    console.log(form.current)
 
     stuffInstance.post('/stuff/create', form.current).then((res) => {
       console.log(res.data);
@@ -70,7 +69,6 @@ const ThrowingForm = () => {
         floor: map.floor,
       },
     };
-    console.log(form.current);
   };
 
   const inputHandler = (e) => {

@@ -29,7 +29,7 @@ function Map({
   targetId,
   throwError,
 }) {
-  console.log('re render Map')
+  console.log('Map render')
   const [landingTarget, setLandingTarget] = useState(targetId);
   if (!throwError) {
     throwError = (e) => {

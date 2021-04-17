@@ -36,7 +36,7 @@ const LandingForm = ({ mapName }) => {
     };
 
     try {
-      const res = await stuffInstance.post('/stuff/create', formFormatted);
+      await stuffInstance.post('/stuff/create', formFormatted);
 
       history.push('/stuff/' + cursor.name);
     } catch (error) {
