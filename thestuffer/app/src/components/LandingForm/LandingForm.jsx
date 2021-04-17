@@ -13,7 +13,6 @@ import './LandingForm.css';
 const LandingForm = ({ mapName }) => {
   const history = useHistory();
 
-  const [message, setMessage] = useState('');
   const [cursor, setCursor] = useState({
     name: mapName || 'de_dust2',
     floor: 0,
@@ -38,11 +37,10 @@ const LandingForm = ({ mapName }) => {
 
     try {
       const res = await stuffInstance.post('/stuff/create', formFormatted);
-      if (!res.data.ok) return setMessage(res.data.message);
 
       history.push('/stuff/' + cursor.name);
     } catch (error) {
-      setMessage(error);
+      console.log(error);
     }
   };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, useMapEvent } from 'react-leaflet';
+import { MapContainer, Marker, useMapEvent } from 'react-leaflet';
 import L from 'leaflet';
 
 import LandingLayer from './LandingLayer';
@@ -29,6 +29,7 @@ function Map({
   targetId,
   throwError,
 }) {
+  console.log('re render Map')
   const [landingTarget, setLandingTarget] = useState(targetId);
   if (!throwError) {
     throwError = (e) => {
@@ -47,10 +48,21 @@ function Map({
   }
 
   const MapEvent = () => {
+    const [mouseTarget, setMouseTarget] = useState(undefined);
+
     useMapEvent('click', (event) => {
-      if (clickHandler) clickHandler({ event, map });
+      if (!event) return;
+      setMouseTarget(<Marker position={event.latlng}/>)
+      if (clickHandler) {
+        clickHandler({
+          event,
+          map,
+          landingMode: !landingTarget ? true : false,
+          throwingMode: landingTarget ? true : false,
+        });
+      }
     });
-    return null;
+    return <div>{mouseTarget}</div>;
   };
 
   useEffect(() => {

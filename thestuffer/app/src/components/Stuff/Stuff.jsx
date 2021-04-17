@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -23,8 +23,9 @@ const Stuff = () => {
     landingTarget: null,
   });
 
-  const clickHandler = ({ event }) => {
-    if (landingTarget === null) return;
+  const clickHandler = useCallback(({ event, landingMode }) => {
+    if (landingMode) return;
+
     const pos = event.latlng;
     const payload = {
       collection: 'throwing',
@@ -53,7 +54,7 @@ const Stuff = () => {
         });
       })
       .catch((error) => setData({ isLoading: false, error }));
-  };
+  }, [landingTarget, setData]);
 
   const cards =
     hits &&
@@ -73,21 +74,25 @@ const Stuff = () => {
     );
   };
 
-  return (
-    <div>
-      <h1>{landingTarget ? 'Throwing spot' : 'Landing spot'}</h1>
+  const mapComponent = useMemo(() => (
       <Map
         mapName={params.map}
         clickHandler={clickHandler}
         onChangeTarget={setLandingTarget}
       />
+  ), [params, setLandingTarget, clickHandler])
+
+  return (
+    <div>
+      <h1>{landingTarget ? 'Throwing spot' : 'Landing spot'}</h1>
+      {mapComponent}
       {!isLoading && !error && (
         <div>
           {createButton()}
           <Showcase>{cards}</Showcase>
         </div>
       )}
-      {error && 'Something goes wrong!'}
+      {error && 'Something goes wrong! ' + error}
     </div>
   );
 };
