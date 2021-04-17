@@ -1,4 +1,4 @@
-import React, { useRef, useReducer } from 'react';
+import React, { useCallback, useRef, useReducer, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -47,8 +47,32 @@ const ThrowingForm = () => {
     return ytId;
   }, '');
 
+  const posSelectionHandler = useCallback(
+    ({ event, map }) => {
+      form.current = {
+        ...form.current,
+        position: {
+          ...event.latlng,
+          floor: map.floor,
+        },
+      };
+    },
+    [form]
+  );
+
+  const mapRender = useMemo(
+    () => (
+      <Map
+        mapName={map}
+        clickHandler={posSelectionHandler}
+        targetId={id}
+        disabledThrowing
+      />
+    ),
+    [map, id, posSelectionHandler]
+  );
+
   const history = useHistory();
-  if (!id || !map) return history.push('/');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,20 +85,10 @@ const ThrowingForm = () => {
     });
   };
 
-  const posSelectionHandler = ({ event, map }) => {
-    form.current = {
-      ...form.current,
-      position: {
-        ...event.latlng,
-        floor: map.floor,
-      },
-    };
-  };
-
   const inputHandler = (e) => {
     let { value, name } = e.target;
 
-    if (!isNaN(e.target.value)) value = parseInt(e.target.value)
+    if (!isNaN(e.target.value)) value = parseInt(e.target.value);
     if (e.target.value === '') value = undefined;
     if (e.target.type === 'checkbox') value = e.target.checked;
     if (e.target.id) {
@@ -90,6 +104,8 @@ const ThrowingForm = () => {
     };
   };
 
+  if (!id || !map) return history.push('/');
+
   return (
     <Form
       className='throwingForm'
@@ -97,13 +113,7 @@ const ThrowingForm = () => {
       as={Col}
       xl={{ span: 10, offset: 1 }}
     >
-      <Map
-        mapName={map}
-        clickHandler={posSelectionHandler}
-        targetId={id}
-        disabledThrowing
-      />
-
+      {mapRender}
       <Form.Row>
         <Form.Group as={Col}>
           <Form.Row>
