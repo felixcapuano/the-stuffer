@@ -1,24 +1,25 @@
-const CONST = require('./schema');
+const common = require('./common-schema');
 
-const properties = {
-  collection: { type: 'string', enum: CONST.COLLECTION_LIST },
+const throwingProperties = {
+  ...common.collectionProperties,
   landing_id: { type: 'string', isIdExist: true },
-  movement: { type: 'string', enum: CONST.MOVEMENT_LIST },
-  position: {
-    type: 'object',
-    properties: {
-      lat: { type: 'number' },
-      lng: { type: 'number' },
-      floor: { type: 'integer', minimum: 0 },
-    },
-    required: ['lat', 'lng', 'floor'],
-    additionalProperties: false,
+  movement: {
+    type: 'string',
+    enum: ['throw', 'jumpthrow', 'runjumpthrow'],
   },
   video: {
     type: 'object',
     properties: {
-      id: { type: 'string' },
-      time: { type: 'integer' },
+      id: {
+        type: 'string',
+        minLength: 11,
+        maxLength: 11,
+      },
+      time: {
+        type: 'integer',
+        minimum: 0,
+        maximum: 86400,
+      },
     },
     required: ['id', 'time'],
     additionalProperties: false,
@@ -32,13 +33,20 @@ const properties = {
     required: ['64', '128'],
     additionalProperties: false,
   },
-  description: { type: 'string', maxLength: 255 },
+  description: {
+    type: 'string',
+    minLength: 0,
+    maxLength: 255,
+  },
 };
 
 exports.create = {
   $async: true,
   type: 'object',
-  properties: properties,
+  properties: {
+    ...throwingProperties,
+    ...common.positionProperties,
+  },
   required: [
     'collection',
     'landing_id',
@@ -55,17 +63,9 @@ exports.update = {
   $async: true,
   type: 'object',
   properties: {
-    ...properties,
-    reaction: {
-      type: 'object',
-      properties: {
-        hyped: { type: 'boolean' },
-        user: { type: 'string' },
-        hidden: { type: 'boolean' },
-      },
-      required: ['hyped', 'user', 'hidden'],
-      additionalProperties: false,
-    },
+    ...throwingProperties,
+    ...common.positionProperties,
+    ...common.reactionProperties,
   },
   required: ['collection'],
   additionalProperties: false,
@@ -75,18 +75,9 @@ exports.search = {
   $async: true,
   type: 'object',
   properties: {
-    collection: { type: 'string', enum: CONST.COLLECTION_LIST },
-    landing_id: { type: 'string', isIdExist: true },
-    movement: { type: 'string', enum: CONST.MOVEMENT_LIST },
-    position: CONST.UPDATE_POSITION,
-    tickrate: {
-      type: 'object',
-      properties: {
-        64: { type: 'boolean' },
-        128: { type: 'boolean' },
-      },
-      additionalProperties: false,
-    },
+    ...throwingProperties,
+    ...common.collectionProperties,
+    ...common.searchPositionProperties,
   },
   required: ['collection'],
   additionalProperties: false,

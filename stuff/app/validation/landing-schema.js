@@ -1,34 +1,41 @@
-const CONST = require('./schema');
+const common = require('./common-schema');
 
-const properties = {
-  collection: { type: 'string', enum: CONST.COLLECTION_LIST },
-  type: { type: 'string', enum: CONST.STUFF_LIST },
+const landingProperties = {
+  ...common.collectionProperties,
+  type: {
+    type: 'string',
+    enum: ['smoke', 'molotov', 'flash'],
+  },
   map: {
     type: 'string',
-    enum: CONST.MAP_LIST,
-  },
-  position: {
-    type: 'object',
-    properties: {
-      lat: { type: 'number' },
-      lng: { type: 'number' },
-      floor: { type: 'integer', minimum: 0 },
-    },
-    required: ['lat', 'lng', 'floor'],
-    additionalProperties: false,
+    enum: [
+      'de_mirage',
+      'de_dust2',
+      'de_inferno',
+      'de_nuke',
+      'de_vertigo',
+      'de_overpass',
+      'de_train',
+    ],
   },
 };
 
 exports.create = {
   type: 'object',
-  properties: properties,
+  properties: {
+    ...landingProperties,
+    ...common.positionProperties,
+  },
   required: ['collection', 'type', 'map', 'position'],
   additionalProperties: false,
 };
 
 exports.update = {
   type: 'object',
-  properties: properties,
+  properties: {
+    ...landingProperties,
+    ...common.positionProperties,
+  },
   required: ['collection'],
   additionalProperties: false,
 };
@@ -36,13 +43,8 @@ exports.update = {
 exports.search = {
   type: 'object',
   properties: {
-    collection: { type: 'string', enum: CONST.COLLECTION_LIST },
-    map: {
-      type: 'string',
-      enum: CONST.MAP_LIST,
-    },
-    type: { type: 'string', enum: CONST.STUFF_LIST },
-    position: CONST.UPDATE_POSITION,
+    ...landingProperties,
+    ...common.searchPositionProperties,
   },
   required: ['map', 'collection'],
   additionalProperties: false,
