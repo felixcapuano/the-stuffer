@@ -6,3 +6,11 @@
 .tickBadge {
   margin: 1px;
 }
+
+.cardBody {
+  background-color: blue;
+}
+
+.openButton {
+  width: 100%;
+}
