@@ -53,12 +53,13 @@ const ThrowingForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(form.current);
+    form.current.collection = 'throwing';
+    console.log(form.current)
 
-    // stuffInstance.post('/stuff/create', formFormatted).then((res) => {
-    //   console.log(res.data);
-    //   setMessage(res.data.message);
-    // });
+    stuffInstance.post('/stuff/create', form.current).then((res) => {
+      console.log(res.data);
+      //  setMessage(res.data.message);
+    });
   };
 
   const posSelectionHandler = ({ event, map }) => {
@@ -75,6 +76,7 @@ const ThrowingForm = () => {
   const inputHandler = (e) => {
     let { value, name } = e.target;
 
+    if (!isNaN(e.target.value)) value = parseInt(e.target.value)
     if (e.target.value === '') value = undefined;
     if (e.target.type === 'checkbox') value = e.target.checked;
     if (e.target.id) {
