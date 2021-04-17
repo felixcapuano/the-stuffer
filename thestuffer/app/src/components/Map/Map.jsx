@@ -29,7 +29,7 @@ function Map({
   targetId,
   throwError,
 }) {
-  console.log('Map render')
+  console.log('Map render');
   const [landingTarget, setLandingTarget] = useState(targetId);
   if (!throwError) {
     throwError = (e) => {
@@ -52,7 +52,12 @@ function Map({
 
     useMapEvent('click', (event) => {
       if (!event) return;
-      setMouseTarget(<Marker position={event.latlng}/>)
+      setMouseTarget(
+        <Marker
+          position={event.latlng}
+          eventHandlers={{ click: () => setMouseTarget(undefined) }}
+        />
+      );
       if (clickHandler) {
         clickHandler({
           event,

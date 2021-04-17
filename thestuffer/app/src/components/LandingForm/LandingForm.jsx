@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { useHistory } from 'react-router';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -44,9 +44,12 @@ const LandingForm = ({ mapName }) => {
     }
   };
 
-  const posSelectionHandler = ({ event, map }) => {
-    setCursor({ ...cursor, ...event.latlng, ...map });
-  };
+  const posSelectionHandler = useCallback(
+    ({ event, map }) => {
+      setCursor({ ...cursor, ...event.latlng, ...map });
+    },
+    [cursor]
+  );
 
   const mapChangeHandler = (e) => {
     setCursor({ ...cursor, name: e.target.value });
@@ -56,13 +59,17 @@ const LandingForm = ({ mapName }) => {
     setCursor({ ...cursor, type: e.target.value });
   };
 
+  const mapRender = useMemo(() => (
+    <Map
+      mapName={cursor.name}
+      clickHandler={posSelectionHandler}
+      disabledThrowing
+    />
+  ), [cursor, posSelectionHandler]);
+
   return (
     <Form className='landingForm' onSubmit={handleSubmit}>
-      <Map
-        mapName={cursor.name}
-        clickHandler={posSelectionHandler}
-        disabledThrowing
-      />
+      {mapRender}
       <Form.Group>
         <Form.Control as='select' name='map' onChange={mapChangeHandler}>
           <option value='de_dust2'>Dust 2</option>
