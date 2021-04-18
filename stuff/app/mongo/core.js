@@ -13,13 +13,14 @@ const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   socketTimeoutMS: 60000,
-  serverSelectionTimeoutMS: 5000,
+  serverSelectionTimeoutMS: 60000,
   heartbeatFrequencyMS: 5000,
   useFindAndModify: false,
 };
 
 const uri = `mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`;
 exports.connect = () => {
+  console.log('uri : ' + uri);
   console.log('Trying to connect to mongo');
   mongoose.connect(uri, options).then(
     () => console.log('Mongo connection established!'),

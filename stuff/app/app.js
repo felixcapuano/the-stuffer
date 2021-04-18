@@ -1,4 +1,4 @@
-const dotenv = require('dotenv').config({ path: '.env.development' });
+const dotenv = require('dotenv').config();
 if (dotenv.error) throw dotenv.error;
 const PORT = process.env.STUFF_PORT;
 

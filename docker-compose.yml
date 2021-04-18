@@ -1,29 +1,5 @@
 version: '3.9'
 services:
-  # auth:
-  #   build: ./auth
-  #   container_name: auth
-  #   depends_on:
-  #     - mongo
-  #   ports:
-  #     - 3002:3002
-
-  # stuff:
-  #   build: ./stuff
-  #   container_name: stuff
-  #   depends_on:
-  #     - mongo
-  #   ports:
-  #     - 3001:3001
-
-  # thestuffer:
-  #   build: ./thestuffer
-  #   container_name: thestuffer
-  #   depends_on:
-  #     - mongo
-  #   ports:
-  #     - 3000:3000
-
   mongo:
     image: mongo:4.4.4
     container_name: mongo
@@ -37,3 +13,33 @@ services:
       - ./mongo/mongo-volume:/data/db
     ports:
       - 27017:27017
+
+  auth:
+    build: ./auth
+    container_name: auth
+    environment:
+      MONGO_HOST: mongo
+    depends_on:
+      - mongo
+    ports:
+      - 3002:3002
+
+  stuff:
+    build: ./stuff
+    container_name: stuff
+    environment:
+      MONGO_HOST: mongo
+    depends_on:
+      - mongo
+    ports:
+      - 3001:3001
+
+  thestuffer:
+    build: ./thestuffer
+    container_name: thestuffer
+    environment:
+      MONGO_HOST: mongo
+    depends_on:
+      - mongo
+    ports:
+      - 3000:3000
