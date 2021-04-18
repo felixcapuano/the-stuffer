@@ -1,25 +1,37 @@
 version: '3.9'
 services:
-  #  stuff:
-  #    build: ./stuff
-  #    container_name: stuff
-  #    depends_on:
-  #      - mongo
-  #    ports:
-  #      - 3001:3001
-  #    environment:
-  #      STUFF_HOST: stuff
-  #      STUFF_PORT: 3001
-  #      STUFF_MONGO_HOST: mongo
-  #      STUFF_MONGO_DATABASE: ${MONGO_DATABASE}
+  # auth:
+  #   build: ./auth
+  #   container_name: auth
+  #   depends_on:
+  #     - mongo
+  #   ports:
+  #     - 3002:3002
+
+  # stuff:
+  #   build: ./stuff
+  #   container_name: stuff
+  #   depends_on:
+  #     - mongo
+  #   ports:
+  #     - 3001:3001
+
+  # thestuffer:
+  #   build: ./thestuffer
+  #   container_name: thestuffer
+  #   depends_on:
+  #     - mongo
+  #   ports:
+  #     - 3000:3000
 
   mongo:
     image: mongo:4.4.4
     container_name: mongo
     environment:
-      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: $MONGO_DATABASE
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_ROOT_PASSWORD
+    env_file: .env
     volumes:
       - ./mongo/init-scripts:/docker-entrypoint-initdb.d:ro
       - ./mongo/mongo-volume:/data/db
