@@ -6,4 +6,6 @@ COPY app .
 
 RUN npm i
 
+EXPOSE 3002
+
 CMD [ "npm", "run", "dev-start"]
