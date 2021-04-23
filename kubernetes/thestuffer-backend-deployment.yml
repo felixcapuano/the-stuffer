@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-backend-deployment
+  label:
+    app: auth-backend
+spec:
+  replica: 1
+  selector:
+    matchLabels:
+      app: auth-backend
