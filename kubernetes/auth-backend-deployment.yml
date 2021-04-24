@@ -28,16 +28,16 @@ spec:
               value: thestuffer-frontend
             - name: THESTUFFER_PORT
               value: '3000'
-            - name: AUTH_MONGO_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: auth-mongo-secret
-                  key: username
             - name: MONGO_URI
               valueFrom:
                 configMapKeyRef:
                   name: mongo-configmap
                   key: uri
+            - name: AUTH_MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: auth-mongo-secret
+                  key: username
             - name: AUTH_MONGO_PASSWORD
               valueFrom:
                 secretKeyRef:
