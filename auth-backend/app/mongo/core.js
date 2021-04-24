@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
 const { User } = require('./model');
 
-const URI = process.env.AUTH_MONGO_URI;
-if (!URI) throw new Error('AUTH_MONGO_URI not set.');
+const URI = process.env.MONGO_URI;
+if (!URI) throw new Error('MONGO_URI not set.');
+const USER = process.env.AUTH_MONGO_USERNAME;
+if (!USER) throw new Error('AUTH_MONGO_USERNAME not set.');
+const PASS = process.env.AUTH_MONGO_PASSWORD;
+if (!PASS) throw new Error('AUTH_MONGO_PASSWORD not set.');
 
 const options = {
+  user: USER,
+  pass: PASS,
   useNewUrlParser: true,
   useUnifiedTopology: true,
   socketTimeoutMS: 60000,
@@ -22,6 +28,7 @@ exports.connect = () => {
   );
 
   const db = mongoose.connection;
+
   db.on('error', (e) => console.log('Mongo error : ' + e.message));
   db.on('disconnected', () => console.log('Connection interrupted'));
 };
