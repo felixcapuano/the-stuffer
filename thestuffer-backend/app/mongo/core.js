@@ -3,11 +3,8 @@ let ObjectID = require('mongodb').ObjectID;
 
 const models = require('./models');
 
-const PORT = process.env.MONGO_PORT;
-const HOST = process.env.MONGO_HOST;
-const DATABASE = process.env.MONGO_DATABASE;
-const USERNAME = process.env.STUFF_MONGO_USERNAME;
-const PASSWORD = process.env.STUFF_MONGO_PASSWORD;
+const URI = process.env.STUFF_MONGO_URI;
+if (!URI) throw new Error('STUFF_MONGO_URI not set.');
 
 const options = {
   useNewUrlParser: true,
@@ -18,11 +15,10 @@ const options = {
   useFindAndModify: false,
 };
 
-const uri = `mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`;
 exports.connect = () => {
-  console.log('uri : ' + uri);
+  console.log('uri : ' + URI);
   console.log('Trying to connect to mongo');
-  mongoose.connect(uri, options).then(
+  mongoose.connect(URI, options).then(
     () => console.log('Mongo connection established!'),
     () => console.log('Mongo connection failed!')
   );

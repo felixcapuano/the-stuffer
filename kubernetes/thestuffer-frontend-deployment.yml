@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thestuffer-frontend-deployment
+  labels:
+    app: thestuffer-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thestuffer-frontend
+  template:
+    metadata:
+      labels:
+        app: thestuffer-frontend
+    spec:
+      containers:
+      - name: thestuffer-frontend
+        image: 
+        ports: 457436777387.dkr.ecr.eu-west-1.amazonaws.com/thestuffer-frontend:latest
+        - containerPort: 3000

@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
 const { User } = require('./model');
 
-const PORT = process.env.MONGO_PORT;
-const HOST = process.env.MONGO_HOST;
-const DATABASE = process.env.MONGO_DATABASE;
-const USERNAME = process.env.AUTH_MONGO_USERNAME;
-const PASSWORD = process.env.AUTH_MONGO_PASSWORD;
+const URI = process.env.AUTH_MONGO_URI;
+if (!URI) throw new Error('AUTH_MONGO_URI not set.');
 
 const options = {
   useNewUrlParser: true,
@@ -16,11 +13,10 @@ const options = {
   useFindAndModify: false,
 };
 
-const uri = `mongodb://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}`;
 exports.connect = () => {
   console.log('Trying to connect to mongo');
-  console.log('uri : ' + uri);
-  mongoose.connect(uri, options).then(
+  console.log('uri : ' + URI);
+  mongoose.connect(URI, options).then(
     () => console.log('Mongo connection establish!'),
     () => console.log('Mongo connection fail!')
   );

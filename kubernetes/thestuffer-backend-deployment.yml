@@ -1,13 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-backend-deployment
-  label:
-    app: auth-backend
+  name: thestuffer-backend-deployment
+  labels:
+    app: thestuffer-backend
 spec:
-  replica: 1
+  replicas: 1
   selector:
     matchLabels:
-      app: auth-backend
+      app: thestuffer-backend
   template:
-    metadata: 
+    metadata:
+      labels:
+        app: thestuffer-backend
+    spec:
+      containers:
+      - name: thestuffer-backend
+        image: 
+        ports: 457436777387.dkr.ecr.eu-west-1.amazonaws.com/thestuffer-backend:latest
+        - containerPort: 3001

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-backend-deployment
+  labels:
+    app: auth-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-backend
+  template:
+    metadata:
+      labels:
+        app: auth-backend
+    spec:
+      containers:
+      - name: auth-backend
+        image: 
+        ports: 457436777387.dkr.ecr.eu-west-1.amazonaws.com/auth-backend:latest
+        - containerPort: 3002
+        env:
+        - name: AUTH_PORT
+          value: 3002
+        - name: THESTUFFER_HOST
+          value: 
+        - name: THESTUFFER_PORT
+          value: 
+        - name: AUTH_MONGO_USERNAME
+          value:
+        - name: AUTH_MONGO_PASSWORD
+          value:
+        - name: MONGO_DATABASE
+          value:
+        - name: MONGO_HOST
+          value:
+        - name: MONGO_PORT
+          value:
+        - name: ACCESS_TOKEN
+          value:
+        - name: REFRESH_TOKEN
+          value:

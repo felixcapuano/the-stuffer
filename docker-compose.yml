@@ -1,18 +1,18 @@
 version: '3.9'
 services:
-  mongo:
-    image: mongo:4.4.4
-    container_name: mongo
-    environment:
-      MONGO_INITDB_DATABASE: $MONGO_DATABASE
-      MONGO_INITDB_ROOT_USERNAME: $MONGO_ROOT_USERNAME
-      MONGO_INITDB_ROOT_PASSWORD: $MONGO_ROOT_PASSWORD
-    env_file: .env
-    volumes:
-      - ./mongo/init-scripts:/docker-entrypoint-initdb.d:ro
-      - ./mongo/mongo-volume:/data/db
-    ports:
-      - 27017:27017
+  # mongo:
+  #   image: mongo:4.4.4
+  #   container_name: mongo
+  #   environment:
+  #     MONGO_INITDB_DATABASE: $MONGO_DATABASE
+  #     MONGO_INITDB_ROOT_USERNAME: $MONGO_ROOT_USERNAME
+  #     MONGO_INITDB_ROOT_PASSWORD: $MONGO_ROOT_PASSWORD
+  #   env_file: .env
+  #   volumes:
+  #     - ./mongo/init-scripts:/docker-entrypoint-initdb.d:ro
+  #     - ./mongo/mongo-volume:/data/db
+  #   ports:
+  #     - 27017:27017
 
   auth:
     build: ./auth-backend
