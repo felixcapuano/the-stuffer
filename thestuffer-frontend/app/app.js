@@ -1,7 +1,9 @@
-require('dotenv').config({ path: '.env.production' })
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const app = express();
+
+const PORT = process.env.PORT;
 
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -10,5 +12,5 @@ app.get('/*', function (req, res) {
 });
 
 app.listen(process.env.PORT, () => {
-  console.log(`Listening at http://${process.env.HOST}:${process.env.PORT}`);
+  console.log(`The stuffer listenning on port : ${PORT}`);
 });
