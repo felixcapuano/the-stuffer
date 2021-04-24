@@ -1,6 +1,7 @@
 .env
 mongo-volume/
 node_modules/
+secrets/
 
 # dependencies
 /node_modules
