@@ -14,32 +14,36 @@ services:
   #   ports:
   #     - 27017:27017
 
-  auth:
+  auth-backend:
+    image: auth-backend
     build: ./auth-backend
     container_name: auth-backend
     environment:
-      MONGO_HOST: mongo
-    depends_on:
-      - mongo
+      THESTUFFER_HOST: thestuffer-frontend
+    # depends_on:
+    #   - mongo
     ports:
       - 3002:3002
 
-  stuff:
+  thestuffer-backend:
+    image: thestuffer-backend
     build: ./thestuffer-backend
     container_name: thestuffer-backend
     environment:
-      MONGO_HOST: mongo
-    depends_on:
-      - mongo
+      THESTUFFER_HOST: thestuffer-frontend
+    # depends_on:
+    #   - mongo
     ports:
       - 3001:3001
 
-  thestuffer:
+  thestuffer-frontend:
+    image: thestuffer-frontend
     build: ./thestuffer-frontend
     container_name: thestuffer-frontend
     environment:
-      MONGO_HOST: mongo
-    depends_on:
-      - mongo
+      REACT_APP_STUFF_HOST: thestuffer-backend
+      REACT_APP_AUTH_HOST: auth-backend
+    # depends_on:
+    #   - mongo
     ports:
-      - 3000:3000
+      - 8080:8080
