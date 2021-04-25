@@ -1,11 +1,8 @@
-FROM node:15.12.0
-
+FROM node:15.14.0-alpine3.13
 WORKDIR /app
-
-COPY app .
-
-RUN npm i
-
+COPY app/package.json app/package-lock.json ./
+RUN npm install
+COPY ./app .
 EXPOSE 3002
 
-CMD [ "npm", "run", "dev-start"]
+CMD [ "npm", "start"]
