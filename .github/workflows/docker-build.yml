@@ -26,7 +26,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
       
     - name: Build images
-      run:
+      run: |
         docker build --tag ${{ secrets.AWS_ECR_URL }}/auth-backend:${{ github.sha }} ./auth-backend
         docker build --tag ${{ secrets.AWS_ECR_URL }}/thestuffer-backend:${{ github.sha }} ./thestuffer-backend
         docker build --tag ${{ secrets.AWS_ECR_URL }}/thestuffer-frontend:${{ github.sha }} ./thestuffer-frontend
