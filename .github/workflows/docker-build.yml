@@ -1,0 +1,37 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: 
+    - main
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      
+    - name: Build images
+      run:
+       docker build ./auth-backend --tag ${{ secrets.AWS_ECR_URL }}/auth-backend:${{ github.sha }}
+       docker build ./thestuffer-backend --tag ${{ secrets.AWS_ECR_URL }}/thestuffer-backend:${{ github.sha }}
+       docker build ./thestuffer-frontend --tag ${{ secrets.AWS_ECR_URL }}/thestuffer-frontend:${{ github.sha }}
+    - name: Push images
+      run:
+       docker push ${{ secrets.ECR_URL }}/auth-backend:${{ github.sha }}
+       docker push ${{ secrets.ECR_URL }}/thestuffer-backend:${{ github.sha }}
+       docker push ${{ secrets.ECR_URL }}/thestuffer-frontend:${{ github.sha }}
