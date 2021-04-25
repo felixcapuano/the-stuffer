@@ -27,11 +27,11 @@ jobs:
       
     - name: Build images
       run:
-       docker build --tag ${{ secrets.AWS_ECR_URL }}/auth-backend:${{ github.sha }} ./auth-backend
-       docker build --tag ${{ secrets.AWS_ECR_URL }}/thestuffer-backend:${{ github.sha }} ./thestuffer-backend
-       docker build --tag ${{ secrets.AWS_ECR_URL }}/thestuffer-frontend:${{ github.sha }} ./thestuffer-frontend
+        docker build --tag ${{ secrets.AWS_ECR_URL }}/auth-backend:${{ github.sha }} ./auth-backend
+        docker build --tag ${{ secrets.AWS_ECR_URL }}/thestuffer-backend:${{ github.sha }} ./thestuffer-backend
+        docker build --tag ${{ secrets.AWS_ECR_URL }}/thestuffer-frontend:${{ github.sha }} ./thestuffer-frontend
     - name: Push images
       run:
-       docker push ${{ secrets.ECR_URL }}/auth-backend:${{ github.sha }}
-       docker push ${{ secrets.ECR_URL }}/thestuffer-backend:${{ github.sha }}
-       docker push ${{ secrets.ECR_URL }}/thestuffer-frontend:${{ github.sha }}
+        docker push ${{ secrets.ECR_URL }}/auth-backend:${{ github.sha }}
+        docker push ${{ secrets.ECR_URL }}/thestuffer-backend:${{ github.sha }}
+        docker push ${{ secrets.ECR_URL }}/thestuffer-frontend:${{ github.sha }}
