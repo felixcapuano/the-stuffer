@@ -22,14 +22,21 @@ services:
       - thestuffer-backend
       - thestuffer-frontend
     volumes:
-      - ./nginx/nginx-development.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx-internal.conf:/etc/nginx/nginx.conf
     ports:
       - 8080:80
 
   auth-backend:
     container_name: auth-backend
-    image: auth-backend
+    image: auth-backend.dev
     build: ./auth-backend
+    build: 
+      context: ./auth-backend
+      dockerfile: Dockerfile.dev
+    # volumes:
+    #   - type: bind
+    #     source: ./app
+    #     target: /app
     environment:
       MONGO_URI: mongodb://mongo:27017/thestuffer
       AUTH_MONGO_USERNAME: auth
@@ -41,10 +48,16 @@ services:
 
   thestuffer-backend:
     container_name: thestuffer-backend
-    image: thestuffer-backend
-    build: ./thestuffer-backend
+    image: thestuffer-backend.dev
+    build: 
+      context: ./thestuffer-backend
+      dockerfile: Dockerfile.dev
+    # volumes:
+    #   - type: bind
+    #     source: ./app
+    #     target: /app
     environment:
-      MONGO_URI: mongodb://mongo:27017/thestuffer
+      MONGO_URI: mongobd://mongo:27017/thestuffer
       STUFF_MONGO_USERNAME: stuff
       STUFF_MONGO_PASSWORD: 123
     depends_on:
@@ -54,9 +67,15 @@ services:
 
   thestuffer-frontend:
     container_name: thestuffer-frontend
-    image: thestuffer-frontend
-    build: ./thestuffer-frontend
+    image: thestuffer-frontend.dev
+    build: 
+      context: ./thestuffer-frontend
+      dockerfile: Dockerfile.dev
+    # volumes:
+    #   - type: bind
+    #     source: ./app
+    #     target: /app
     depends_on:
       - mongo
     ports:
-      - 8081:8080
+      - 3000:3000
