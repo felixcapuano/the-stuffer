@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-let ObjectID = require('mongodb').ObjectID;
-
 const models = require('./models');
 
 const URI = process.env.MONGO_URI;
@@ -22,15 +20,15 @@ const options = {
 };
 
 exports.connect = () => {
-  console.log('uri : ' + URI);
   console.log('Trying to connect to mongo');
+  console.log('uri : ' + URI);
   mongoose.connect(URI, options).then(
     () => console.log('Mongo connection established!'),
     () => console.log('Mongo connection failed!')
   );
 
   const db = mongoose.connection;
-  db.on('error', (e) => console.log('Mongo error : ' + e.message));
+  db.on('error', (e) => console.log('Mongo error : ' + e));
   db.on('disconnected', () => console.log('Connection interrupted'));
 };
 

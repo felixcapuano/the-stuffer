@@ -29,7 +29,7 @@ exports.connect = () => {
 
   const db = mongoose.connection;
 
-  db.on('error', (e) => console.log('Mongo error : ' + e.message));
+  db.on('error', (e) => console.log('Mongo error : ' + e));
   db.on('disconnected', () => console.log('Connection interrupted'));
 };
 

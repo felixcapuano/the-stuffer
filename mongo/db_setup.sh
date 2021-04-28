@@ -1,4 +1,4 @@
-mongo ${MONGO_DATABASE} \
+mongo ${MONGO_INITDB_DATABASE} \
 --host localhost \
 --port ${MONGO_PORT} \
 -u ${MONGO_INITDB_ROOT_USERNAME} \

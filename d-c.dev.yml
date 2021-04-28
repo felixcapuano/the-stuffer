@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  mongo:
+    image: mongo:4.4.4
+    container_name: mongo
+    volumes:
+      - ./mongo/init-scripts:/docker-entrypoint-initdb.d:ro
+      - ./mongo/mongo-volume:/data/db
+    environment: 
+      MONGO_INITDB_DATABASE: thestuffer
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
