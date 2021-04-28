@@ -7,6 +7,16 @@ const app = express();
 
 require('./mongo/core').connect();
 
+if (process.env.NODE_ENV === 'development') {
+  console.log('Development server use CORS');
+  app.use(
+    require('cors')({
+      origin: 'http://localhost:3000',
+      credentials: true,
+    })
+  );
+}
+
 app.use(express.json());
 
 const stuffRouter = require('./routes/stuff');

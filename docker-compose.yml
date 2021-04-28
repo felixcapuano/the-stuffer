@@ -22,7 +22,7 @@ services:
       - thestuffer-backend
       - thestuffer-frontend
     volumes:
-      - ./nginx/nginx-development.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 8080:80
 
@@ -31,26 +31,28 @@ services:
     image: auth-backend
     build: ./auth-backend
     environment:
+      NODE_ENV: production
       MONGO_URI: mongodb://mongo:27017/thestuffer
       AUTH_MONGO_USERNAME: auth
       AUTH_MONGO_PASSWORD: 123
     depends_on:
       - mongo
-    ports:
-      - 3002:3002
+    # ports:
+    #   - 3002:3002
 
   thestuffer-backend:
     container_name: thestuffer-backend
     image: thestuffer-backend
     build: ./thestuffer-backend
     environment:
+      NODE_ENV: production
       MONGO_URI: mongodb://mongo:27017/thestuffer
       STUFF_MONGO_USERNAME: stuff
       STUFF_MONGO_PASSWORD: 123
     depends_on:
       - mongo
-    ports:
-      - 3001:3001
+    # ports:
+    #   - 3001:3001
 
   thestuffer-frontend:
     container_name: thestuffer-frontend
@@ -58,5 +60,5 @@ services:
     build: ./thestuffer-frontend
     depends_on:
       - mongo
-    ports:
-      - 8081:8080
+    # ports:
+    #   - 8081:8080

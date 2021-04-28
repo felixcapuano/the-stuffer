@@ -6,8 +6,17 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const app = express();
 
-const mongo = require('./mongo/core');
-mongo.connect();
+require('./mongo/core').connect();
+
+if (process.env.NODE_ENV === 'development') {
+  console.log('Development server use CORS');
+  app.use(
+    require('cors')({
+      origin: 'http://localhost:3000',
+      credentials: true,
+    })
+  );
+}
 
 const loginRoute = require('./routes/login');
 const registerRoute = require('./routes/register');
