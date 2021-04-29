@@ -18,16 +18,14 @@ spec:
         - name: awsecr-cred
       containers:
         - name: thestuffer-backend
-          image: 457436777387.dkr.ecr.eu-west-1.amazonaws.com/thestuffer-backend:latest
+          image: 457436777387.dkr.ecr.eu-west-1.amazonaws.com/thestuffer-backend:ac4b1f68c3459be58d0e31af941246eb682ee452
           ports:
             - containerPort: 3001
           env:
-            - name: STUFF_PORT
+            - name: NODE_ENV
+              value: production
+            - name: PORT
               value: '3001'
-            - name: THESTUFFER_HOST
-              value: thestuffer-frontend
-            - name: THESTUFFER_PORT
-              value: '3000'
             - name: MONGO_URI
               valueFrom:
                 configMapKeyRef:

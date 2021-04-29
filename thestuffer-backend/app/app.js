@@ -1,21 +1,20 @@
-const dotenv = require('dotenv').config();
-if (dotenv.error) throw dotenv.error;
-const PORT = process.env.STUFF_PORT;
+require('dotenv').config();
 
 const express = require('express');
 const app = express();
 
-require('./mongo/core').connect();
+if (process.env.NODE_ENV !== 'production') {
+  console.log('Startup: development');
 
-if (process.env.NODE_ENV === 'development') {
-  console.log('Development server use CORS');
   app.use(
     require('cors')({
       origin: 'http://localhost:3000',
       credentials: true,
     })
   );
-}
+} else console.log('Startup: production');
+
+require('./mongo/core').connect();
 
 app.use(express.json());
 
@@ -26,6 +25,8 @@ app.get('/ping', (req, res) =>
   res.json({ ok: true, server: 'thestuffer-backend' })
 );
 
+const PORT = process.env.PORT;
+if (!PORT) throw new Error('PORT not set.');
 app.listen(PORT, () => {
   console.log(`Stuff server listenning on port : ${PORT}`);
 });

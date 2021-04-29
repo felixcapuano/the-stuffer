@@ -1,22 +1,22 @@
-const dotenv = require('dotenv').config();
-if (dotenv.error) throw dotenv.error;
-const PORT = process.env.AUTH_PORT;
+require('dotenv').config();
 
-const cookieParser = require('cookie-parser');
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
 
-require('./mongo/core').connect();
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV !== 'production') {
+  console.log('Startup: development');
 
-if (process.env.NODE_ENV === 'development') {
-  console.log('Development server use CORS');
   app.use(
     require('cors')({
       origin: 'http://localhost:3000',
       credentials: true,
     })
   );
-}
+} else console.log('Startup: production');
+
+require('./mongo/core').connect();
 
 const loginRoute = require('./routes/login');
 const registerRoute = require('./routes/register');
@@ -32,6 +32,8 @@ app.get('/token', tokenRoute);
 app.delete('/logout', logoutRoute);
 app.get('/ping', (req, res) => res.json({ ok: true, server: 'auth-backend' }));
 
+const PORT = process.env.PORT;
+if (!PORT) throw new Error('PORT not set.');
 app.listen(PORT, () => {
   console.log(`Auth server listening on port : ${PORT}`);
 });
