@@ -18,7 +18,7 @@ spec:
         - name: awsecr-cred
       containers:
         - name: thestuffer-backend
-          image: 457436777387.dkr.ecr.eu-west-1.amazonaws.com/thestuffer-frontend:ac4b1f68c3459be58d0e31af941246eb682ee452
+          image: 457436777387.dkr.ecr.eu-west-1.amazonaws.com/thestuffer-frontend:1c5e1505a75fcc7cfdaf96641690ace8e3f69f56
           env:
             - name: PORT
               value: '8080'
