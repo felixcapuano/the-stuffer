@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: the-stuffer
   name: mongo-configmap
 data:
   uri: mongodb+srv://mammoth.rq5fy.mongodb.net/thestuffer?retryWrites=true&w=majority

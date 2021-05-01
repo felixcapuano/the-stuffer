@@ -58,6 +58,8 @@ services:
     container_name: thestuffer-frontend
     image: thestuffer-frontend
     build: ./thestuffer-frontend
+    environment:
+      PORT: 8080
     depends_on:
       - mongo
     # ports:
