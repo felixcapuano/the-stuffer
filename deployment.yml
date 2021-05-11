@@ -30,6 +30,7 @@ services:
     image: ${REGISTRY_URL}/auth-backend:${VERSION}
     container_name: auth-backend
     environment:
+      PORT: 3002
       NODE_ENV: production
       MONGO_URI: mongodb://mongo:27017/thestuffer
       AUTH_MONGO_USERNAME: auth
@@ -41,6 +42,7 @@ services:
     container_name: thestuffer-backend
     image: ${REGISTRY_URL}/thestuffer-backend:${VERSION}
     environment:
+      PORT: 3001
       NODE_ENV: production
       MONGO_URI: mongodb://mongo:27017/thestuffer
       STUFF_MONGO_USERNAME: stuff
@@ -51,5 +53,7 @@ services:
   thestuffer-frontend:
     container_name: thestuffer-frontend
     image: ${REGISTRY_URL}/thestuffer-frontend:${VERSION}
+    environment:
+      PORT: 8080
     depends_on:
       - mongo
