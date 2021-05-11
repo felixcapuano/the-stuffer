@@ -27,7 +27,7 @@ services:
       - 8080:80
 
   auth-backend:
-    images: ${REGISTRY_URL}/auth-backend:${VERSION}
+    image: ${REGISTRY_URL}/auth-backend:${VERSION}
     container_name: auth-backend
     environment:
       NODE_ENV: production
@@ -39,7 +39,7 @@ services:
 
   thestuffer-backend:
     container_name: thestuffer-backend
-    images: ${REGISTRY_URL}/thestuffer-backend:${VERSION}
+    image: ${REGISTRY_URL}/thestuffer-backend:${VERSION}
     environment:
       NODE_ENV: production
       MONGO_URI: mongodb://mongo:27017/thestuffer
@@ -50,6 +50,6 @@ services:
 
   thestuffer-frontend:
     container_name: thestuffer-frontend
-    images: ${REGISTRY_URL}/thestuffer-frontend:${VERSION}
+    image: ${REGISTRY_URL}/thestuffer-frontend:${VERSION}
     depends_on:
       - mongo
