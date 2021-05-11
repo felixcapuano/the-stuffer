@@ -24,13 +24,14 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - 8080:80
+      - 81:80
 
   auth-backend:
     container_name: auth-backend
     image: auth-backend
     build: ./auth-backend
     environment:
+      PORT: 3002
       NODE_ENV: production
       MONGO_URI: mongodb://mongo:27017/thestuffer
       AUTH_MONGO_USERNAME: auth
@@ -45,6 +46,7 @@ services:
     image: thestuffer-backend
     build: ./thestuffer-backend
     environment:
+      PORT: 3001
       NODE_ENV: production
       MONGO_URI: mongodb://mongo:27017/thestuffer
       STUFF_MONGO_USERNAME: stuff
@@ -58,6 +60,8 @@ services:
     container_name: thestuffer-frontend
     image: thestuffer-frontend
     build: ./thestuffer-frontend
+    environment: 
+      PORT: 8080
     depends_on:
       - mongo
     # ports:
