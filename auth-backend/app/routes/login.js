@@ -7,7 +7,8 @@ const { isRefreshTokenExist } = require('../mongo/core');
 
 module.exports = async (req, res) => {
   const isExist = await isRefreshTokenExist(req.cookies.jid);
-  if (isExist) return res.send({ ok: false, message: 'You already login' });
+  if (isExist)
+    return await res.send({ ok: false, message: 'You already login' });
 
   const valid = validation.login(req.body);
   if (!valid)
@@ -23,7 +24,7 @@ module.exports = async (req, res) => {
 
   const validPass = await bcrypt.compare(req.body.password, user.password);
   if (!validPass)
-    return res.send({ ok: false, message: 'Email or password is wrong' });
+    return await res.send({ ok: false, message: 'Email or password is wrong' });
 
   // save the refreshtoken
   const refreshToken = generateRefreshToken({ id: user._id });
@@ -32,10 +33,10 @@ module.exports = async (req, res) => {
   try {
     await token.save();
   } catch (err) {
-    return res.send({ ok: false, message: 'Internal error' });
+    return await res.send({ ok: false, message: 'Internal error' });
   }
 
-  return res.cookie('jid', refreshToken, { httpOnly: true }).send({
+  return await res.cookie('jid', refreshToken, { httpOnly: true }).send({
     ok: true,
     message: 'Success',
     accessToken: generateAccessToken({ id: user._id, role: user.role }),

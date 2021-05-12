@@ -7,21 +7,21 @@ module.exports = async (req, res) => {
   const badRequest = { ok: false, message: '', accessToken: '' };
 
   const refreshToken = req.cookies.jid;
-  if (!refreshToken) return res.send(badRequest);
+  if (!refreshToken) return await res.send(badRequest);
 
   const tokenExist = await Token.findOne({ token: refreshToken });
-  if (!tokenExist) return res.send(badRequest);
+  if (!tokenExist) return await res.send(badRequest);
 
   try {
     const { id } = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
 
     const user = await User.findOne({ _id: id });
-    if (!user) return res.send(badRequest);
+    if (!user) return await res.send(badRequest);
 
     const _accessToken = generateAccessToken({ id, role: user.role });
-    return res.send({ ok: true, message: '', accessToken: _accessToken });
+    return await res.send({ ok: true, message: '', accessToken: _accessToken });
   } catch (error) {
     console.error(error);
-    return res.send(badRequest);
+    return await res.send(badRequest);
   }
 };

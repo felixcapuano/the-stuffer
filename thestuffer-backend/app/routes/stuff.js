@@ -10,7 +10,7 @@ stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {
 
   if (collection === 'landing') {
     if (!(req.body._user.role === 'admin'))
-      return res.send({ ok: false, message: 'Access denied' });
+      return await res.send({ ok: false, message: 'Access denied' });
   }
 
   req.body.creator = req.body._user.id;
@@ -18,26 +18,26 @@ stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {
   const model = new models[collection](req.body);
   try {
     const doc = await model.save();
-    return res.send({ ok: true, message: 'Success', _id: doc._id });
+    return await res.send({ ok: true, message: 'Success', _id: doc._id });
   } catch (err) {
     console.error(err);
-    return res.send({ ok: false, message: '' });
+    return await res.send({ ok: false, message: '' });
   }
 });
 
 stuffRouter.get('/:collection/get/:id', async (req, res) => {
   const Model = models[req.params.collection];
-  if (!Model) return res.sendStatus(404);
+  if (!Model) return await res.sendStatus(404);
 
   const id = req.params.id;
   try {
     const doc = await Model.findById(id);
-    if (!doc || doc.deleted) return res.sendStatus(404);
+    if (!doc || doc.deleted) return await res.sendStatus(404);
 
-    return res.send({ ok: true, message: 'Success', hit: doc });
+    return await res.send({ ok: true, message: 'Success', hit: doc });
   } catch (err) {
     console.error(err);
-    return res.send({ ok: false, message: '' });
+    return await res.send({ ok: false, message: '' });
   }
 });
 
@@ -59,11 +59,11 @@ stuffRouter.put(
     const id = req.params.id;
     try {
       const doc = await Model.findByIdAndUpdate(id, req.body);
-      if (!doc) return res.send({ ok: false, message: '' });
+      if (!doc) return await res.send({ ok: false, message: '' });
 
-      return res.send({ ok: true, message: '', _id: doc._id });
+      return await res.send({ ok: true, message: '', _id: doc._id });
     } catch (err) {
-      return res.send({ ok: false, message: '' });
+      return await res.send({ ok: false, message: '' });
     }
   }
 );
@@ -74,15 +74,15 @@ stuffRouter.delete('/delete/:id', async (req, res) => {
   const id = req.params.id;
   try {
     const doc = await Model.findById(id);
-    if (!doc) return res.send({ ok: false, message: '' });
+    if (!doc) return await res.send({ ok: false, message: '' });
 
     doc.deleted = !doc.deleted ? true : !doc.deleted;
 
     await doc.save();
 
-    return res.send({ ok: true, message: 'Success', _id: doc._id });
+    return await res.send({ ok: true, message: 'Success', _id: doc._id });
   } catch (err) {
-    return res.send({ ok: false, message: '' });
+    return await res.send({ ok: false, message: '' });
   }
 });
 
@@ -122,9 +122,9 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
   try {
     const doc = await Model.find(payload, {});
 
-    return res.send({ ok: true, message: 'Success', hits: doc });
+    return await res.send({ ok: true, message: 'Success', hits: doc });
   } catch (err) {
-    return res.send({ ok: false, message: '' });
+    return await res.send({ ok: false, message: '' });
   }
 });
 

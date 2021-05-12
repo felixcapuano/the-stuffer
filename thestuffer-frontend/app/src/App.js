@@ -33,7 +33,6 @@ const App = () => {
   return (
     <div className='App'>
       <AuthContext.Provider value={loggedContextValue}>
-        user is logged : {logged.toString()}
         <Router />
       </AuthContext.Provider>
     </div>

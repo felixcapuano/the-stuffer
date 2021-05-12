@@ -1,4 +1,8 @@
 require('dotenv').config();
+if (!process.env.ACCESS_TOKEN)
+  throw new Error('Env variable ACCESS_TOKEN not set');
+if (!process.env.REFRESH_TOKEN)
+  throw new Error('Env variable ACCESS_TOKEN not set');
 
 const express = require('express');
 const app = express();
