@@ -5,7 +5,7 @@
       {
         "command": "workbench.action.terminal.sendSequence",
         "args": {
-          "text": "docker-compose --file d-c.dev.yml up\n"
+          "text": "docker-compose --file dev.yml up\n"
         }
       },
       "workbench.action.terminal.new",
