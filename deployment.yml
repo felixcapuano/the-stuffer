@@ -9,8 +9,8 @@ services:
       MONGO_INITDB_DATABASE: thestuffer
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-    ports:
-      - 27017:27017
+    # ports:
+    #   - 27017:27017
 
   reverse-proxy:
     image: ${REGISTRY_URL}/thestuffer-nginx:${VERSION}
