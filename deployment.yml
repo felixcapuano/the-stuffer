@@ -1,10 +1,9 @@
 version: '3.9'
 services:
   mongo:
-    image: mongo:4.4.4
+    image: ${REGISTRY_URL}/thestuffer-mongo:${VERSION}
     container_name: mongo
     volumes:
-      - ./mongo/init-scripts:/docker-entrypoint-initdb.d:ro
       - ./mongo/mongo-volume:/data/db
     environment: 
       MONGO_INITDB_DATABASE: thestuffer
@@ -14,15 +13,13 @@ services:
       - 27017:27017
 
   reverse-proxy:
-    image: nginx
+    image: ${REGISTRY_URL}/thestuffer-nginx:${VERSION}
     container_name: reverse-proxy
     depends_on:
       - mongo
       - auth-backend
       - thestuffer-backend
       - thestuffer-frontend
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 8080:80
 
