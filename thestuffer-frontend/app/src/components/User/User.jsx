@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { authInstance } from '../../axios';
 
@@ -32,7 +32,10 @@ const User = () => {
       <li>{role}</li>
       <li>{email}</li>
       <li>{username}</li>
-      <li>{verifed.toString()}</li>
+      <li>
+      {verifed.toString()}
+      {!verifed && <Link to='/user/verification'>(verify email)</Link>}
+      </li>
     </ul>
   );
 };
