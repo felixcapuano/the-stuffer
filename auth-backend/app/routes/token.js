@@ -18,7 +18,8 @@ module.exports = async (req, res) => {
     const user = await User.findOne({ _id: id });
     if (!user) return await res.send(badRequest);
 
-    const _accessToken = generateAccessToken({ id, role: user.role });
+    user.password = undefined;
+    const _accessToken = generateAccessToken(user.toObject());
     return await res.send({ ok: true, message: '', accessToken: _accessToken });
   } catch (error) {
     console.error(error);

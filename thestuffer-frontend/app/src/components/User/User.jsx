@@ -16,8 +16,7 @@ const User = () => {
 
   useEffect(() => {
     authInstance.get('/user').then(async (res) => {
-      if (!res.data.ok) return history.push('/')
-      console.log('request')
+      if (!res.data.ok) return history.push('/');
       setCreation(res.data.hit.date);
       setRole(res.data.hit.role);
       setUsername(res.data.hit.username);
@@ -33,8 +32,8 @@ const User = () => {
       <li>{email}</li>
       <li>{username}</li>
       <li>
-      {verifed.toString()}
-      {!verifed && <Link to='/user/verification'>(verify email)</Link>}
+        {verifed.toString()}
+        {!verifed && <Link to='/user/verification'>(verify email)</Link>}
       </li>
     </ul>
   );

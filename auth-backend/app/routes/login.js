@@ -36,9 +36,10 @@ module.exports = async (req, res) => {
     return await res.send({ ok: false, message: 'Internal error' });
   }
 
+  user.password = undefined;
   return await res.cookie('jid', refreshToken, { httpOnly: true }).send({
     ok: true,
     message: 'Success',
-    accessToken: generateAccessToken({ id: user._id, role: user.role }),
+    accessToken: generateAccessToken(user.toObject()),
   });
 };
