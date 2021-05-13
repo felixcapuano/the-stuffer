@@ -12,21 +12,21 @@
       {
         "command": "workbench.action.terminal.sendSequence",
         "args": {
-          "text": "cd ./thestuffer-frontend/app\nnpm run dev-start\n"
+          "text": "cd ./thestuffer-frontend/app\nnpm install\nnpm run dev-start\n"
         }
       },
       "workbench.action.terminal.split",
       {
         "command": "workbench.action.terminal.sendSequence",
         "args": {
-          "text": "cd ./auth-backend/app\nnpm run dev-start\n"
+          "text": "cd ./auth-backend/app\nnpm install\nnpm run dev-start\n"
         }
       },
       "workbench.action.terminal.split",
       {
         "command": "workbench.action.terminal.sendSequence",
         "args": {
-          "text": "cd ./thestuffer-backend/app\nnpm run dev-start\n"
+          "text": "cd ./thestuffer-backend/app\nnpm install\nnpm run dev-start\n"
         }
       }
     ]

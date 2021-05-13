@@ -2,7 +2,7 @@ const stuffRouter = require('express').Router();
 
 const validation = require('../validation/validation');
 const models = require('../mongo/models');
-const { isAuth } = require('../auth');
+const isAuth = require('../auth');
 const { cleanEmpty } = require('../utils');
 
 stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {

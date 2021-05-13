@@ -7,6 +7,7 @@ if (!process.env.REFRESH_TOKEN)
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
+const isAuth = require('./auth')
 
 if (process.env.NODE_ENV !== 'production') {
   console.log('Startup: development');
@@ -25,6 +26,7 @@ const loginRoute = require('./routes/login');
 const registerRoute = require('./routes/register');
 const tokenRoute = require('./routes/token');
 const logoutRoute = require('./routes/logout');
+const { getUser } = require('./routes/user');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -33,6 +35,7 @@ app.post('/login', loginRoute);
 app.post('/register', registerRoute);
 app.get('/token', tokenRoute);
 app.delete('/logout', logoutRoute);
+app.get('/user', isAuth, getUser);
 app.get('/ping', (req, res) => res.json({ ok: true, server: 'auth-backend' }));
 
 const PORT = process.env.PORT;
