@@ -16,9 +16,18 @@ const createIcon = (path) =>
   });
 
 const icons = {
-  smoke: createIcon('images/icons/smoke.png'),
-  flash: createIcon('images/icons/flash.png'),
-  molotov: createIcon('images/icons/molotov.png'),
+  smoke: {
+    classic: createIcon('images/icons/smoke.png'),
+    highlight: createIcon('images/icons/smoke_h.png'),
+  },
+  flash: {
+    classic: createIcon('images/icons/flash.png'),
+    highlight: createIcon('images/icons/flash_h.png'),
+  },
+  molotov: {
+    classic: createIcon('images/icons/molotov.png'),
+    highlight: createIcon('images/icons/molotov_h.png'),
+  },
 };
 
 const markerTypes = ['smoke', 'molotov', 'flash'];
@@ -43,8 +52,8 @@ const LandingLayer = ({
       stuffInstance
         .get(`/stuff/landing/get/${target}`)
         .then((res) => {
-          const hits = res.data.hit ? [res.data.hit]: [];
-          setData({ isLoading: false, hits});
+          const hits = res.data.hit ? [res.data.hit] : [];
+          setData({ isLoading: false, hits });
         })
         .catch((error) => setData({ isLoading: false, error }));
     } else {
@@ -69,24 +78,25 @@ const LandingLayer = ({
 
   const handlerMarker = {
     click: (e) => {
+      console.log(e.target);
       if (disabledMarker) return;
       const landingId = e.target.options.dataId;
       setTarget(target ? null : landingId);
     },
   };
 
-  const createMarker = (hit) => (
+  const createMarker = (hit, highlighted) => (
     <Marker
       dataId={hit._id}
       key={hit._id}
       position={[hit.position.lat, hit.position.lng]}
       eventHandlers={handlerMarker}
-      icon={icons[hit.type]}
+      icon={icons[hit.type][highlighted ? 'highlight' : 'classic']}
     />
   );
 
   const landingMarkers = (_type) => {
-    return hits.map((h) => (h.type === _type ? createMarker(h) : null));
+    return hits.map((h) => (h.type === _type ? createMarker(h, target) : null));
   };
 
   const stuffOverLay = (markersList) => {
