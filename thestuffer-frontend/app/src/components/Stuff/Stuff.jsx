@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useContext, useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -7,6 +7,7 @@ import { stuffInstance } from '../../axios';
 import { Map } from '../Map';
 import { Showcase } from '../Showcase';
 import { ThrowingCard } from '../ThrowingCard';
+import AuthContext from '../../context/AuthContext';
 
 import './Stuff.css';
 
@@ -15,6 +16,7 @@ const CLICK_RADIUS = 5;
 const Stuff = () => {
   const params = useParams();
   const [landingTarget, setLandingTarget] = useState(null);
+  const { user } = useContext(AuthContext);
 
   const [{ hits, isLoading, error }, setData] = useState({
     hits: [],
@@ -69,6 +71,8 @@ const Stuff = () => {
     const type = landingTarget ? `throwing?id=${landingTarget}&` : 'landing?';
     const query = type + 'map=' + params.map;
 
+    // user && !landingTarget && user.role === 'admin';
+
     return (
       <LinkContainer to={'/stuff/create/' + query}>
         <Button variant='light'>Create new</Button>
@@ -93,7 +97,20 @@ const Stuff = () => {
       {mapComponent}
       {!isLoading && !error && (
         <div>
-          {createButton()}
+          {user && landingTarget && (
+            <LinkContainer
+              to={`/stuff/create/throwing?id=${landingTarget}&map=${params.map}`}
+            >
+              <Button variant='light'>Create new throwing spot</Button>
+            </LinkContainer>
+          )}
+          {user && user.role === 'admin' && !landingTarget && (
+            <LinkContainer
+              to={`/stuff/create/landing?map=${params.map}`}
+            >
+              <Button variant='light'>Create new landing spot</Button>
+            </LinkContainer>
+          )}
           <Showcase>{cards}</Showcase>
         </div>
       )}
