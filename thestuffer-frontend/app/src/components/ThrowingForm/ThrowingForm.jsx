@@ -46,7 +46,8 @@ const ThrowingForm = () => {
       description: '',
     },
     onSubmit: (values) => {
-      if (!cursor.current.floor) return alert('You have to select a position on the map.')
+      if (cursor.current.floor === undefined)
+        return alert('You have to select a position on the map.');
       values.position = {
         lat: parseFloat(cursor.current.lat.toFixed(3)),
         lng: parseFloat(cursor.current.lng.toFixed(3)),
@@ -87,8 +88,7 @@ const ThrowingForm = () => {
     [map, id, posSelectionHandler]
   );
 
-  if (!id || !map) return history.push('/');
-
+  if (!id || !map) history.push('/');
   return (
     <Col xl={{ span: 10, offset: 1 }}>
       <Form className='throwingForm' onSubmit={formik.handleSubmit}>

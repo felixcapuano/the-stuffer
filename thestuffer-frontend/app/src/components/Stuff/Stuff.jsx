@@ -23,38 +23,41 @@ const Stuff = () => {
     landingTarget: null,
   });
 
-  const clickHandler = useCallback(({ event, landingMode }) => {
-    if (landingMode) return;
+  const clickHandler = useCallback(
+    ({ event, landingMode }) => {
+      if (landingMode) return;
 
-    const pos = event.latlng;
-    const payload = {
-      collection: 'throwing',
-      landing_id: landingTarget,
-      position: {
-        lat: {
-          gt: pos.lat - CLICK_RADIUS,
-          lt: pos.lat + CLICK_RADIUS,
+      const pos = event.latlng;
+      const payload = {
+        collection: 'throwing',
+        landing_id: landingTarget,
+        position: {
+          lat: {
+            gt: pos.lat - CLICK_RADIUS,
+            lt: pos.lat + CLICK_RADIUS,
+          },
+          lng: {
+            gt: pos.lng - CLICK_RADIUS,
+            lt: pos.lng + CLICK_RADIUS,
+          },
+          floor: 0,
         },
-        lng: {
-          gt: pos.lng - CLICK_RADIUS,
-          lt: pos.lng + CLICK_RADIUS,
-        },
-        floor: 0,
-      },
-    };
+      };
 
-    setData({ isLoading: true });
-    stuffInstance
-      .post('/stuff/search', payload)
-      .then((res) => {
-        if (!res.data.ok) throw new Error(res.data.message);
-        setData({
-          isLoading: false,
-          hits: res.data.hits,
-        });
-      })
-      .catch((error) => setData({ isLoading: false, error }));
-  }, [landingTarget, setData]);
+      setData({ isLoading: true });
+      stuffInstance
+        .post('/stuff/search', payload)
+        .then((res) => {
+          if (!res.data.ok) throw new Error(res.data.message);
+          setData({
+            isLoading: false,
+            hits: res.data.hits,
+          });
+        })
+        .catch((error) => setData({ isLoading: false, error }));
+    },
+    [landingTarget, setData]
+  );
 
   const cards =
     hits &&
@@ -63,24 +66,26 @@ const Stuff = () => {
     });
 
   const createButton = () => {
-    const throwQuery =
-      'throwing?id=' + landingTarget + '&map=' + params.map;
-    const type = landingTarget ? throwQuery : 'landing';
+    const type = landingTarget ? `throwing?id=${landingTarget}&` : 'landing?';
+    const query = type + 'map=' + params.map;
 
     return (
-      <LinkContainer to={'/stuff/create/' + type}>
+      <LinkContainer to={'/stuff/create/' + query}>
         <Button variant='light'>Create new</Button>
       </LinkContainer>
     );
   };
 
-  const mapComponent = useMemo(() => (
+  const mapComponent = useMemo(
+    () => (
       <Map
         mapName={params.map}
         clickHandler={clickHandler}
         onChangeTarget={setLandingTarget}
       />
-  ), [params, setLandingTarget, clickHandler])
+    ),
+    [params, setLandingTarget, clickHandler]
+  );
 
   return (
     <div>
