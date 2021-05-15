@@ -5,8 +5,8 @@ module.exports = (req, res, next) => {
   if (!accessToken) return res.send({ ok: false, message: 'Need to login' });
 
   try {
-    const { id, role } = verify(accessToken, process.env.ACCESS_TOKEN);
-    req.body._user = { id, role };
+    const user = verify(accessToken, process.env.ACCESS_TOKEN);
+    req.body._user = user;
   } catch (error) {
     console.error(error);
     return res.send({ ok: false, message: 'Access denied' });
