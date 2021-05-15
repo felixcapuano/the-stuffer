@@ -19,7 +19,6 @@ const LandingForm = ({ mapName }) => {
     floor: 0,
     lat: 0,
     lng: 0,
-    type: 'smoke',
   });
 
   const formik = useFormik({
