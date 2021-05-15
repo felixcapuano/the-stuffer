@@ -13,7 +13,7 @@ import './Login.css';
 import { InputGroup } from '../InputGroup';
 
 const Login = () => {
-  const { updateLogged } = useContext(AuthContext);
+  const { updateUser } = useContext(AuthContext);
   const [message, setMessage] = useState('');
   const history = useHistory();
 
@@ -26,7 +26,7 @@ const Login = () => {
       authInstance.post('/login', values).then((res) => {
         setMessage(res.data.message);
         if (res.data.ok) {
-          updateLogged(true);
+          updateUser(res.data.user);
           setToken(res.data.accessToken);
           history.push('/');
         }

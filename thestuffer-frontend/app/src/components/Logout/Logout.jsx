@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import './Logout.css';
 
 const Logout = () => {
-  const { updateLogged } = useContext(AuthContext);
+  const { updateUser } = useContext(AuthContext);
   const history = useHistory();
 
   const logout = (e) => {
@@ -17,7 +17,7 @@ const Logout = () => {
 
     authInstance.delete('/logout').then((res) => {
       if (!res.data.ok) return console.error(res.data.message);
-      updateLogged(false);
+      updateUser(undefined);
       setToken('');
       history.push('/');
     });

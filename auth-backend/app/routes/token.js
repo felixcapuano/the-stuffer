@@ -20,7 +20,15 @@ module.exports = async (req, res) => {
 
     user.password = undefined;
     const _accessToken = generateAccessToken(user.toObject());
-    return await res.send({ ok: true, message: '', accessToken: _accessToken });
+    user.email = undefined;
+    user.date = undefined;
+    user.__v = undefined;
+    return await res.send({
+      ok: true,
+      message: '',
+      accessToken: _accessToken,
+      user: user.toObject(),
+    });
   } catch (error) {
     console.error(error);
     return await res.send(badRequest);
