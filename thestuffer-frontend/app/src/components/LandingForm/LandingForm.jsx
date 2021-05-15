@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { useFormik } from 'formik';
 
 import { stuffInstance } from '../../axios';
 import { Map } from '../Map';
@@ -21,28 +22,29 @@ const LandingForm = ({ mapName }) => {
     type: 'smoke',
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formFormatted = {
+  const formik = useFormik({
+    initialValues: {
       collection: 'landing',
-      type: cursor.type,
-      map: cursor.name,
-      position: {
+      type: 'smoke',
+      map: 'de_dust2',
+    },
+    onSubmit: async (values) => {
+      values.position = {
         lat: parseFloat(cursor.lat.toFixed(3)),
         lng: parseFloat(cursor.lng.toFixed(3)),
         floor: cursor.floor,
-      },
-    };
+      };
+      alert(JSON.stringify(values, null, 2));
 
-    try {
-      await stuffInstance.post('/stuff/create', formFormatted);
+      try {
+        await stuffInstance.post('/stuff/create', values);
 
-      history.push('/stuff/' + cursor.name);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+        history.push('/stuff/' + cursor.name);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
 
   const posSelectionHandler = useCallback(
     ({ event, map }) => {
@@ -51,27 +53,27 @@ const LandingForm = ({ mapName }) => {
     [cursor]
   );
 
-  const mapChangeHandler = (e) => {
-    setCursor({ ...cursor, name: e.target.value });
-  };
-
-  const typeChangeHandler = (e) => {
-    setCursor({ ...cursor, type: e.target.value });
-  };
-
-  const mapRender = useMemo(() => (
-    <Map
-      mapName={cursor.name}
-      clickHandler={posSelectionHandler}
-      disabledThrowing
-    />
-  ), [cursor, posSelectionHandler]);
+  const mapRender = useMemo(
+    () => (
+      <Map
+        mapName={cursor.name}
+        clickHandler={posSelectionHandler}
+        disabledThrowing
+      />
+    ),
+    [cursor, posSelectionHandler]
+  );
 
   return (
-    <Form className='landingForm' onSubmit={handleSubmit}>
+    <Form className='landingForm' onSubmit={formik.handleSubmit}>
       {mapRender}
       <Form.Group>
-        <Form.Control as='select' name='map' onChange={mapChangeHandler}>
+        <Form.Control
+          as='select'
+          name='map'
+          onChange={formik.handleChange}
+          value={formik.values.map}
+        >
           <option value='de_dust2'>Dust 2</option>
           <option value='de_inferno'>Inferno</option>
           <option value='de_mirage'>Mirage</option>
@@ -97,7 +99,12 @@ const LandingForm = ({ mapName }) => {
           Type
         </Form.Label>
         <Col>
-          <Form.Control name='type' as='select' onChange={typeChangeHandler}>
+          <Form.Control
+            name='type'
+            as='select'
+            onChange={formik.handleChange}
+            value={formik.values.type}
+          >
             <option value='smoke'>Smoke</option>
             <option value='flash'>Flash</option>
             <option value='molotov'>Molotov</option>
