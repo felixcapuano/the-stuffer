@@ -1,10 +1,7 @@
 import React from 'react';
 import './MapsMenu.css';
-import { Link } from 'react-router-dom';
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Carousel from 'react-bootstrap/Carousel';
 
 const maps = [
   {
@@ -44,31 +41,28 @@ const maps = [
   },
 ];
 
-function MapsMenu() {
-  const grid = maps.map((map) => {
-    return (
-      <Col key={map.key}>
-        <Link to={'/stuff/' + map.key}>
-          <div className='thumbnail'>
-            <img
-              src={window.location.origin + '/' + map.thumb}
-              className='img-fluid'
-              id='thumb-img'
-              alt={map.name}
-            ></img>
-            <div className='bottom-left'>{map.name}</div>
-          </div>
-        </Link>
-      </Col>
-    );
-  });
-
+const carouselItem = maps.map((map) => {
   return (
-    <Container fluid id='maps-menu'>
-      <Row>{grid.slice(0, 3)}</Row>
-      <Row>{grid.slice(3, 7)}</Row>
-    </Container>
+    <Carousel.Item key={map.key}>
+      <img
+        src={window.location.origin + '/' + map.thumb}
+        className='img-fluid'
+        id='thumb-img'
+        alt={map.name}
+      />
+      <Carousel.Caption>
+        <div className='mapName'>{map.name}</div>
+      </Carousel.Caption>
+    </Carousel.Item>
   );
-}
+});
+
+const MapsMenu = () => {
+  return (
+    <Carousel className='mapCarousel' fade indicators={false} interval={7000}>
+      {carouselItem}
+    </Carousel>
+  );
+};
 
 export default MapsMenu;

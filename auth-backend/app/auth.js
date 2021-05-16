@@ -1,5 +1,4 @@
 const { verify } = require('jsonwebtoken');
-const { User } = require('./mongo/model');
 
 module.exports = async (req, res, next) => {
   const accessToken = req.headers.authorization?.split(' ')[1];

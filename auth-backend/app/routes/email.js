@@ -37,7 +37,6 @@ exports.sendEmail = async (req, res) => {
   //    text: 'The token is : ' + _token,
   //  });
   //} catch (error) {
-  //  console.log(error);
   //  return await res.send({ ok: false, message: 'Email fail' });
   //}
 

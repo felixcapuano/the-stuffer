@@ -2,6 +2,9 @@ import React, { useContext, useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { LinkContainer } from 'react-router-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 import { stuffInstance } from '../../axios';
 import { Map } from '../Map';
@@ -67,19 +70,6 @@ const Stuff = () => {
       return <ThrowingCard key={data._id} data={data} />;
     });
 
-  const createButton = () => {
-    const type = landingTarget ? `throwing?id=${landingTarget}&` : 'landing?';
-    const query = type + 'map=' + params.map;
-
-    // user && !landingTarget && user.role === 'admin';
-
-    return (
-      <LinkContainer to={'/stuff/create/' + query}>
-        <Button variant='light'>Create new</Button>
-      </LinkContainer>
-    );
-  };
-
   const mapComponent = useMemo(
     () => (
       <Map
@@ -92,30 +82,33 @@ const Stuff = () => {
   );
 
   return (
-    <div>
-      <h1>{landingTarget ? 'Throwing spot' : 'Landing spot'}</h1>
-      {mapComponent}
+    <Container fluid>
       {!isLoading && !error && (
-        <div>
-          {user && landingTarget && (
-            <LinkContainer
-              to={`/stuff/create/throwing?id=${landingTarget}&map=${params.map}`}
-            >
-              <Button variant='light'>Create new throwing spot</Button>
-            </LinkContainer>
-          )}
-          {user && user.role === 'admin' && !landingTarget && (
-            <LinkContainer
-              to={`/stuff/create/landing?map=${params.map}`}
-            >
-              <Button variant='light'>Create new landing spot</Button>
-            </LinkContainer>
-          )}
-          <Showcase>{cards}</Showcase>
-        </div>
+        <Row className='commandBar'>
+          <Col sm={{ span: 3, offset: 9 }}>
+            {user && landingTarget && (
+              <LinkContainer
+                to={`/stuff/create/throwing?id=${landingTarget}&map=${params.map}`}
+              >
+                <Button variant='light' block>
+                  Create new throwing spot
+                </Button>
+              </LinkContainer>
+            )}
+            {user && user.role === 'admin' && !landingTarget && (
+              <LinkContainer to={`/stuff/create/landing?map=${params.map}`}>
+                <Button variant='light' block>
+                  Create new landing spot
+                </Button>
+              </LinkContainer>
+            )}
+          </Col>
+        </Row>
       )}
+      {mapComponent}
+      <Showcase>{cards}</Showcase>
       {error && 'Something goes wrong! ' + error}
-    </div>
+    </Container>
   );
 };
 

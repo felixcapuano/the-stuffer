@@ -38,7 +38,6 @@ const LandingForm = () => {
         lng: parseFloat(cursor.current.lng.toFixed(3)),
         floor: cursor.current.floor,
       };
-      alert(JSON.stringify(values, null, 2));
 
       try {
         await stuffInstance.post('/stuff/create', values);
@@ -52,7 +51,6 @@ const LandingForm = () => {
 
   const posSelectionHandler = useCallback(
     ({ event, map }) => {
-      console.log(map)
       cursor.current = { ...cursor.current, ...event.latlng, ...map };
     },
     [cursor]
@@ -66,7 +64,7 @@ const LandingForm = () => {
         disabledThrowing
       />
     ),
-    [cursor, posSelectionHandler]
+    [cursor, posSelectionHandler, map]
   );
 
   if (!map) history.push('/')

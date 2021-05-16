@@ -53,7 +53,6 @@ const ThrowingForm = () => {
         lng: parseFloat(cursor.current.lng.toFixed(3)),
         floor: cursor.current.floor,
       };
-      alert(JSON.stringify(values, null, 2));
 
       stuffInstance.post('/stuff/create', values).then((res) => {
         console.log(res.data);

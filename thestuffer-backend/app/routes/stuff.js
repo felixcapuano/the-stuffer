@@ -7,7 +7,6 @@ const { cleanEmpty } = require('../utils');
 
 stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {
   const collection = req.body.collection;
-  console.log(req.body);
 
   if (collection === 'landing') {
     if (!(req.body._user.role === 'admin'))

@@ -65,7 +65,7 @@ const Register = () => {
           Type again your password
         </InputGroup>
 
-        <Button variant='light' type='submit'>
+        <Button variant='dark' type='submit'>
           Submit
         </Button>
       </Form>
