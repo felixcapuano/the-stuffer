@@ -11,7 +11,7 @@ import { Logout } from '../Logout';
 import './NavBar.css';
 
 const NavBar = () => {
-  const { logged } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const maps = [
     { key: 'de_mirage', name: 'Mirage' },
     { key: 'de_dust2', name: 'Dust 2' },
@@ -39,15 +39,17 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls='navbar-nav' />
         <Navbar.Collapse id='navbar-nav'>
           <Nav className='mr-auto'>
-            <LinkContainer to='/user'>
-              <Nav.Link>User</Nav.Link>
-            </LinkContainer>
+            {user && (
+              <LinkContainer to='/user'>
+                <Nav.Link>User</Nav.Link>
+              </LinkContainer>
+            )}
             <Nav.Link>Help</Nav.Link>
             <NavDropdown title='Map' id='nav-dropdown'>
               {dropdownItems}
             </NavDropdown>
           </Nav>
-          {logged ? (
+          {user ? (
             <Logout />
           ) : (
             <div>

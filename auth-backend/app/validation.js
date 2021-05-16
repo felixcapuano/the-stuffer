@@ -40,3 +40,14 @@ exports.login = ajv.compile({
   required: ['email', 'password'],
   additionalProperties: false,
 });
+
+exports.emailToken = ajv.compile({
+  type: 'object',
+  properties: {
+    token: {
+      type: 'string',
+    },
+  },
+  required: ['token'],
+  additionalProperties: false,
+});

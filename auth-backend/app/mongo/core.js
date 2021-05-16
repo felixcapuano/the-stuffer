@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { User } = require('./model');
+const { User, Token } = require('./model');
 
 const URI = process.env.MONGO_URI;
 if (!URI) throw new Error('MONGO_URI not set.');
@@ -33,11 +33,12 @@ exports.connect = () => {
   db.on('disconnected', () => console.log('Connection interrupted'));
 };
 
-exports.isRefreshTokenExist = async (_token) => {
+exports.isRefreshTokenExist = async (_token = '') => {
   try {
-    const doc = await User.findOne({ token: _token });
+    const doc = await Token.findOne({ token: _token });
     return doc ? true : false;
   } catch (error) {
+    console.error(error);
     return false;
   }
 };

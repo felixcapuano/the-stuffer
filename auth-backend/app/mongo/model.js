@@ -6,6 +6,7 @@ const userSchema = mongoose.Schema({
   username: String,
   password: String,
   role: { type: String, default: 'user' },
+  verified: { type: Boolean, default: false },
 });
 
 const tokenSchema = mongoose.Schema({

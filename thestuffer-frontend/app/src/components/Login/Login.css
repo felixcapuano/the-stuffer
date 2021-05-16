@@ -1,3 +1,13 @@
-.LoginForm {
-  margin: 20% 20%;
+.loginForm {
+  margin-top: 10%;
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.forgetPassword {
+  margin-bottom: 15px;
+  font-weight: 50;
+  font-size: medium;
+  text-decoration: none;
 }

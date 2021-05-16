@@ -9,22 +9,19 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
-  const [logged, setLogged] = useState(false);
+  const [user, updateUser] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const loggedContextValue = {
-    logged: logged,
-    updateLogged: setLogged,
-  };
+  const userContextValue = { user, updateUser };
 
   useEffect(() => {
     authInstance.get('/token').then(async (res) => {
       console.log(res.data);
       setToken(res.data.accessToken);
       setLoading(false);
-      if (res.data.ok) setLogged(true);
+      if (res.data.ok) updateUser(res.data.user);
     });
-  }, [setLoading, setLogged]);
+  }, [setLoading, updateUser]);
 
   if (loading) {
     return <div>Waiting for server response...</div>;
@@ -32,8 +29,7 @@ const App = () => {
 
   return (
     <div className='App'>
-      <AuthContext.Provider value={loggedContextValue}>
-        user is logged : {logged.toString()}
+      <AuthContext.Provider value={userContextValue}>
         <Router />
       </AuthContext.Provider>
     </div>
