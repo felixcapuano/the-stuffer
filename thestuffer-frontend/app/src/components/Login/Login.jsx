@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { useFormik } from 'formik';
 
 import { authInstance } from '../../axios';
@@ -35,24 +37,43 @@ const Login = () => {
   });
 
   return (
-    <Form className='LoginForm' onSubmit={formik.handleSubmit}>
-      {message && <Alert variant='danger'>{message}</Alert>}
-      <InputGroup name='email' type='email' handleChange={formik.handleChange}>
-        Email
-      </InputGroup>
+    <Col className='loginPage' sm={{ span: 4, offset: 4 }}>
+      <Form className='loginForm' onSubmit={formik.handleSubmit}>
+        {message && <Alert variant='danger'>{message}</Alert>}
+        <Form.Row>
+          <InputGroup
+            name='email'
+            type='email'
+            handleChange={formik.handleChange}
+            value={formik.values.email}
+          >
+            Email
+          </InputGroup>
+        </Form.Row>
 
-      <InputGroup
-        name='password'
-        type='password'
-        handleChange={formik.handleChange}
-      >
-        Password
-      </InputGroup>
+        <Form.Row>
+          <InputGroup
+            name='password'
+            type='password'
+            handleChange={formik.handleChange}
+            value={formik.values.password}
+          >
+            Password
+          </InputGroup>
+        </Form.Row>
+        <Form.Row>
+          <Col className='forgetPassword' sm={{offset: 8}}>
+            <Link>Forget password</Link>
+          </Col>
+        </Form.Row>
 
-      <Button variant='light' type='submit'>
-        Submit
-      </Button>
-    </Form>
+        <Form.Row>
+          <Button variant='dark' type='submit' block={true}>
+            Submit
+          </Button>
+        </Form.Row>
+      </Form>
+    </Col>
   );
 };
 

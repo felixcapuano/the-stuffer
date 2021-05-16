@@ -1,3 +1,6 @@
-.RegisterForm {
-  margin: 20% 20%;
+.registerForm {
+  margin-top: 10%;
+  background-color: white;
+  padding: 40px 15px 15px 15px;
+  border-radius: 10px;
 }

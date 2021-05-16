@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Col from 'react-bootstrap/Col';
 import { useFormik } from 'formik';
 
 import { InputGroup } from '../InputGroup';
@@ -29,32 +30,46 @@ const Register = () => {
   });
 
   return (
-    <Form className='RegisterForm' onSubmit={formik.handleSubmit}>
-      {message && <Alert variant='danger'>{message}</Alert>}
-      <InputGroup
-        name='username'
-        type='text'
-        handleChange={formik.handleChange}
-      >
-        Username
-      </InputGroup>
+    <Col sm={{ span: 6, offset: 3 }}>
+      <Form className='registerForm' onSubmit={formik.handleSubmit}>
+        {message && <Alert variant='danger'>{message}</Alert>}
+        <InputGroup
+          name='username'
+          type='text'
+          handleChange={formik.handleChange}
+        >
+          Username
+        </InputGroup>
 
-      <InputGroup name='email' type='email' handleChange={formik.handleChange}>
-        Email
-      </InputGroup>
+        <InputGroup
+          name='email'
+          type='email'
+          handleChange={formik.handleChange}
+        >
+          Email
+        </InputGroup>
 
-      <InputGroup
-        name='password'
-        type='password'
-        handleChange={formik.handleChange}
-      >
-        Password
-      </InputGroup>
+        <InputGroup
+          name='password'
+          type='password'
+          handleChange={formik.handleChange}
+        >
+          Password
+        </InputGroup>
 
-      <Button variant='primary' type='submit'>
-        Submit
-      </Button>
-    </Form>
+        <InputGroup
+          name='passwordAgain'
+          type='password'
+          handleChange={formik.handleChange}
+        >
+          Type again your password
+        </InputGroup>
+
+        <Button variant='light' type='submit'>
+          Submit
+        </Button>
+      </Form>
+    </Col>
   );
 };
 

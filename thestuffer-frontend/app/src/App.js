@@ -30,7 +30,6 @@ const App = () => {
   return (
     <div className='App'>
       <AuthContext.Provider value={userContextValue}>
-        {JSON.stringify(user)}
         <Router />
       </AuthContext.Provider>
     </div>
