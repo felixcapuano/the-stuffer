@@ -4,7 +4,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import InputGroup from 'react-bootstrap/InputGroup';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import { stuffInstance } from '../../axios';
 import { Map } from '../Map';
@@ -34,7 +36,7 @@ const ThrowingForm = () => {
   const formik = useFormik({
     initialValues: {
       landing_id: id,
-      movement: 'jumpthrow',
+      movement: 'empty',
       tickrate: {
         64: true,
         128: true,
@@ -45,6 +47,19 @@ const ThrowingForm = () => {
       },
       description: '',
     },
+    validationSchema: Yup.object({
+      landing_id: Yup.string().length(12),
+      movement: Yup.string().matches(/jumpthrow|throw|runjumpthrow/),
+      tickrate: Yup.object({
+        64: Yup.boolean(),
+        128: Yup.boolean(),
+      }),
+      video: Yup.object({
+        id: Yup.string(),
+        time: Yup.number().integer(),
+      }),
+      description: Yup.string().max(255),
+    }),
     onSubmit: (values) => {
       if (cursor.current.floor === undefined)
         return alert('You have to select a position on the map.');
@@ -91,10 +106,22 @@ const ThrowingForm = () => {
   return (
     <Col xl={{ span: 10, offset: 1 }}>
       <Form className='throwingForm' onSubmit={formik.handleSubmit}>
-        {mapRender}
         <Form.Row>
-          <Form.Group as={Col}>
-            <Form.Row>
+          <Col md={{ span: 6 }}>{mapRender}</Col>
+          <Col>
+            <Form.Row className='textHeader'>
+              <Form.Text>
+                Welcome, this form allow you to create your own stuff descrition.
+              </Form.Text>
+              <Form.Text>
+                First Select a location on the map by clicking on it.
+              </Form.Text>
+            </Form.Row>
+            <Form.Group
+              as={Row}
+              controlId='movementGroup'
+              className='inputGroup'
+            >
               <Form.Label column className='throwingLabel' md='2'>
                 Move
               </Form.Label>
@@ -102,25 +129,26 @@ const ThrowingForm = () => {
                 <Form.Control
                   as='select'
                   name='movement'
-                  onChange={formik.handleChange}
-                  value={formik.values.movement}
+                  {...formik.getFieldProps('movement')}
+                  {...{'isInvalid': formik.touched.movement && formik.errors.movement ? 'true' : ''}}
                 >
-                  <option value=''>Select...</option>
+                  <option value='empty'>Select...</option>
                   <option value='throw'>Throw</option>
                   <option value='jumpthrow'>Jumpthow</option>
                   <option value='runjumpthrow'>Run Jumpthrow</option>
                 </Form.Control>
+                <Form.Control.Feedback type='invalid'>
+                  {formik.errors.movement}
+                </Form.Control.Feedback>
               </Col>
-            </Form.Row>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId='tickrate'>
-            <Form.Row>
+            </Form.Group>
+            <Form.Row className='inputGroup'>
               <Form.Label column className='throwingLabel'>
                 Tickrate
               </Form.Label>
               <Col>
                 <Form.Check
+                  className='tickrateCheckbox'
                   label='64'
                   type='checkbox'
                   onChange={formik.handleChange}
@@ -130,6 +158,7 @@ const ThrowingForm = () => {
               </Col>
               <Col>
                 <Form.Check
+                  className='tickrateCheckbox'
                   label='128'
                   type='checkbox'
                   onChange={formik.handleChange}
@@ -138,56 +167,80 @@ const ThrowingForm = () => {
                 />
               </Col>
             </Form.Row>
-          </Form.Group>
+            <Form.Row className='inputGroup'>
+              <Form.Label column className='throwingLabel' md='2'>
+                Youtube Url
+              </Form.Label>
+              <Col>
+                <InputGroup>
+                  <Form.Control
+                    placeholder='https://www.youtube.com/watch?v=QH2-TGUlwu4&ab_channel=NyanCat'
+                    name='video.id'
+                    onChange={formik.handleChange}
+                    value={formik.values.video.id}
+                  />
+                  <InputGroup.Append>
+                    <Button
+                      variant='dark'
+                      onClick={() => alert('Enter the full url of the video.')}
+                    >
+                      ?
+                    </Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Col>
+            </Form.Row>
+            <Form.Row className='inputGroup'>
+              <Form.Label column className='throwingLabel' md='2'>
+                Time
+              </Form.Label>
+              <Col>
+                <InputGroup>
+                  <Form.Control
+                    type='number'
+                    min={0}
+                    name='video.time'
+                    onChange={formik.handleChange}
+                    value={formik.values.video.time}
+                  />
+                  <InputGroup.Append>
+                    <Button
+                      variant='dark'
+                      onClick={() =>
+                        alert(
+                          'Enter the start of the important action of the video in seconds.'
+                        )
+                      }
+                    >
+                      ?
+                    </Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Col>
+            </Form.Row>
+            <Form.Row className='inputGroup'>
+              <Form.Label column className='throwingLabel'>
+                Description
+              </Form.Label>
+              <Form.Control
+                as='textarea'
+                placeholder='Description...'
+                maxLength={255}
+                rows={2}
+                name='description'
+                onChange={formik.handleChange}
+                value={formik.values.description}
+              />
+            </Form.Row>
+            <Form.Row className='inputGroup'>
+              <Col sm={{ offset: 10 }}>
+                <Button type='submit' variant='dark' block>
+                  Submit
+                </Button>
+              </Col>
+            </Form.Row>
+          </Col>
         </Form.Row>
-
-        <Form.Group as={Row} controlId='video'>
-          <Form.Label column className='throwingLabel' md='2'>
-            Youtube Url/Id
-          </Form.Label>
-          <Col md='7'>
-            <Form.Control
-              placeholder='https://www.youtube.com/watch?v=QH2-TGUlwu4&ab_channel=NyanCat'
-              name='video.id'
-              onChange={formik.handleChange}
-              value={formik.values.video.id}
-            />
-          </Col>
-          <Form.Label column className='throwingLabel' md='1'>
-            Time
-          </Form.Label>
-          <Col md='2'>
-            <Form.Control
-              type='number'
-              min={0}
-              name='video.time'
-              onChange={formik.handleChange}
-              value={formik.values.video.time}
-            />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Form.Label column className='throwingLabel' md='1'>
-            Description
-          </Form.Label>
-          <Col md='9'>
-            <Form.Control
-              as='textarea'
-              placeholder='Description...'
-              maxLength={255}
-              rows={2}
-              name='description'
-              onChange={formik.handleChange}
-              value={formik.values.description}
-            />
-          </Col>
-          <Col>
-            <Button type='submit' variant='outline-light'>
-              Submit
-            </Button>
-          </Col>
-        </Form.Group>
       </Form>
     </Col>
   );

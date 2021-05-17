@@ -1,4 +1,4 @@
 #map {
-    height: 700px;
-    background-color: black;
+  background-color: black;
+  height: calc(100vh - 123px);
 }

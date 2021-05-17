@@ -64,7 +64,7 @@ const LandingForm = () => {
         disabledThrowing
       />
     ),
-    [cursor, posSelectionHandler, map]
+    [posSelectionHandler, map]
   );
 
   if (!map) history.push('/')

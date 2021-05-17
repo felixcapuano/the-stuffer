@@ -78,7 +78,6 @@ const LandingLayer = ({
 
   const handlerMarker = {
     click: (e) => {
-      console.log(e.target);
       if (disabledMarker) return;
       const landingId = e.target.options.dataId;
       setTarget(target ? null : landingId);

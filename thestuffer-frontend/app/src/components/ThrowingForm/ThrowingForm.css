@@ -1,7 +1,24 @@
 .throwingForm {
   margin-top: 1%;
+  background-color: white;
+  padding: 1%;
+  color: black;
+  border-radius: 10px;
 }
 
 .throwingLabel {
   text-align: left;
+}
+
+.textHeader {
+  margin-bottom: 30px;
+  font-size: x-large;
+}
+
+.inputGroup {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.tickrateCheckbox {
 }
