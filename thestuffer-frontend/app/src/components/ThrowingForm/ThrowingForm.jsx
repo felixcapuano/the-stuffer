@@ -125,7 +125,7 @@ const ThrowingForm = () => {
                 First Select a location on the map by clicking on it.
               </Form.Text>
             </Form.Row>
-            {feedback && (
+            {feedback.message && (
               <Alert variant={feedback.type}>{feedback.message}</Alert>
             )}
             <Form.Group

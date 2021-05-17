@@ -34,7 +34,6 @@ exports.login = ajv.compile({
     },
     password: {
       type: 'string',
-      minLength: 8,
     },
   },
   required: ['email', 'password'],
