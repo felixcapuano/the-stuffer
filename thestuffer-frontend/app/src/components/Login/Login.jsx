@@ -12,7 +12,6 @@ import AuthContext from '../../context/AuthContext';
 import { setToken } from '../../token';
 
 import './Login.css';
-import { InputGroup } from '../InputGroup';
 
 const Login = () => {
   const { updateUser } = useContext(AuthContext);
@@ -29,7 +28,6 @@ const Login = () => {
       password: Yup.string().required(),
     }),
     onSubmit: (values) => {
-      console.log(values);
       authInstance.post('/login', values).then((res) => {
         if (res.data.ok) {
           updateUser(res.data.user);
@@ -43,46 +41,41 @@ const Login = () => {
     },
   });
 
+  const inputField = (fieldName, placeholder = '', fieldType) => {
+    return (
+      <Form.Row className='loginInput'>
+        <Form.Control
+          name={fieldName}
+          type={fieldType}
+          placeholder={placeholder}
+          {...formik.getFieldProps(fieldName)}
+          {...{
+            isInvalid:
+              formik.touched[fieldName] && formik.errors[fieldName]
+                ? 'true'
+                : '',
+          }}
+        />
+        <Form.Control.Feedback type='invalid'>
+          {formik.errors[fieldName]}
+        </Form.Control.Feedback>
+      </Form.Row>
+    );
+  };
+
   return (
     <Col className='loginPage' sm={{ span: 4, offset: 4 }}>
       <Form className='loginForm' onSubmit={formik.handleSubmit}>
         {feedback.message && (
           <Alert variant={feedback.type}>{feedback.message}</Alert>
         )}
-        <Form.Row className='loginInput'>
-          <Form.Control
-            name='email'
-            type='text'
-            placeholder='Email'
-            {...formik.getFieldProps('email')}
-            {...{
-              isInvalid:
-                formik.touched.email && formik.errors.email ? 'true' : '',
-            }}
-          />
-          <Form.Control.Feedback type='invalid'>
-            {formik.errors.email}
-          </Form.Control.Feedback>
-        </Form.Row>
 
-        <Form.Row className='loginInput'>
-          <Form.Control
-            name='password'
-            type='password'
-            placeholder='Password'
-            {...formik.getFieldProps('password')}
-            {...{
-              isInvalid:
-                formik.touched.password && formik.errors.password ? 'true' : '',
-            }}
-          />
-          <Form.Control.Feedback type='invalid'>
-            {formik.errors.password}
-          </Form.Control.Feedback>
-        </Form.Row>
+        {inputField('email', 'Email', 'email')}
+        {inputField('password', 'Password', 'password')}
+
         <Form.Row>
           <Col className='forgetPassword' sm={{ offset: 8 }}>
-            <Link>Forget password</Link>
+            <Link to='/'>Forget password</Link>
           </Col>
         </Form.Row>
 

@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Col from 'react-bootstrap/Col';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import { InputGroup } from '../InputGroup';
 import { authInstance } from '../../axios';
@@ -12,7 +13,7 @@ import { authInstance } from '../../axios';
 import './Register.css';
 
 const Register = () => {
-  const [message, setMessage] = useState('');
+  const [feedback, setFeedback] = useState({ type: '', message: '' });
   const history = useHistory();
 
   const formik = useFormik({
@@ -20,50 +21,72 @@ const Register = () => {
       username: '',
       email: '',
       password: '',
+      repassword: '',
     },
+    validationSchema: Yup.object({
+      username: Yup.string().max(30).required(),
+      email: Yup.string().email().required(),
+      password: Yup.string().min(8).max(100).required(),
+      repassword: Yup.string().min(8).max(100).required(),
+    }),
     onSubmit: (values) => {
-      authInstance.post('/register', values).then((res) => {
-        setMessage(res.data.message);
-        if (res.data.ok) history.push('/user/login');
-      });
+      console.log(values);
+      if (values.password !== values.repassword) {
+        return setFeedback({
+          type: 'danger',
+          message: 'Password are not equals.',
+        });
+      }
+
+      authInstance
+        .post('/register', {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+        })
+        .then((res) => {
+          if (res.data.ok) {
+            setFeedback({ type: 'success', message: res.data.message });
+            return history.push('/user/login');
+          } else {
+            setFeedback({ type: 'danger', message: res.data.message });
+          }
+        });
     },
   });
+
+  const inputField = (fieldName, placeholder = '', fieldType) => {
+    return (
+      <Form.Row className='registerInput'>
+        <Form.Control
+          name={fieldName}
+          type={fieldType}
+          placeholder={placeholder}
+          {...formik.getFieldProps(fieldName)}
+          {...{
+            isInvalid:
+              formik.touched[fieldName] && formik.errors[fieldName]
+                ? 'true'
+                : '',
+          }}
+        />
+        <Form.Control.Feedback type='invalid'>
+          {formik.errors[fieldName]}
+        </Form.Control.Feedback>
+      </Form.Row>
+    );
+  };
 
   return (
     <Col sm={{ span: 6, offset: 3 }}>
       <Form className='registerForm' onSubmit={formik.handleSubmit}>
-        {message && <Alert variant='danger'>{message}</Alert>}
-        <InputGroup
-          name='username'
-          type='text'
-          handleChange={formik.handleChange}
-        >
-          Username
-        </InputGroup>
-
-        <InputGroup
-          name='email'
-          type='email'
-          handleChange={formik.handleChange}
-        >
-          Email
-        </InputGroup>
-
-        <InputGroup
-          name='password'
-          type='password'
-          handleChange={formik.handleChange}
-        >
-          Password
-        </InputGroup>
-
-        <InputGroup
-          name='passwordAgain'
-          type='password'
-          handleChange={formik.handleChange}
-        >
-          Type again your password
-        </InputGroup>
+        {feedback.message && (
+          <Alert variant={feedback.type}>{feedback.message}</Alert>
+        )}
+        {inputField('username', 'Username', 'text')}
+        {inputField('email', 'Email', 'email')}
+        {inputField('password', 'Password', 'password')}
+        {inputField('repassword', 'Type again your password', 'password')}
 
         <Button variant='dark' type='submit'>
           Submit
