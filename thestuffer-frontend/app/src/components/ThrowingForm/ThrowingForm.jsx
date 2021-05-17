@@ -1,10 +1,11 @@
-import React, { useCallback, useRef, useMemo } from 'react';
+import React, { useCallback, useRef, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Alert from 'react-bootstrap/Alert';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -13,11 +14,16 @@ import { Map } from '../Map';
 
 import './ThrowingForm.css';
 
+//const ytRegExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+const ytRegExp =
+  /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-_]*)(&(amp;)?‌​[\w?‌​=]*)?/;
+
 const ThrowingForm = () => {
   const query = new URLSearchParams(useLocation().search);
   const id = query.get('id');
   const map = query.get('map');
   const history = useHistory();
+  const [feedback, setFeedback] = useState({ type: '', message: '' });
 
   const cursor = useRef({
     name: '',
@@ -35,6 +41,7 @@ const ThrowingForm = () => {
 
   const formik = useFormik({
     initialValues: {
+      collection: 'throwing',
       landing_id: id,
       movement: 'empty',
       tickrate: {
@@ -43,26 +50,39 @@ const ThrowingForm = () => {
       },
       video: {
         id: '',
-        time: 0,
+        time: '',
       },
       description: '',
     },
     validationSchema: Yup.object({
-      landing_id: Yup.string().length(12),
+      collection: Yup.string().matches(/throwing/),
+      landing_id: Yup.string().length(24),
       movement: Yup.string().matches(/jumpthrow|throw|runjumpthrow/),
       tickrate: Yup.object({
         64: Yup.boolean(),
         128: Yup.boolean(),
       }),
       video: Yup.object({
-        id: Yup.string(),
-        time: Yup.number().integer(),
+        id: Yup.string().matches(ytRegExp),
+        time: Yup.number().integer().min(0),
       }),
-      description: Yup.string().max(255),
+      description: Yup.string().max(255).trim(),
     }),
     onSubmit: (values) => {
       if (cursor.current.floor === undefined)
-        return alert('You have to select a position on the map.');
+        return setFeedback({
+          type: 'danger',
+          message: 'You have to select a position on the map.',
+        });
+
+      const ytId = values.video.id.match(ytRegExp)?.[1];
+      if (!ytId || ytId.length !== 11)
+        return setFeedback({
+          type: 'danger',
+          message: 'No video ID detected in the youtube url.',
+        });
+      values.video.id = ytId;
+
       values.position = {
         lat: parseFloat(cursor.current.lat.toFixed(3)),
         lng: parseFloat(cursor.current.lng.toFixed(3)),
@@ -70,25 +90,15 @@ const ThrowingForm = () => {
       };
 
       stuffInstance.post('/stuff/create', values).then((res) => {
-        console.log(res.data);
-        //  setMessage(res.data.message);
+        if (res.data.ok) {
+          setFeedback({ type: 'success', message: res.data.message });
+          formik.resetForm();
+        } else {
+          setFeedback({ type: 'danger', message: res.data.message });
+        }
       });
     },
   });
-
-  // const [idDetected, setUrl] = useReducer((state, action) => {
-  //   const url = action.target.value;
-  //   //const ytRegExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-  //   const ytRegExp =
-  //     /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-_]*)(&(amp;)?‌​[\w?‌​=]*)?/;
-  //   const ytId = url.match(ytRegExp)?.[1];
-
-  //   if (!ytId || ytId.length !== 11) return '';
-
-  //   form.current.video.id = ytId;
-
-  //   return ytId;
-  // }, '');
 
   const mapRender = useMemo(
     () => (
@@ -110,13 +120,14 @@ const ThrowingForm = () => {
           <Col md={{ span: 6 }}>{mapRender}</Col>
           <Col>
             <Form.Row className='textHeader'>
-              <Form.Text>
-                Welcome, this form allow you to create your own stuff descrition.
-              </Form.Text>
+              Welcome, this form allow you to create your own stuff.
               <Form.Text>
                 First Select a location on the map by clicking on it.
               </Form.Text>
             </Form.Row>
+            {feedback && (
+              <Alert variant={feedback.type}>{feedback.message}</Alert>
+            )}
             <Form.Group
               as={Row}
               controlId='movementGroup'
@@ -130,7 +141,12 @@ const ThrowingForm = () => {
                   as='select'
                   name='movement'
                   {...formik.getFieldProps('movement')}
-                  {...{'isInvalid': formik.touched.movement && formik.errors.movement ? 'true' : ''}}
+                  {...{
+                    isInvalid:
+                      formik.touched.movement && formik.errors.movement
+                        ? 'true'
+                        : '',
+                  }}
                 >
                   <option value='empty'>Select...</option>
                   <option value='throw'>Throw</option>
@@ -146,28 +162,32 @@ const ThrowingForm = () => {
               <Form.Label column className='throwingLabel'>
                 Tickrate
               </Form.Label>
-              <Col>
+              <Form.Group as={Col} controlId='tickrate64Group'>
                 <Form.Check
                   className='tickrateCheckbox'
                   label='64'
-                  type='checkbox'
+                  type='switch'
                   onChange={formik.handleChange}
                   defaultChecked={formik.values.tickrate['64']}
                   name='tickrate.64'
                 />
-              </Col>
-              <Col>
+              </Form.Group>
+              <Form.Group as={Col} controlId='tickrate128Group'>
                 <Form.Check
                   className='tickrateCheckbox'
                   label='128'
-                  type='checkbox'
+                  type='switch'
                   onChange={formik.handleChange}
                   defaultChecked={formik.values.tickrate['128']}
                   name='tickrate.128'
                 />
-              </Col>
+              </Form.Group>
             </Form.Row>
-            <Form.Row className='inputGroup'>
+            <Form.Group
+              as={Row}
+              controlId='videoIdGroup'
+              className='inputGroup'
+            >
               <Form.Label column className='throwingLabel' md='2'>
                 Youtube Url
               </Form.Label>
@@ -176,8 +196,10 @@ const ThrowingForm = () => {
                   <Form.Control
                     placeholder='https://www.youtube.com/watch?v=QH2-TGUlwu4&ab_channel=NyanCat'
                     name='video.id'
-                    onChange={formik.handleChange}
-                    value={formik.values.video.id}
+                    {...formik.getFieldProps('video.id')}
+                    {...{
+                      isInvalid: formik.errors.video?.id ? 'true' : '',
+                    }}
                   />
                   <InputGroup.Append>
                     <Button
@@ -187,10 +209,17 @@ const ThrowingForm = () => {
                       ?
                     </Button>
                   </InputGroup.Append>
+                  <Form.Control.Feedback type='invalid'>
+                    {formik.errors.video?.id}
+                  </Form.Control.Feedback>
                 </InputGroup>
               </Col>
-            </Form.Row>
-            <Form.Row className='inputGroup'>
+            </Form.Group>
+            <Form.Group
+              as={Row}
+              controlId='videoTimeGroup'
+              className='inputGroup'
+            >
               <Form.Label column className='throwingLabel' md='2'>
                 Time
               </Form.Label>
@@ -200,8 +229,13 @@ const ThrowingForm = () => {
                     type='number'
                     min={0}
                     name='video.time'
-                    onChange={formik.handleChange}
-                    value={formik.values.video.time}
+                    {...formik.getFieldProps('video.time')}
+                    {...{
+                      isInvalid:
+                        formik.touched.video?.time && formik.errors.video?.time
+                          ? 'true'
+                          : '',
+                    }}
                   />
                   <InputGroup.Append>
                     <Button
@@ -216,8 +250,11 @@ const ThrowingForm = () => {
                     </Button>
                   </InputGroup.Append>
                 </InputGroup>
+                <Form.Control.Feedback type='invalid'>
+                  {formik.errors.video?.time}
+                </Form.Control.Feedback>
               </Col>
-            </Form.Row>
+            </Form.Group>
             <Form.Row className='inputGroup'>
               <Form.Label column className='throwingLabel'>
                 Description
@@ -233,7 +270,7 @@ const ThrowingForm = () => {
               />
             </Form.Row>
             <Form.Row className='inputGroup'>
-              <Col sm={{ offset: 10 }}>
+              <Col sm={{ offset: 9 }}>
                 <Button type='submit' variant='dark' block>
                   Submit
                 </Button>
