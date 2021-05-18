@@ -19,6 +19,7 @@ const Stuff = () => {
   const params = useParams();
   const [landingTarget, setLandingTarget] = useState(null);
   const { user } = useContext(AuthContext);
+  const [pageNumber, setPageNumber] = useState(0);
 
   const [{ hits, isLoading, error }, setData] = useState({
     hits: [],
@@ -45,6 +46,10 @@ const Stuff = () => {
             lt: pos.lng + CLICK_RADIUS,
           },
           floor: 0,
+        },
+        params: {
+          count: 10,
+          page: pageNumber,
         },
       };
 
@@ -86,7 +91,7 @@ const Stuff = () => {
       <Col md={6}>
         {!isLoading && !error && (
           <Row className='commandBar'>
-            <Col xl={{ span: 6, offset: 3 }} lg={{ span: 6, offset: 3}}>
+            <Col xl={{ span: 6, offset: 3 }} lg={{ span: 6, offset: 3 }}>
               {user && landingTarget && (
                 <LinkContainer
                   to={`/stuff/create/throwing?id=${landingTarget}&map=${params.map}`}
@@ -106,7 +111,7 @@ const Stuff = () => {
             </Col>
           </Row>
         )}
-        <Showcase>{cards}</Showcase>
+        {cards?.length !== 0 && <Showcase page={pageNumber} setPage={setPageNumber}>{cards}</Showcase>}
         {error && 'Something goes wrong! ' + error}
       </Col>
     </Row>

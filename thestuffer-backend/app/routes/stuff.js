@@ -47,10 +47,6 @@ stuffRouter.put(
   validation('update'),
   async (req, res) => {
     // TODO change reaction pushing
-    if (req.body.reaction) {
-      req.body.$push = { reactions: req.body.reaction };
-      delete req.body.reaction;
-    }
 
     const Model = models[req.body.collection];
 
@@ -88,12 +84,11 @@ stuffRouter.delete('/delete/:id', async (req, res) => {
 
 stuffRouter.post('/search', validation('search'), async (req, res) => {
   const Model = models[req.body.collection];
-
   let payload = { ...req.body };
   delete payload.collection;
-  delete payload.position;
-  delete payload.tickrate;
+  delete payload.params;
 
+  delete payload.position;
   const pos = req.body.position;
   if (pos?.lat !== undefined) {
     // TODO improve sytax
@@ -112,6 +107,7 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
     payload['position.floor'] = req.body.position.floor;
   }
 
+  delete payload.tickrate;
   if (req.body.tickrate?.['64'] !== undefined) {
     payload['tickrate.64'] = req.body.tickrate['64'];
   }
@@ -119,8 +115,18 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
     payload['tickrate.128'] = req.body.tickrate['128'];
   }
 
+  payload.deleted = false;
   try {
-    const doc = await Model.find(payload, {});
+    const count = req.body.params?.count;
+    const firstElement = req.body.params?.page * count;
+    const lastElement = firstElement + count;
+    console.log(firstElement, lastElement)
+
+    const doc = await Model.find(payload, {})
+      .sort({ like: 1 })
+      .skip(firstElement)
+      .limit(lastElement);
+    console.log(doc);
 
     return await res.send({ ok: true, message: 'Success', hits: doc });
   } catch (err) {

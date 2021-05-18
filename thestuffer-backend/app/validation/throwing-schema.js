@@ -65,7 +65,8 @@ exports.update = {
   properties: {
     ...throwingProperties,
     ...common.positionProperties,
-    ...common.reactionProperties,
+    like: { type: 'integer' },
+    dislike: { type: 'integer' },
   },
   required: ['collection'],
   additionalProperties: false,
@@ -78,6 +79,13 @@ exports.search = {
     ...throwingProperties,
     ...common.collectionProperties,
     ...common.searchPositionProperties,
+    params: {
+      type: 'object',
+      properties: {
+        page: { type: 'integer' },
+        count: { type: 'integer' },
+      },
+    },
   },
   required: ['collection'],
   additionalProperties: false,

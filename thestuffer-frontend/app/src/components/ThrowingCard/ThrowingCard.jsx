@@ -41,11 +41,11 @@ const ThrowingCard = ({ data }) => {
         <ButtonGroup lg={{ span: 3 }} as={Col}>
           <Button variant='success'>
             <img src='/images/icons/like.png' width='30' alt='like' />
-            <span className='reactButtonValue'> 0</span>
+            <span className='reactButtonValue'> {data.like}</span>
           </Button>
           <Button variant='danger'>
             <img src='/images/icons/dislike.png' width='30' alt='dislike' />
-            <span className='reactButtonValue'> 0</span>
+            <span className='reactButtonValue'> {data.dislike}</span>
           </Button>
         </ButtonGroup>
       </Row>
