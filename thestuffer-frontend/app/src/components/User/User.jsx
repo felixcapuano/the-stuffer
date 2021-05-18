@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
@@ -33,7 +32,7 @@ const User = () => {
   return (
     <Col xl={{ span: 4, offset: 4 }}>
       <Form className='profile'>
-        <img src='/images/icons/profileIcon.png' className='profileIcon' />
+        <img src='/images/icons/profileIcon.png' className='profileIcon' alt='profile icon'/>
         <InputGroup className='profileInput'>
           <InputGroup.Prepend>
             <InputGroup.Text>Role</InputGroup.Text>

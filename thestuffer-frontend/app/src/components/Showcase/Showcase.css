@@ -1,3 +1,5 @@
 .showcase {
-  margin: 1% 20%;
+  background-color: white;
+  padding: 5px;
+  border-radius: 10px;
 }

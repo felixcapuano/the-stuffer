@@ -2,7 +2,6 @@ import React, { useContext, useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { LinkContainer } from 'react-router-bootstrap';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -82,33 +81,35 @@ const Stuff = () => {
   );
 
   return (
-    <Container fluid>
-      {!isLoading && !error && (
-        <Row className='commandBar'>
-          <Col sm={{ span: 3, offset: 9 }}>
-            {user && landingTarget && (
-              <LinkContainer
-                to={`/stuff/create/throwing?id=${landingTarget}&map=${params.map}`}
-              >
-                <Button variant='light' block>
-                  Create new throwing spot
-                </Button>
-              </LinkContainer>
-            )}
-            {user && user.role === 'admin' && !landingTarget && (
-              <LinkContainer to={`/stuff/create/landing?map=${params.map}`}>
-                <Button variant='light' block>
-                  Create new landing spot
-                </Button>
-              </LinkContainer>
-            )}
-          </Col>
-        </Row>
-      )}
-      {mapComponent}
-      <Showcase>{cards}</Showcase>
-      {error && 'Something goes wrong! ' + error}
-    </Container>
+    <Row>
+      <Col md={6}>{mapComponent}</Col>
+      <Col md={6}>
+        {!isLoading && !error && (
+          <Row className='commandBar'>
+            <Col xl={{ span: 6, offset: 3 }} lg={{ span: 6, offset: 3}}>
+              {user && landingTarget && (
+                <LinkContainer
+                  to={`/stuff/create/throwing?id=${landingTarget}&map=${params.map}`}
+                >
+                  <Button variant='light' block>
+                    Create new throwing spot
+                  </Button>
+                </LinkContainer>
+              )}
+              {user && user.role === 'admin' && !landingTarget && (
+                <LinkContainer to={`/stuff/create/landing?map=${params.map}`}>
+                  <Button variant='light' block>
+                    Create new landing spot
+                  </Button>
+                </LinkContainer>
+              )}
+            </Col>
+          </Row>
+        )}
+        <Showcase>{cards}</Showcase>
+        {error && 'Something goes wrong! ' + error}
+      </Col>
+    </Row>
   );
 };
 

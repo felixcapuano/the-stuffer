@@ -8,9 +8,41 @@
 }
 
 .cardBody {
-  background-color: blue;
+  background-color: whitesmoke;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  color: black;
+}
+
+.dateText {
+  font-size: small;
+  text-align: right;
 }
 
 .openButton {
   width: 100%;
+}
+
+.testColor {
+  background-color: violet;
+}
+
+.reactButtonValue {
+  font-size: large;
+  font-weight: bolder;
+  float: right;
+}
+
+.infoRow {
+  margin-top: 10px;
+}
+
+.contentRow {
+  margin-top: 10px;
+}
+
+.badgesCol {
+  justify-content: left;
+
 }

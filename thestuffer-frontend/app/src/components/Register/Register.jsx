@@ -7,7 +7,6 @@ import Col from 'react-bootstrap/Col';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { InputGroup } from '../InputGroup';
 import { authInstance } from '../../axios';
 
 import './Register.css';
