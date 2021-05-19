@@ -120,7 +120,7 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
     const count = req.body.params?.count;
     const firstElement = req.body.params?.page * count;
     const lastElement = firstElement + count;
-    console.log(firstElement, lastElement)
+    console.log(req.body.params)
 
     const doc = await Model.find(payload, {})
       .sort({ like: 1 })

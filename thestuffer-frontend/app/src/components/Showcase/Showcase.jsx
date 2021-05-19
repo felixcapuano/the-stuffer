@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import './Showcase.css';
 
-const Showcase = ({ children, page, setPage }) => {
+const Showcase = ({ children , page, setPage}) => {
   return (
     <div className='showcase'>
       {children}
@@ -14,7 +14,7 @@ const Showcase = ({ children, page, setPage }) => {
           as={Col}
           variant='dark'
           lg={{ span: 1, offset: 4 }}
-          onClick={setPage((page -= 1))}
+          onClick={() => setPage(page - 1)}
         >
           {'<'}
         </Button>
@@ -25,7 +25,7 @@ const Showcase = ({ children, page, setPage }) => {
           as={Col}
           variant='dark'
           lg={{ span: 1 }}
-          onClick={setPage((page += 1))}
+          onClick={() => setPage(page + 1)}
         >
           {'>'}
         </Button>

@@ -8,6 +8,7 @@ import TilesLayer from './TilesLayer';
 import FloorControl from './FloorControl';
 
 import './Map.css';
+const defaultMapStyle = { backgroundColor: 'black', height: '100px', wight: '100px'};
 
 const corner1 = L.latLng(180, -180);
 const corner2 = L.latLng(-180, 180);
@@ -22,6 +23,7 @@ const mapConfig = {
 };
 
 function Map({
+  mapStyle,
   mapName,
   clickHandler,
   onChangeTarget,
@@ -30,6 +32,7 @@ function Map({
   throwError,
 }) {
   console.log('Map render');
+
   const [landingTarget, setLandingTarget] = useState(targetId);
   if (!throwError) {
     throwError = (e) => {
@@ -75,7 +78,7 @@ function Map({
   }, [landingTarget, onChangeTarget]);
 
   return (
-    <MapContainer id='map' {...mapConfig}>
+    <MapContainer id='map' {...mapConfig} style={mapStyle || defaultMapStyle}>
       <FloorControl map={map} updateMap={setMap} />
       <MapEvent />
       <TilesLayer map={map} />
