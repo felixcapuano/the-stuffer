@@ -12,19 +12,23 @@ import { authInstance } from '../../axios';
 
 import './EmailVerify.css';
 import { InputGroup } from '../InputGroup';
+import Feedback from 'react-bootstrap/esm/Feedback';
 
 const EmailVerify = () => {
   const [message, setMessage] = useState('');
+  const [feedback, setFeedback] = useState({ type: '', message: '' });
   const history = useHistory();
+  const [submitEnabled, setSubmitEnabled] = useState(true);
 
   useEffect(() => {
     authInstance.get('/email/send').then((res) => {
-      setMessage(res.data.message);
       if (res.data.ok) {
-        setMessage(res.data.message);
+        setFeedback({ type: 'success', message: res.data.message });
+      } else {
+        setFeedback({ type: 'danger', message: res.data.message });
       }
     });
-  }, [setMessage]);
+  }, [setFeedback]);
 
   const formik = useFormik({
     initialValues: {
@@ -32,10 +36,13 @@ const EmailVerify = () => {
     },
     onSubmit: (values) => {
       authInstance.post('/email/verify', values).then((res) => {
-        console.log(res);
-        setMessage(res.data.message);
         if (res.data.ok) {
-          history.push('/');
+          formik.resetForm();
+          setFeedback({ type: 'success', message: res.data.message });
+          setSubmitEnabled(false);
+          setTimeout(() => history.push('/'), 3000);
+        } else {
+          setFeedback({ type: 'danger', message: res.data.message });
         }
       });
     },
@@ -45,7 +52,9 @@ const EmailVerify = () => {
     <Container fluid as={Row}>
       <Col sm={{ span: 4, offset: 4 }}>
         <Form className='emailVerifyForm' onSubmit={formik.handleSubmit}>
-          {message && <Alert variant='danger'>{message}</Alert>}
+          {feedback.message && (
+            <Alert variant={feedback.type}>{feedback.message}</Alert>
+          )}
           <p>An email has been sent to you.</p>
           <InputGroup
             name='token'
@@ -55,7 +64,7 @@ const EmailVerify = () => {
             Token
           </InputGroup>
 
-          <Button variant='dark' type='submit'>
+          <Button variant='dark' type='submit' disabled={!submitEnabled}>
             Submit
           </Button>
         </Form>

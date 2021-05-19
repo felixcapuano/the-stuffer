@@ -46,7 +46,6 @@ exports.sendEmail = async (req, res) => {
     expirationTime: new Date().getTime() + TIMEOUT * 1000,
     token: _token,
   });
-  console.log(tokens);
 
   await res.send({ ok: true, message: 'Message sent' });
 };
