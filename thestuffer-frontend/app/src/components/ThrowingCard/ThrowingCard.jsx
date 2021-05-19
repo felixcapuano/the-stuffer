@@ -55,28 +55,26 @@ const ThrowingCard = ({ data }) => {
         </Col>
         <Col md={{ span: 4, offset: 1 }}>
           <Button
-            variant='dark'
+            variant={open ? 'outline-dark' : 'dark'}
             block
             onClick={() => setOpen(!open)}
             aria-controls='video-collapse'
             aria-expanded={open}
           >
-            View
+            {open ? 'Hide' : 'View'}
           </Button>
         </Col>
       </Row>
-      <Collapse in={open}>
-        <Row id='video-collapse'>
-          <iframe
-            width='100%'
-            height='500'
-            src={ytUrl}
-            title='YouTube video player'
-            frameBorder='0'
-            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-            allowFullScreen
-          />
-        </Row>
+      <Collapse as={Row} in={open}>
+        <iframe
+          width='100%'
+          height='374'
+          src={ytUrl}
+          title='YouTube video player'
+          frameBorder='0'
+          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+          allowFullScreen
+        />
       </Collapse>
       <Row className='infoRow'>
         <Col className='text-left'>Created by : {data.creator}</Col>

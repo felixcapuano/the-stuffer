@@ -59,8 +59,6 @@ const Stuff = () => {
         page: _page,
       },
     };
-    console.log(payload);
-
     setData({ isLoading: true });
     try {
       const res = await stuffInstance.post('/stuff/search', payload);
@@ -124,7 +122,7 @@ const Stuff = () => {
 
   const createButton = () => {
     return (
-      <div>
+      <Container>
         {user && landingTarget && (
           <LinkContainer
             to={`/stuff/create/throwing?id=${landingTarget}&map=${params.map}`}
@@ -141,12 +139,12 @@ const Stuff = () => {
             </Button>
           </LinkContainer>
         )}
-      </div>
+      </Container>
     );
   };
 
   return (
-    <Container fluid as={Row}>
+    <Container fluid as={Row} className='stuffPage'>
       <Col md={6}>
         {mapComponent}
         <Row>{createButton()}</Row>
@@ -160,31 +158,32 @@ const Stuff = () => {
             </Container>
           }
         </Row>
+        <Row className='commandRow'>
+          <Col sm={{ span: 1, offset: 4 }} xs={4}>
+            <Button
+              variant='light'
+              onClick={() => pageHandler(-1)}
+              block
+              {...{ disabled: page === 0 ? true : false }}
+            >
+              {'<'}
+            </Button>
+          </Col>
+          <Col sm={{ span: 2 }} xs={4}>
+            <h3>{page}</h3>
+          </Col>
+          <Col sm={{ span: 1 }} xs={4}>
+            <Button variant='light' onClick={() => pageHandler(1)} block
+              {...{ disabled: cards?.length === 0 ? true : false }}
+            >
+              {'>'}
+            </Button>
+          </Col>
+        </Row>
       </Col>
       {/* {!isLoading && !error && (
         <Row className='commandBar'>
           <Col>
-            <Row className='commandRow'>
-              <Button
-                as={Col}
-                variant='light'
-                lg={{ span: 1, offset: 4 }}
-                onClick={() => pageHandler(-1)}
-              >
-                {'<'}
-              </Button>
-              <Col lg={{ span: 2 }}>
-                <h3>{page}</h3>
-              </Col>
-              <Button
-                as={Col}
-                variant='light'
-                lg={{ span: 1 }}
-                onClick={() => pageHandler(1)}
-              >
-                {'>'}
-              </Button>
-            </Row>
           </Col>
         </Row>
       )} */}
