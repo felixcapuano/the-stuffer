@@ -19,7 +19,7 @@ import AuthContext from '../../context/AuthContext';
 
 import './Stuff.css';
 
-const CLICK_RADIUS = 5;
+const CLICK_RADIUS = 10;
 
 const Stuff = () => {
   const params = useParams();
@@ -74,7 +74,7 @@ const Stuff = () => {
         setData({ ...data, isLoading: false, error });
       }
     },
-    []
+    [landingTarget]
   );
 
   const clickHandler = useCallback(
@@ -148,11 +148,11 @@ const Stuff = () => {
 
   return (
     <Container fluid as={Row} className='stuffPage'>
-      <Col md={6}>
+      <Col lg={6}>
         {mapComponent}
         <Row>{createButton()}</Row>
       </Col>
-      <Col md={6}>
+      <Col lg={6}>
         <Row>{data.error && 'Something goes wrong! ' + data.error}</Row>
         <Row>
           {

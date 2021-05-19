@@ -4,6 +4,7 @@ const validation = require('../validation/validation');
 const models = require('../mongo/models');
 const isAuth = require('../auth');
 const { cleanEmpty } = require('../utils');
+const { model } = require('mongoose');
 
 stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {
   const collection = req.body.collection;
@@ -122,13 +123,34 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
     const lastElement = firstElement + count;
 
     const doc = await Model.find(payload, {})
-      .sort({ like: 1 })
+      .sort({ like: -1 })
       .skip(firstElement)
       .limit(lastElement);
 
     return await res.send({ ok: true, message: 'Success', hits: doc });
   } catch (err) {
     return await res.send({ ok: false, message: '' });
+  }
+});
+
+stuffRouter.put('/react/:id', isAuth, async (req, res) => {
+  const id = req.params.id;
+  const type = req.query.type;
+  if (type !== 'like' && type !== 'dislike') {
+    return res.send({ ok: false, message: 'Bad type.' });
+  }
+
+  try {
+    const doc = await models.throwing.findById(id);
+
+    doc[type] += 1;
+
+    await doc.save();
+
+    return res.send({ ok: true, message: 'Success', _id: doc._id });
+  } catch (err) {
+    console.error(err);
+    return res.send({ ok: false, message: 'Bad id.' });
   }
 });
 

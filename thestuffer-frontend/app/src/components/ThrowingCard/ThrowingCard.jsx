@@ -4,9 +4,10 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Collapse from 'react-bootstrap/Collapse';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Col from 'react-bootstrap/Col';
 
+import { stuffInstance } from '../../axios';
 import './ThrowingCard.css';
-import Col from 'react-bootstrap/esm/Col';
 
 const ThrowingCard = ({ data }) => {
   const [open, setOpen] = useState(false);
@@ -28,22 +29,32 @@ const ThrowingCard = ({ data }) => {
     return <Badge variant={colorBinding[movement]}>{movement}</Badge>;
   };
 
+  const react = async (_type) => {
+    const path = `/stuff/react/${data._id}?type=${_type}`;
+    try {
+      const res = await stuffInstance.put(path);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className='cardBody'>
       <Row>
-        <Col lg={{ span: 9 }} className='text-left'>
+        <Col lg={8} md={6} className='text-left'>
           <h4>
             {data.tickrate['64'] && tickrateBadge('64')}
             {data.tickrate['128'] && tickrateBadge('128')}
             {movementBadge(data.movement)}
           </h4>
         </Col>
-        <ButtonGroup lg={{ span: 3 }} as={Col}>
-          <Button variant='success'>
+        <ButtonGroup lg={4} md={6} as={Col}>
+          <Button variant='success' onClick={async () => await react('like')}>
             <img src='/images/icons/like.png' width='30' alt='like' />
             <span className='reactButtonValue'> {data.like}</span>
           </Button>
-          <Button variant='danger'>
+          <Button variant='danger' onClick={async () => await react('dislike')}>
             <img src='/images/icons/dislike.png' width='30' alt='dislike' />
             <span className='reactButtonValue'> {data.dislike}</span>
           </Button>
