@@ -46,33 +46,36 @@ const Stuff = () => {
     landingTarget: null,
   });
 
-  const searchHandler = async (_page) => {
-    if (!selectedPosition.current || _page < 0) return;
+  const searchHandler = useCallback(
+    async (_page) => {
+      if (!selectedPosition.current || _page < 0) return;
 
-    const payload = {
-      collection: 'throwing',
-      landing_id: landingTarget,
-      position: selectedPosition.current,
-      params: {
-        count: 10,
-        page: _page,
-      },
-    };
-    setData({...data, isLoading: true });
-    try {
-      const res = await stuffInstance.post('/stuff/search', payload);
-      if (!res.data.ok) throw new Error(res.data.message);
-      setData({
-        ...data,
-        isLoading: false,
-        hits: res.data.hits,
-      });
-      if (res.data.hits.length !== 0) maxPage.current = true;
-      setPage(_page);
-    } catch (error) {
-      setData({ ...data, isLoading: false, error });
-    }
-  };
+      const payload = {
+        collection: 'throwing',
+        landing_id: landingTarget,
+        position: selectedPosition.current,
+        params: {
+          count: 10,
+          page: _page,
+        },
+      };
+      setData({ ...data, isLoading: true });
+      try {
+        const res = await stuffInstance.post('/stuff/search', payload);
+        if (!res.data.ok) throw new Error(res.data.message);
+        setData({
+          ...data,
+          isLoading: false,
+          hits: res.data.hits,
+        });
+        if (res.data.hits.length !== 0) maxPage.current = true;
+        setPage(_page);
+      } catch (error) {
+        setData({ ...data, isLoading: false, error });
+      }
+    },
+    []
+  );
 
   const clickHandler = useCallback(
     async ({ event, landingMode }) => {
@@ -92,7 +95,7 @@ const Stuff = () => {
 
       if (!landingMode) await searchHandler(0);
     },
-    [landingTarget, setData]
+    [searchHandler]
   );
 
   const pageHandler = async (shift) => {
@@ -173,7 +176,10 @@ const Stuff = () => {
             <h3>{page}</h3>
           </Col>
           <Col sm={{ span: 1 }} xs={4}>
-            <Button variant='light' onClick={() => pageHandler(1)} block
+            <Button
+              variant='light'
+              onClick={() => pageHandler(1)}
+              block
               {...{ disabled: cards?.length === 0 ? true : false }}
             >
               {'>'}

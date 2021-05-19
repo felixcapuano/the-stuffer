@@ -29,16 +29,17 @@ exports.sendEmail = async (req, res) => {
 
   const _token = generateToken(99999999);
 
-  //try {
-  //  await transporter.sendMail({
-  //    from: process.env.EMAIL,
-  //    to: req.body._user.email,
-  //    subject: 'thestuffer.com : verification token',
-  //    text: 'The token is : ' + _token,
-  //  });
-  //} catch (error) {
-  //  return await res.send({ ok: false, message: 'Email fail' });
-  //}
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL,
+      to: req.body._user.email,
+      subject: 'thestuffer.com : verification token',
+      text: 'The token is : ' + _token,
+    });
+  } catch (error) {
+    console.error(error);
+    return await res.send({ ok: false, message: 'Email fail' });
+  }
 
   tokens.push({
     id: req.body._user._id,

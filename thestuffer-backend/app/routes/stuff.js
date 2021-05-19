@@ -120,13 +120,11 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
     const count = req.body.params?.count;
     const firstElement = req.body.params?.page * count;
     const lastElement = firstElement + count;
-    console.log(req.body.params)
 
     const doc = await Model.find(payload, {})
       .sort({ like: 1 })
       .skip(firstElement)
       .limit(lastElement);
-    console.log(doc);
 
     return await res.send({ ok: true, message: 'Success', hits: doc });
   } catch (err) {
