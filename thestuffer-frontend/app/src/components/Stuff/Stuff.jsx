@@ -14,7 +14,6 @@ import Container from 'react-bootstrap/Container';
 
 import { stuffInstance } from '../../axios';
 import { Map } from '../Map';
-import { Showcase } from '../Showcase';
 import { ThrowingCard } from '../ThrowingCard';
 import AuthContext from '../../context/AuthContext';
 
@@ -40,7 +39,7 @@ const Stuff = () => {
     floor: 0,
   });
 
-  const [{ hits, isLoading, error }, setData] = useState({
+  const [data, setData] = useState({
     hits: [],
     isLoading: false,
     error: null,
@@ -59,18 +58,19 @@ const Stuff = () => {
         page: _page,
       },
     };
-    setData({ isLoading: true });
+    setData({...data, isLoading: true });
     try {
       const res = await stuffInstance.post('/stuff/search', payload);
       if (!res.data.ok) throw new Error(res.data.message);
       setData({
+        ...data,
         isLoading: false,
         hits: res.data.hits,
       });
       if (res.data.hits.length !== 0) maxPage.current = true;
       setPage(_page);
     } catch (error) {
-      setData({ isLoading: false, error });
+      setData({ ...data, isLoading: false, error });
     }
   };
 
@@ -100,8 +100,8 @@ const Stuff = () => {
   };
 
   const cards =
-    hits &&
-    hits.map((data) => {
+    data.hits &&
+    data.hits.map((data) => {
       return <ThrowingCard key={data._id} data={data} />;
     });
 
@@ -150,7 +150,7 @@ const Stuff = () => {
         <Row>{createButton()}</Row>
       </Col>
       <Col md={6}>
-        <Row>{error && 'Something goes wrong! ' + error}</Row>
+        <Row>{data.error && 'Something goes wrong! ' + data.error}</Row>
         <Row>
           {
             <Container className='showcase' as={Col}>

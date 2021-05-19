@@ -78,7 +78,7 @@ function Map({
   }, [landingTarget, onChangeTarget]);
 
   return (
-    <MapContainer id='map' {...mapConfig} style={mapStyle || defaultMapStyle}>
+    <MapContainer id='map' {...mapConfig} style={{...defaultMapStyle, ...mapStyle}}>
       <FloorControl map={map} updateMap={setMap} />
       <MapEvent />
       <TilesLayer map={map} />

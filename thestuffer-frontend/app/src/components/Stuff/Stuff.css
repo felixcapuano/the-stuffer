@@ -1,5 +1,5 @@
 .commandBar {
-  margin: 10px 0px 5px 0px
+  margin: 10px 0px 5px 0px;
 }
 
 .commandRow {
@@ -8,5 +8,12 @@
 
 .stuffPage {
   margin-top: 20px;
+}
 
+.showcase {
+  position: absolute;
+  background-color: white;
+  overflow-y: scroll;
+  height: calc(100vh - 150px);
+  border-radius: 10px;
 }

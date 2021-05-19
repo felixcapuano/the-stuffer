@@ -103,6 +103,7 @@ const ThrowingForm = () => {
   const mapRender = useMemo(
     () => (
       <Map
+        mapStyle={{ height: 'calc(100vh - 150px)' }}
         mapName={map}
         clickHandler={posSelectionHandler}
         targetId={id}
