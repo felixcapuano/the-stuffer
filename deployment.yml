@@ -32,6 +32,8 @@ services:
       MONGO_URI: mongodb://mongo:27017/thestuffer
       AUTH_MONGO_USERNAME: auth
       AUTH_MONGO_PASSWORD: 123
+      EMAIL: ${EMAIL}
+      EMAIL_PWD: ${EMAIL_PWD}
     depends_on:
       - mongo
 
