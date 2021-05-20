@@ -11,9 +11,18 @@
 }
 
 .showcase {
+  color: black;
   position: absolute;
   background-color: white;
   overflow-y: scroll;
   height: calc(100vh - 150px);
   border-radius: 10px;
+}
+
+.cards {
+  min-height: calc(100vh - 240px);
+}
+
+.ifEmpty {
+  margin: 30px;
 }

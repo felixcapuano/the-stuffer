@@ -155,44 +155,47 @@ const Stuff = () => {
       <Col lg={6}>
         <Row>{data.error && 'Something goes wrong! ' + data.error}</Row>
         <Row>
-          {
-            <Container className='showcase' as={Col}>
-              {cards}
-            </Container>
-          }
-        </Row>
-        <Row className='commandRow'>
-          <Col sm={{ span: 1, offset: 4 }} xs={4}>
-            <Button
-              variant='light'
-              onClick={() => pageHandler(-1)}
-              block
-              {...{ disabled: page === 0 ? true : false }}
-            >
-              {'<'}
-            </Button>
-          </Col>
-          <Col sm={{ span: 2 }} xs={4}>
-            <h3>{page}</h3>
-          </Col>
-          <Col sm={{ span: 1 }} xs={4}>
-            <Button
-              variant='light'
-              onClick={() => pageHandler(1)}
-              block
-              {...{ disabled: cards?.length === 0 ? true : false }}
-            >
-              {'>'}
-            </Button>
-          </Col>
+          <Container className='showcase' as={Col}>
+            <div className='cards'>
+              {cards.length === 0 ? (
+                <h5 className='ifEmpty'>
+                  To search, you just have to click on the map. If there is any
+                  existing data near your cursor, it will appear here.
+                </h5>
+              ) : (
+                cards
+              )}
+            </div>
+            <Row className='commandRow'>
+              <Col sm={{ span: 2, offset: 3 }} xs={4}>
+                <Button
+                  style={{ margin: '0px', padding: '0px' }}
+                  variant='outline-dark'
+                  onClick={() => pageHandler(-1)}
+                  block
+                  {...{ disabled: page === 0 ? true : false }}
+                >
+                  {'<'}
+                </Button>
+              </Col>
+              <Col sm={2} xs={4}>
+                <h3>{page}</h3>
+              </Col>
+              <Col sm={2} xs={4}>
+                <Button
+                  style={{ margin: '0px', padding: '0px' }}
+                  variant='outline-dark'
+                  onClick={() => pageHandler(1)}
+                  block
+                  {...{ disabled: cards?.length === 0 ? true : false }}
+                >
+                  {'>'}
+                </Button>
+              </Col>
+            </Row>
+          </Container>
         </Row>
       </Col>
-      {/* {!isLoading && !error && (
-        <Row className='commandBar'>
-          <Col>
-          </Col>
-        </Row>
-      )} */}
     </Container>
   );
 };
