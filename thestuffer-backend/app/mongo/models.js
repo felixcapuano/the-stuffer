@@ -28,8 +28,8 @@ const throwingSchema = new Schema({
   last_update_date: { type: Date, default: Date.now },
   creator: String,
   deleted: { type: Boolean, default: false },
-  like: { type: Number, default: 0 },
-  dislike: { type: Number, default: 0 },
+  like: { type: [String], default: [] },
+  dislike: { type: [String], default: [] },
 });
 
 const landingSchema = new Schema({

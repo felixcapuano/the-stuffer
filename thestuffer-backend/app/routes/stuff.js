@@ -4,7 +4,6 @@ const validation = require('../validation/validation');
 const models = require('../mongo/models');
 const isAuth = require('../auth');
 const { cleanEmpty } = require('../utils');
-const { model } = require('mongoose');
 
 stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {
   const collection = req.body.collection;
@@ -134,8 +133,10 @@ stuffRouter.post('/search', validation('search'), async (req, res) => {
 });
 
 stuffRouter.put('/react/:id', isAuth, async (req, res) => {
+  const user = req.body._user;
   const id = req.params.id;
   const type = req.query.type;
+
   if (type !== 'like' && type !== 'dislike') {
     return res.send({ ok: false, message: 'Bad type.' });
   }
@@ -143,7 +144,9 @@ stuffRouter.put('/react/:id', isAuth, async (req, res) => {
   try {
     const doc = await models.throwing.findById(id);
 
-    doc[type] += 1;
+    doc.like = doc.like.filter((id) => id !== user._id);
+    doc.dislike = doc.dislike.filter((id) => id !== user._id);
+    doc[type].push(user._id);
 
     await doc.save();
 
