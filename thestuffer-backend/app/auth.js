@@ -12,5 +12,12 @@ module.exports = (req, res, next) => {
     return res.send({ ok: false, message: 'Access denied' });
   }
 
+  if (!req.body._user.verified) {
+    return res.send({
+      ok: false,
+      message: 'You have to verified your email account.',
+    });
+  }
+
   next();
 };

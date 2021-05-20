@@ -12,10 +12,8 @@ import { authInstance } from '../../axios';
 
 import './EmailVerify.css';
 import { InputGroup } from '../InputGroup';
-import Feedback from 'react-bootstrap/esm/Feedback';
 
 const EmailVerify = () => {
-  const [message, setMessage] = useState('');
   const [feedback, setFeedback] = useState({ type: '', message: '' });
   const history = useHistory();
   const [submitEnabled, setSubmitEnabled] = useState(true);

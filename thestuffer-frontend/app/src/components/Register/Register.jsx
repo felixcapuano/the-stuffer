@@ -29,7 +29,6 @@ const Register = () => {
       repassword: Yup.string().min(8).max(100).required(),
     }),
     onSubmit: (values) => {
-      console.log(values);
       if (values.password !== values.repassword) {
         return setFeedback({
           type: 'danger',
@@ -46,7 +45,7 @@ const Register = () => {
         .then((res) => {
           if (res.data.ok) {
             setFeedback({ type: 'success', message: res.data.message });
-            return history.push('/user/login');
+            setTimeout(() => history.push('/user/login'), 3000);
           } else {
             setFeedback({ type: 'danger', message: res.data.message });
           }

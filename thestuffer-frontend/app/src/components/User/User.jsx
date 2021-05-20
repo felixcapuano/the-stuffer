@@ -32,7 +32,11 @@ const User = () => {
   return (
     <Col xl={{ span: 4, offset: 4 }}>
       <Form className='profile'>
-        <img src='/images/icons/profileIcon.png' className='profileIcon' alt='profile icon'/>
+        <img
+          src='/images/icons/profileIcon.png'
+          className='profileIcon'
+          alt='profile icon'
+        />
         <InputGroup className='profileInput'>
           <InputGroup.Prepend>
             <InputGroup.Text>Role</InputGroup.Text>
@@ -73,13 +77,12 @@ const User = () => {
             </InputGroup.Append>
           )}
         </InputGroup>
-        {/* <li>{role}</li>
-      <li>{email}</li>
-      <li>{username}</li>
-      <li>
-        {verifed.toString()}
-        {!verifed && <Link to='/user/verification'>(verify email)</Link>}
-      </li> */}
+        <InputGroup className='profileInput'>
+          <InputGroup.Prepend>
+            <InputGroup.Text>User since</InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control value={new Date(creation).toLocaleDateString()} readOnly />
+        </InputGroup>
       </Form>
     </Col>
   );
