@@ -51,8 +51,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: 22
           key: ${{ secrets.SSH_KEY }}
-          source: "dist/deployment.yml"
-          target: "/home/mammoth"
+          source: "dist/"
+          target: "/home/mammoth/"
 
       # - name: SSH Remote Commands
       #   uses: appleboy/ssh-action@v0.1.4
