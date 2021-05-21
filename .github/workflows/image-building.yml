@@ -40,13 +40,7 @@ jobs:
         docker push ${{ secrets.REGISTRY_URL }}/thestuffer-frontend:${{ github.sha }}
         docker push ${{ secrets.REGISTRY_URL }}/thestuffer-mongo:${{ github.sha }}
         docker push ${{ secrets.REGISTRY_URL }}/thestuffer-nginx:${{ github.sha }}
-
   
-  deploy:
-    name: Docker deployment
-    runs-on: ubuntu-latest
-    
-    steps:
     - name: SSH Remote Commands
       uses: appleboy/ssh-action@v0.1.4
       with:
