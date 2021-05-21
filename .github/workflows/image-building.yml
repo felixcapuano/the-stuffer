@@ -53,20 +53,20 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             mkdir -p /home/${{ secrets.SSH_USER }}/workspace/thestuffer/ && cd "$_"
-            git clone https://github.com/felixcapuano/the-stuffer
+            git clone https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/felixcapuano/the-stuffer
 
             rm -r ./the-stuffer/
             docker-compose down --remove-orphans
       #####################
       # - name: Testing
       #   run: ls -l
-        # uses: garygrossgarten/github-action-scp@release
-        # with:
-        #   local: dist/deployment.yml
-        #   remote: workspace/thestuffer/deployment-${{ github.sha }}.yml
-        #   host: ${{ secrets.SSH_HOST }}
-        #   username: ${{ secrets.SSH_USER }}
-        #   privateKey: ${{ secrets.SSH_KEY }}
+      # uses: garygrossgarten/github-action-scp@release
+      # with:
+      #   local: dist/deployment.yml
+      #   remote: workspace/thestuffer/deployment-${{ github.sha }}.yml
+      #   host: ${{ secrets.SSH_HOST }}
+      #   username: ${{ secrets.SSH_USER }}
+      #   privateKey: ${{ secrets.SSH_KEY }}
 
       # - name: Run a multi-line script
       #   run: |
