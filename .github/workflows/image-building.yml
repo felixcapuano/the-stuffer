@@ -56,13 +56,14 @@ jobs:
       #       docker-compose down --remove-orphans
       #####################
       - name: Copy single file to remote
-        uses: garygrossgarten/github-action-scp@release
-        with:
-          local: dist/deployment.yml
-          remote: workspace/thestuffer/deployment-${{ github.sha }}.yml
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          privateKey: ${{ secrets.SSH_KEY }}
+        run: ls
+        # uses: garygrossgarten/github-action-scp@release
+        # with:
+        #   local: dist/deployment.yml
+        #   remote: workspace/thestuffer/deployment-${{ github.sha }}.yml
+        #   host: ${{ secrets.SSH_HOST }}
+        #   username: ${{ secrets.SSH_USER }}
+        #   privateKey: ${{ secrets.SSH_KEY }}
 
       # - name: Run a multi-line script
       #   run: |
