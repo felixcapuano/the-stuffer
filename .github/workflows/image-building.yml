@@ -45,7 +45,14 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Copy deployment docker compose
-        run: rsync -avz ./deployments.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/mammoth/workspace/thestuffer/${{ steps.date.outputs.date }}/
+        uses: easingthemes/ssh-deploy@v2
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          REMOTE_PORT: 22
+          SOURCE: ./deployments.yml
+          TARGET: /home/${{ secrets.SSH_USER }}/workspace/thestuffer/${{ steps.date.outputs.date }}/deployment-${{ github.sha }}.yml
 
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
