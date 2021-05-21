@@ -53,10 +53,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             mkdir -p /home/${{ secrets.SSH_USER }}/workspace/thestuffer/ && cd "$_"
-            git clone https://${{secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/felixcapuano/the-stuffer
+            git clone https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/felixcapuano/the-stuffer
 
-            rm -r ./the-stuffer/
-            docker-compose down --remove-orphans
+            # rm -r ./the-stuffer/
+            # docker-compose down --remove-orphans
       #####################
       # - name: Testing
       #   run: ls -l
