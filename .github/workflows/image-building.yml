@@ -44,7 +44,7 @@ jobs:
       #   id: date
       #   run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      - name: SSH Remote Commands
+      - name: Thestuffer deployment
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -54,8 +54,8 @@ jobs:
           script: |
             mkdir -p /home/${{ secrets.SSH_USER }}/workspace/thestuffer/ && cd "$_"
             git clone https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/felixcapuano/the-stuffer
-
-            # rm -r ./the-stuffer/
+            cp ./the-stuffer/dist/deployment.yml ./deployment-${{ github.sha }}.yml
+            rm -r ./the-stuffer/
             # docker-compose down --remove-orphans
       #####################
       # - name: Testing
