@@ -55,7 +55,7 @@ jobs:
             mkdir -p /home/${{ secrets.SSH_USER }}/workspace/thestuffer/ && cd "$_"
 
             docker-compose -f deployment.yml down
-            # rm deployment.yml .env
+            rm deployment.yml .env
 
             git clone https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/felixcapuano/the-stuffer
             cp ./the-stuffer/dist/deployment.yml ./deployment.yml
@@ -65,4 +65,4 @@ jobs:
             echo "VERSION=${{ github.sha }}" >> .env
             echo "${{ secrets.THESTUFFER }}" >> .env
 
-            # docker-compose -f deployment.yml up --build -d
+            docker-compose -f deployment.yml up --build -d
