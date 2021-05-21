@@ -55,7 +55,7 @@ jobs:
             mkdir -p /home/${{ secrets.SSH_USER }}/workspace/thestuffer/ && cd "$_"
 
             docker-compose -f deployment.yml down
-            rm deployment.yml .env
+            # rm deployment.yml .env
 
             git clone https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/felixcapuano/the-stuffer
             cp ./the-stuffer/dist/deployment.yml ./deployment.yml
@@ -66,30 +66,3 @@ jobs:
             echo "${{ secrets.THESTUFFER }}" >> .env
 
             # docker-compose -f deployment.yml up --build -d
-
-      #####################
-      # - name: Testing
-      #   run: ls -l
-      # uses: garygrossgarten/github-action-scp@release
-      # with:
-      #   local: dist/deployment.yml
-      #   remote: workspace/thestuffer/deployment-${{ github.sha }}.yml
-      #   host: ${{ secrets.SSH_HOST }}
-      #   username: ${{ secrets.SSH_USER }}
-      #   privateKey: ${{ secrets.SSH_KEY }}
-
-      # - name: Run a multi-line script
-      #   run: |
-      #     mkdir ../build
-      #     cp -TR . ../build
-      #     tar -cvf deploy.tar ../build/
-
-      # - name: copy file via ssh key
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USER }}
-      #     port: 22
-      #     key: ${{ secrets.SSH_KEY }}
-      #     target: 'deploy.tar'
-      #     source: '/home/mammoth/test/'
