@@ -51,7 +51,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
           REMOTE_PORT: 22
-          SOURCE: ./deployments.yml
+          SOURCE: ./deployment.yml
           TARGET: /home/${{ secrets.SSH_USER }}/workspace/thestuffer/${{ steps.date.outputs.date }}/deployment-${{ github.sha }}.yml
 
       - name: SSH Remote Commands
