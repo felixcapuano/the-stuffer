@@ -6,9 +6,8 @@ on:
     - main
 
 jobs:
-
-  build:
-
+  image:
+    name: Image storage on registry
     runs-on: ubuntu-latest
 
     steps:
@@ -33,6 +32,7 @@ jobs:
         docker build --tag ${{ secrets.REGISTRY_URL }}/thestuffer-frontend:${{ github.sha }} ./thestuffer-frontend
         docker build --tag ${{ secrets.REGISTRY_URL }}/thestuffer-mongo:${{ github.sha }} ./mongo
         docker build --tag ${{ secrets.REGISTRY_URL }}/thestuffer-nginx:${{ github.sha }} ./nginx
+        
     - name: Push images
       run: |
         docker push ${{ secrets.REGISTRY_URL }}/auth-backend:${{ github.sha }}
@@ -40,3 +40,21 @@ jobs:
         docker push ${{ secrets.REGISTRY_URL }}/thestuffer-frontend:${{ github.sha }}
         docker push ${{ secrets.REGISTRY_URL }}/thestuffer-mongo:${{ github.sha }}
         docker push ${{ secrets.REGISTRY_URL }}/thestuffer-nginx:${{ github.sha }}
+
+  
+  deploy:
+    name: Docker deployment
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: SSH Remote Commands
+      uses: appleboy/ssh-action@v0.1.4
+      with:
+        host: ${{ SSH_HOST }}
+        username: mammoth
+        port: 22
+        key: ${{ SSH_KEY }}
+        script: |
+          cd workspace/the-stuffer
+          git pull origin main
+          git status
