@@ -44,26 +44,6 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      - name: Copy deployment docker compose
-        uses: easingthemes/ssh-deploy@v2.1.5
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USER }}
-          REMOTE_PORT: 22
-          SOURCE: dist/
-          TARGET: /home/${{ secrets.SSH_USER }}/test.ymlworkspace/thestuffer/${{ steps.date.outputs.date }}/
-
-      # - name: SCP Command to Transfer Files
-      #   uses: appleboy/scp-action@v0.1.1
-      #   with:
-      #     host: ${{ secrets.SSH_HOST }}
-      #     port: 22
-      #     username: ${{ secrets.SSH_USER }}
-      #     key: ${{ secrets.SSH_KEY }}
-      #     target: /home/${{ secrets.SSH_USER }}/test.yml #/workspace/thestuffer/${{ steps.date.outputs.date }}/deployment-${{ github.sha }}.yml
-      #     source: ${{github.workspace}}/deployment.yml
-
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
         with:
@@ -72,6 +52,5 @@ jobs:
           port: 22
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd workspace/thestuffer
-            ls .
-            ls ${{ steps.date.outputs.date }}
+            mkdir -p /home/${{ secrets.SSH_USER }}/workspace/thestuffer/ && cd "$_"
+            touch hello
