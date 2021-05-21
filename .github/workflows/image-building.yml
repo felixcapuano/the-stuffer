@@ -44,19 +44,22 @@ jobs:
       #   id: date
       #   run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      # - name: SSH Remote Commands
-      #   uses: appleboy/ssh-action@v0.1.4
-      #   with:
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USER }}
-      #     port: 22
-      #     key: ${{ secrets.SSH_KEY }}
-      #     script: |
-      #       mkdir -p /home/${{ secrets.SSH_USER }}/workspace/thestuffer/ && cd "$_"
-      #       docker-compose down --remove-orphans
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: 22
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            mkdir -p /home/${{ secrets.SSH_USER }}/workspace/thestuffer/ && cd "$_"
+            git clone https://github.com/felixcapuano/the-stuffer
+
+            rm -r ./the-stuffer/
+            docker-compose down --remove-orphans
       #####################
-      - name: Testing
-        run: ls -l
+      # - name: Testing
+      #   run: ls -l
         # uses: garygrossgarten/github-action-scp@release
         # with:
         #   local: dist/deployment.yml
