@@ -65,4 +65,5 @@ jobs:
             echo "VERSION=${{ github.sha }}" >> .env
             echo "${{ secrets.THESTUFFER }}" >> .env
 
+            docker login --username ${{ REGISTRY_USERNAME }} --password ${{ REGISTRY_PASSWORD }}
             docker-compose -f deployment.yml up --build -d
