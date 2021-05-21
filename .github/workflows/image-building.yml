@@ -62,7 +62,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           target: /home/${{ secrets.SSH_USER }}/test.yml #/workspace/thestuffer/${{ steps.date.outputs.date }}/deployment-${{ github.sha }}.yml
-          source: ./deployment.yml
+          source: deployment.yml
 
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
