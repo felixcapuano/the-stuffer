@@ -57,8 +57,7 @@ jobs:
       #####################
       - name: Copy single file to remote
         run: |
-          ls ../the-stuffer/
-          echo ${{ github.workspace}}
+          ls ${{ github.workspace}}
         # uses: garygrossgarten/github-action-scp@release
         # with:
         #   local: dist/deployment.yml
