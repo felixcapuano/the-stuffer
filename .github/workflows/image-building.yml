@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: 22
           key: ${{ secrets.SSH_KEY }}
-          target: "."
+          target: "../dist/"
           source: "/home/mammoth/test/"
 
       # - name: SSH Remote Commands
