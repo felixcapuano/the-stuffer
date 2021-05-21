@@ -57,8 +57,9 @@ jobs:
       #####################
       - name: Copy single file to remote
         run: |
-          cat ${{ github.workspace}}/dist/deployment.yml
-          cat ../the-stuffer/dist/deployment.yml
+          ls
+          ls ..
+          ls ../the-stuffer
         # uses: garygrossgarten/github-action-scp@release
         # with:
         #   local: dist/deployment.yml
