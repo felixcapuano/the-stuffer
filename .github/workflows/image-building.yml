@@ -55,8 +55,8 @@ jobs:
       #       mkdir -p /home/${{ secrets.SSH_USER }}/workspace/thestuffer/ && cd "$_"
       #       docker-compose down --remove-orphans
       #####################
-      - name: Copy single file to remote
-        script: ls
+      - name: Testing
+        run: cat dev.yml
         # uses: garygrossgarten/github-action-scp@release
         # with:
         #   local: dist/deployment.yml
