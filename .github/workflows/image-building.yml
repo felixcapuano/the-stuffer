@@ -44,15 +44,25 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      - name: Copy deployment docker compose
-        uses: easingthemes/ssh-deploy@v2
+      # - name: Copy deployment docker compose
+      #   uses: easingthemes/ssh-deploy@v2
+      #   with:
+      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+      #     REMOTE_HOST: ${{ secrets.SSH_HOST }}
+      #     REMOTE_USER: ${{ secrets.SSH_USER }}
+      #     REMOTE_PORT: 22
+      #     SOURCE: ./deployment.yml
+      #     TARGET: /home/${{ secrets.SSH_USER }}/workspace/thestuffer/${{ steps.date.outputs.date }}/deployment-${{ github.sha }}.yml
+      
+      - name: SCP Command to Transfer Files
+        uses: appleboy/scp-action@v0.1.1
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USER }}
-          REMOTE_PORT: 22
-          SOURCE: ./deployment.yml
-          TARGET: /home/${{ secrets.SSH_USER }}/workspace/thestuffer/${{ steps.date.outputs.date }}/deployment-${{ github.sha }}.yml
+          host: ${{ secrets.SSH_HOST }}
+          port: 22
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          target: /home/${{ secrets.SSH_USER }}/workspace/thestuffer/${{ steps.date.outputs.date }}/deployment-${{ github.sha }}.yml
+          source: ./deployment.yml
 
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
