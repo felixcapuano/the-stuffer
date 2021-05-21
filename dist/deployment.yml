@@ -1,6 +1,7 @@
 version: '3.9'
 services:
   mongo:
+    restart: always
     image: ${REGISTRY_URL}/thestuffer-mongo:${VERSION}
     container_name: mongo
     volumes:
@@ -13,6 +14,7 @@ services:
       - 27017:27017
 
   reverse-proxy:
+    restart: always
     image: ${REGISTRY_URL}/thestuffer-nginx:${VERSION}
     container_name: reverse-proxy
     depends_on:
@@ -24,6 +26,7 @@ services:
       - 8080:80
 
   auth-backend:
+    restart: always
     image: ${REGISTRY_URL}/auth-backend:${VERSION}
     container_name: auth-backend
     environment:
@@ -40,6 +43,7 @@ services:
       - mongo
 
   thestuffer-backend:
+    restart: always
     container_name: thestuffer-backend
     image: ${REGISTRY_URL}/thestuffer-backend:${VERSION}
     environment:
@@ -54,6 +58,7 @@ services:
       - mongo
 
   thestuffer-frontend:
+    restart: always
     container_name: thestuffer-frontend
     image: ${REGISTRY_URL}/thestuffer-frontend:${VERSION}
     environment:
