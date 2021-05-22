@@ -35,7 +35,7 @@ const ThrowingCard = ({ data }) => {
   const react = async (_type) => {
     setReaction({ ...initialReaction, [_type]: !reaction[_type] });
 
-    console.log(reaction)
+    console.log(reaction);
 
     const path = `/stuff/react/${data._id}?type=${_type}`;
     try {
@@ -71,10 +71,12 @@ const ThrowingCard = ({ data }) => {
         </ButtonGroup>
       </Row>
       <Row className='contentRow'>
-        <Col md={{ span: 7 }} className='text-left'>
-          {data.description}
+        <Col md={{ span: 8 }} className='text-left'>
+          Description :
+          {' ' +
+            (open ? data.description : data.description.slice(0, 10) + '...')}
         </Col>
-        <Col md={{ span: 4, offset: 1 }}>
+        <Col md={{ span: 4 }}>
           <Button
             variant={open ? 'outline-dark' : 'dark'}
             block
@@ -98,7 +100,7 @@ const ThrowingCard = ({ data }) => {
         />
       </Collapse>
       <Row className='infoRow'>
-        <Col className='text-left'>Created by : {data.creator}</Col>
+        <Col className='text-left'>Created by : {data.creator.username}</Col>
         <Col className='dateText'>
           {new Date(data.last_update_date).toUTCString()}
         </Col>

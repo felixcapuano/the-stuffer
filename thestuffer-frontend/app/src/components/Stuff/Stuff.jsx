@@ -59,22 +59,22 @@ const Stuff = () => {
           page: _page,
         },
       };
-      setData({ ...data, isLoading: true });
+      setData((d) => ({ ...d, isLoading: true }));
       try {
         const res = await stuffInstance.post('/stuff/search', payload);
         if (!res.data.ok) throw new Error(res.data.message);
-        setData({
-          ...data,
+        setData((d) => ({
+          ...d,
           isLoading: false,
           hits: res.data.hits,
-        });
+        }));
         if (res.data.hits.length !== 0) maxPage.current = true;
         setPage(_page);
       } catch (error) {
-        setData({ ...data, isLoading: false, error });
+        setData((d) => ({ ...d, isLoading: false, error }));
       }
     },
-    [landingTarget]
+    [landingTarget, setData]
   );
 
   const clickHandler = useCallback(

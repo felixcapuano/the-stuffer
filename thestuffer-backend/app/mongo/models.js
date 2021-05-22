@@ -26,7 +26,10 @@ const throwingSchema = new Schema({
   description: String,
   creation_date: { type: Date, default: Date.now },
   last_update_date: { type: Date, default: Date.now },
-  creator: String,
+  creator: {
+    username: String,
+    id: String,
+  },
   deleted: { type: Boolean, default: false },
   like: { type: [String], default: [] },
   dislike: { type: [String], default: [] },
@@ -41,7 +44,10 @@ const landingSchema = new Schema({
     floor: Number,
   },
   creation_date: { type: Date, default: Date.now },
-  creator: String,
+  creator: {
+    username: String,
+    id: String,
+  },
   last_update_date: { type: Date, default: Date.now },
   deleted: { type: Boolean, default: false },
 });

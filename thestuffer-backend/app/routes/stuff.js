@@ -13,7 +13,10 @@ stuffRouter.post('/create', validation('create'), isAuth, async (req, res) => {
       return await res.send({ ok: false, message: 'Access denied' });
   }
 
-  req.body.creator = req.body._user._id;
+  req.body.creator = {
+    id: req.body._user._id,
+    username: req.body._user.username,
+  }
 
   const model = new models[collection](req.body);
   try {

@@ -1,13 +1,13 @@
 {
   "macros": {
     "devrun": [
-      "workbench.action.terminal.new",
-      {
-        "command": "workbench.action.terminal.sendSequence",
-        "args": {
-          "text": "docker-compose --file dev.yml up\n"
-        }
-      },
+      // "workbench.action.terminal.new",
+      // {
+      //   "command": "workbench.action.terminal.sendSequence",
+      //   "args": {
+      //     "text": "docker-compose --file dev.yml up\n"
+      //   }
+      // },
       "workbench.action.terminal.new",
       {
         "command": "workbench.action.terminal.sendSequence",
