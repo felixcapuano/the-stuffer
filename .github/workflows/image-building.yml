@@ -29,9 +29,7 @@ jobs:
           docker build --tag ${{ secrets.REGISTRY_URL }}/auth-backend:${{ github.sha }} ./auth-backend
           docker build --tag ${{ secrets.REGISTRY_URL }}/thestuffer-backend:${{ github.sha }} ./thestuffer-backend
           docker build --tag ${{ secrets.REGISTRY_URL }}/thestuffer-frontend:${{ github.sha }} ./thestuffer-frontend
-          docker build --tag ${{ secrets.REGISTRY_URL }}/thestuffer-frontend:${{ github.sha }} ./thestuffer-frontend
           docker build --tag ${{ secrets.REGISTRY_URL }}/thestuffer-mongo:${{ github.sha }} ./mongo
-          docker build --tag ${{ secrets.REGISTRY_URL }}/thestuffer-nginx:${{ github.sha }} ./nginx
 
       - name: Push images
         run: |
@@ -39,7 +37,6 @@ jobs:
           docker push ${{ secrets.REGISTRY_URL }}/thestuffer-backend:${{ github.sha }}
           docker push ${{ secrets.REGISTRY_URL }}/thestuffer-frontend:${{ github.sha }}
           docker push ${{ secrets.REGISTRY_URL }}/thestuffer-mongo:${{ github.sha }}
-          docker push ${{ secrets.REGISTRY_URL }}/thestuffer-nginx:${{ github.sha }}
 
       # - name: Get current date
       #   id: date

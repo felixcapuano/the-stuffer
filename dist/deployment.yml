@@ -5,25 +5,13 @@ services:
     image: ${REGISTRY_URL}/thestuffer-mongo:${VERSION}
     container_name: mongo
     volumes:
-      - ./mongo/mongo-volume:/data/db
+      - ./mongo-volume:/data/db
     environment:
       MONGO_INITDB_DATABASE: thestuffer
       MONGO_INITDB_ROOT_USERNAME: ${ROOT_MONGO_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${ROOT_MONGO_PASSWORD}
     ports:
       - 27017:27017
-
-  reverse-proxy:
-    restart: always
-    image: ${REGISTRY_URL}/thestuffer-nginx:${VERSION}
-    container_name: reverse-proxy
-    depends_on:
-      - mongo
-      - auth-backend
-      - thestuffer-backend
-      - thestuffer-frontend
-    ports:
-      - 8080:80
 
   auth-backend:
     restart: always
@@ -61,7 +49,7 @@ services:
     restart: always
     container_name: thestuffer-frontend
     image: ${REGISTRY_URL}/thestuffer-frontend:${VERSION}
-    environment:
-      PORT: 8080
     depends_on:
       - mongo
+    ports:
+      - 8080:8080

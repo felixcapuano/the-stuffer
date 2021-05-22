@@ -6,27 +6,13 @@ services:
     container_name: thestuffer-mongo
     volumes:
       - ./mongo/mongo-volume:/data/db
-      # - ./mongo/init-scripts:/docker-entrypoint-initdb.d:ro
+      - ./mongo/init-scripts:/docker-entrypoint-initdb.d:ro
     environment: 
       MONGO_INITDB_DATABASE: thestuffer
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - 27017:27017
-
-  reverse-proxy:
-    image: thestuffer-nginx
-    build: ./nginx
-    container_name: thestuffer-nginx
-    depends_on:
-      - mongo
-      - auth-backend
-      - thestuffer-backend
-      - thestuffer-frontend
-    # volumes:
-    #   - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - 81:80
 
   auth-backend:
     container_name: auth-backend
@@ -37,13 +23,11 @@ services:
       NODE_ENV: production
       MONGO_URI: mongodb://mongo:27017/thestuffer
       AUTH_MONGO_USERNAME: auth
-      AUTH_MONGO_PASSWORD: 123
+      AUTH_MONGO_PASSWORD: $AUTH_MONGO_PASSWORD
       EMAIL: $EMAIL
       EMAIL_PWD: $EMAIL_PWD
     depends_on:
       - mongo
-    # ports:
-    #   - 3002:3002
 
   thestuffer-backend:
     container_name: thestuffer-backend
@@ -54,19 +38,15 @@ services:
       NODE_ENV: production
       MONGO_URI: mongodb://mongo:27017/thestuffer
       STUFF_MONGO_USERNAME: stuff
-      STUFF_MONGO_PASSWORD: 123
+      STUFF_MONGO_PASSWORD: $STUFF_MONGO_PASSWORD
     depends_on:
       - mongo
-    # ports:
-    #   - 3001:3001
 
   thestuffer-frontend:
     container_name: thestuffer-frontend
     image: thestuffer-frontend
     build: ./thestuffer-frontend
-    environment: 
-      PORT: 8080
     depends_on:
       - mongo
-    # ports:
-    #   - 8081:8080
+    ports:
+      - 8080:8080
