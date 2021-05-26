@@ -44,7 +44,9 @@ const NavBar = () => {
                 <Nav.Link>User</Nav.Link>
               </LinkContainer>
             )}
-            <Nav.Link>Help</Nav.Link>
+            <LinkContainer to='/help'>
+              <Nav.Link>Help</Nav.Link>
+            </LinkContainer>
             <NavDropdown title='Map' id='nav-dropdown'>
               {dropdownItems}
             </NavDropdown>
