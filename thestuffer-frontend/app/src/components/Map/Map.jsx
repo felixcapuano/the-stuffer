@@ -82,7 +82,7 @@ function Map({
       <FloorControl map={map} updateMap={setMap} />
       <MapEvent />
       <TilesLayer map={map} />
-      <LandingLayer
+      {/* <LandingLayer
         map={map}
         setTarget={setLandingTarget}
         target={landingTarget}
@@ -91,7 +91,7 @@ function Map({
       />
       {!disabledThrowing && landingTarget && (
         <ThrowingLayer target={landingTarget} />
-      )}
+      )} */}
     </MapContainer>
   );
 }

@@ -11,7 +11,6 @@ const TilesLayer = ({ map }) => {
     tileLayer.current.redraw();
   });
 
-
   const testUrl =
     window.location.origin + '/images/maps/{map}_{floor}/{z}/{y}/{x}.png';
 
@@ -22,10 +21,9 @@ const TilesLayer = ({ map }) => {
     minZoom: 0,
     maxZoom: 3,
     noWrap: true,
-    ref: tileLayer,
   };
 
-  return <TileLayer {...tileLayerConfig} />;
+  return <TileLayer ref={tileLayer} {...tileLayerConfig} />;
 };
 
 export default TilesLayer;

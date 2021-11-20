@@ -14,18 +14,18 @@ const App = () => {
 
   const userContextValue = { user, updateUser };
 
-  useEffect(() => {
-    authInstance.get('/token').then(async (res) => {
-      console.log(res.data);
-      setToken(res.data.accessToken);
-      setLoading(false);
-      if (res.data.ok) updateUser(res.data.user);
-    });
-  }, [setLoading, updateUser]);
+  // useEffect(() => {
+  //   authInstance.get('/token').then(async (res) => {
+  //     console.log(res.data);
+  //     setToken(res.data.accessToken);
+  //     setLoading(false);
+  //     if (res.data.ok) updateUser(res.data.user);
+  //   });
+  // }, [setLoading, updateUser]);
 
-  if (loading) {
-    return <div>Waiting for server response...</div>;
-  }
+  // if (loading) {
+  //   return <div>Waiting for server response...</div>;
+  // }
 
   return (
     <div className='App'>

@@ -15,18 +15,9 @@ const Router = () => {
     <BrowserRouter>
       <NavBar />
       <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/help' component={Help} />
-      </Switch>
-      <Switch>
-        <Route exact path='/stuff/:map' component={Stuff} />
-        <Route path='/stuff/create/:type' component={CreateStuff} />
-      </Switch>
-      <Switch>
-        <Route exact path='/user' component={User} />
-        <Route path='/user/login' component={Login} />
-        <Route path='/user/register' component={Register} />
-        <Route path='/user/verification' component={EmailVerify} />
+        <Route exact path='/' component={Stuff} />
+        <Route exact path='/:map' component={Stuff} />
+        <Route path='/create/:type' component={CreateStuff} />
       </Switch>
     </BrowserRouter>
   );

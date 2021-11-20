@@ -5,7 +5,7 @@ import React, {
   useState,
   useRef,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { LinkContainer } from 'react-router-bootstrap';
 import Row from 'react-bootstrap/Row';
@@ -23,6 +23,9 @@ const CLICK_RADIUS = 10;
 
 const Stuff = () => {
   const params = useParams();
+  const history = useHistory();
+  if (!params.map) history.push('/dust2');
+
   const [landingTarget, setLandingTarget] = useState(null);
   const { user } = useContext(AuthContext);
   const [page, setPage] = useState(0);
@@ -122,6 +125,7 @@ const Stuff = () => {
     ),
     [params, setLandingTarget, clickHandler]
   );
+  if (!params['map']) return <div>shit</div>;
 
   const createButton = () => {
     return (
